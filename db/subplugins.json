@@ -1,0 +1,5 @@
+{
+  "plugintypes": {
+    "checker": "blocks\/course_checker\/checkers"
+  }
+}
