@@ -18,8 +18,8 @@
  * Code to be executed after the plugin's database scheme has been installed is defined here.
  *
  * @package     local_course_checker
- * @category    upgrade
  * @copyright   2024 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
+ * @copyright   2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,5 +28,12 @@
  */
 function xmldb_local_course_checker_install() {
 
+    // Transfer settings table.
+    $importsettings = new \local_course_checker\import_settings();
+    $importsettings->start();
+
+    \core\notification::info('Settings imported: You are free to delete "block_course_checker".');
+
+    // Transfer done.
     return true;
 }
