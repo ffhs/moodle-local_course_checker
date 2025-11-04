@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$plugin->version = 2025062600;
+$plugin->requires = 2025041400;
+$plugin->release = 'v5.0-r1';
 $plugin->component = 'local_course_checker';
-$plugin->release = '0.1.0';
-$plugin->version = 2024061800;
-$plugin->requires = 2022112800;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_STABLE;

@@ -1,5 +1,8 @@
 {
+  "subplugintypes": {
+    "checker": "checker"
+  },
   "plugintypes": {
-    "checker": "blocks\/course_checker\/checkers"
+    "checker": "local/course_checker/checker"
   }
 }
