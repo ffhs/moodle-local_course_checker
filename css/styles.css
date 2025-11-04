@@ -1,0 +1,16 @@
+.local_course_checker__check {
+    background-clip: padding-box;
+}
+
+.local_course_checker__check-successful {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(45, 153, 74, 1) 100%);
+}
+
+.local_course_checker__check-warning {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(224, 151, 6, 1) 100%);
+}
+
+.local_course_checker__check-failed,
+.local_course_checker__check-error {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(183, 0, 5, 1) 100%);
+}

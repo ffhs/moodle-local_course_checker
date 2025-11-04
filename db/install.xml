@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/course_checker/db" VERSION="20250409" COMMENT="XMLDB file for Moodle local/course_checker."
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_course_checker" COMMENT="Contains the results of the local_course_checker.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="version_name" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="latest" SEQUENCE="false" COMMENT="Contains the version name of the results."/>
+        <FIELD NAME="course_id" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="course_id" TYPE="foreign" FIELDS="course_id" REFTABLE="course" REFFIELDS="id" COMMENT="Foreign key of course.id."/>
+        <KEY NAME="versionname_courseid_unique" TYPE="unique" FIELDS="version_name, course_id" COMMENT="Version_name and course_id are unique because there can only be one version of checker in each course."/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_course_checker_check" COMMENT="Contains the results of each subplugin.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="checker_id" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key of local_course_checker.id."/>
+        <FIELD NAME="check_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="successful" SEQUENCE="false" COMMENT="Defines the overall state of the check. 'successful' is the default state because the state can't be empty."/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="checker_id" TYPE="foreign" FIELDS="checker_id" REFTABLE="local_course_checker" REFFIELDS="id" COMMENT="Foreign key of local_course_checker.id."/>
+        <KEY NAME="checkerid_checkname_unique" TYPE="unique" FIELDS="checker_id, check_name"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="checkerid_status_idx" UNIQUE="false" FIELDS="checker_id, status" COMMENT="Index of checker_id, status field."/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_course_checker_check_result" COMMENT="Contains the details of each result of each subplugin.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="check_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key index of local_course_checker_check.id."/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="successful" SEQUENCE="false" COMMENT="Defines the overall state of the single result. 'successful' is the default state because the state can't be empty."/>
+        <FIELD NAME="title" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the title that gets displayed in the result view."/>
+        <FIELD NAME="link" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the link that gets added to the title on the result view."/>
+        <FIELD NAME="message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the message that gets colored with the status color on the result view."/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="check_id" TYPE="foreign" FIELDS="check_id" REFTABLE="local_course_checker_check" REFFIELDS="id" COMMENT="Foreign key index of local_course_checker_check.id."/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="checkid_status_idx" UNIQUE="false" FIELDS="check_id, status" COMMENT="Index of check_id, status field."/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_course_checker_event" COMMENT="Contains all events/modifications to a course that happened after the last checker run.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="checker_id" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key of local_course_checker.id."/>
+        <FIELD NAME="eventname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="action" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="target" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="objecttable" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="objectid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="crud" TYPE="char" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="edulevel" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="contextid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="contextlevel" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="contextinstanceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="relateduserid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="anonymous" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Was this event anonymous at the time of triggering?"/>
+        <FIELD NAME="other" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="checker_id" TYPE="foreign" FIELDS="checker_id" REFTABLE="local_course_checker" REFFIELDS="id" COMMENT="Foreign key of local_course_checker.id."/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="checkerid_action_idx" UNIQUE="false" FIELDS="checker_id, action" COMMENT="Index checker_id, action to maybe filter them later"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
