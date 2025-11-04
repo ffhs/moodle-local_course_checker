@@ -1,0 +1,88 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_course_checker/events
+
+    Displays a collapsible section for recent course activity events in a tabular format.
+    Each row includes the action performed, the user who performed it, a context link, and the timestamp.
+
+    Example context (json):
+    {
+        "timestamp": "Monday, 2024-05-13 14:23",
+        "eventslog": [
+            {
+                "action": "Updated activity name",
+                "user": "<a href=\"/user/view.php?id=4\">John Doe</a>",
+                "context": "<a href=\"/mod/assign/view.php?id=12\">Assignment 1</a>",
+                "timestamp": "Monday, 2024-05-13 14:23"
+            },
+            {
+                "action": "Created quiz",
+                "user": "Deleted user",
+                "context": "Unknown",
+                "timestamp": "Monday, 2024-05-13 13:02"
+            }
+        ]
+    }
+}}
+<h2 class="mb-3 mt-3">{{#str}}activity, local_course_checker{{/str}}</h2>
+<div class="local_course_checker__section mb-1">
+    <div class="d-flex align-items-center p-2 border rounded-lg">
+        <div class="d-flex align-items-start position-relative">
+            <a class="btn me-auto mb-0" data-bs-toggle="collapse" href="#activity_log">
+                {{#str}}last_modified_activity, local_course_checker{{/str}}
+            </a>
+        </div>
+        <div class="flex-fill d-flex justify-content-end align-self-center">
+            {{#timestamp}}
+                <p class="align-self-center m-0 me-2">{{timestamp}}</p>
+            {{/timestamp}}
+                <button class="btn btn-icon btn-light bg-light me-2 icons-collapse-expand collapsed justify-content-center" data-bs-toggle="collapse" data-for="sectiontoggler" data-bs-target="#activity_log" id="collapssesection1" aria-expanded="false" aria-controls="activity_log" aria-label="activity_log">
+                    <span class="expanded-icon icon-no-margin" title="{{#str}} collapse, core{{/str}}">
+                        {{#pix}}t/expandedchevron,core{{/pix}}
+                    </span>
+                    <span class="collapsed-icon icon-no-margin" title="{{#str}} expand, core{{/str}}">
+                        {{#pix}}t/collapsedchevron_rtl,core{{/pix}}
+                    </span>
+                </button>
+        </div>
+    </div>
+    <div id="activity_log" class="collapse">
+        <div class="event-log">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">{{#str}} action, local_course_checker {{/str}}</th>
+                        <th scope="col">{{#str}} user, local_course_checker {{/str}}</th>
+                        <th scope="col">{{#str}} details, local_course_checker {{/str}}</th>
+                        <th scope="col">{{#str}} timestamp, local_course_checker {{/str}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#eventslog}}
+                    <tr>
+                        <td>{{{action}}}</td>
+                        <td>{{{user}}}</td>
+                        <td>{{{context}}}</td>
+                        <td>{{timestamp}}</td>
+                    </tr>
+                {{/eventslog}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

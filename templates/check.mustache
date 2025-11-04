@@ -1,0 +1,106 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_course_checker/check
+
+    Renders a collapsible section representing a single check. Includes timestamp, status, rerun button, settings link,
+    and nested results grouped by status.
+
+    Example context (json):
+    {
+        "check_name": "activity_completion_sections",
+        "plugin_check_name": "Activity Completion Sections",
+        "plugin_description": "This plugin scans course content—including summaries, modules, books, wikis, and URLs—for hyperlinks and checks their validity.",
+        "status": "failed",
+        "timestamp": "Wednesday, 01 May 2025, 14:33",
+        "settings_link": "https://moodle.example.com/admin/settings.php?section=checker_activity_completion_sections_settings",
+        "action_url": "https://moodle.example.com/local/course_checker/action.php",
+        "courseid": 42,
+        "sesskey": "abcd1234",
+        "returnurl": "https://moodle.example.com/course/view.php?id=42",
+        "check_is_running": false,
+        "result": true,
+        "error": [],
+        "failed": [
+            "<div>Check result HTML block 1</div>",
+            "<div>Check result HTML block 2</div>"
+        ],
+        "warning": [],
+        "successful": []
+    }
+}}
+<div class="local_course_checker__section mb-1">
+    <div class="d-flex local_course_checker__check local_course_checker__check-{{status}} align-items-center p-2 border rounded-lg">
+        <div class="d-flex align-items-start position-relative">
+            <a class="btn me-auto mb-0" data-bs-toggle="collapse" href="#{{check_name}}">
+                {{plugin_check_name}}
+            </a>
+        </div>
+        <div class="flex-fill d-flex justify-content-end align-self-center">
+            {{#timestamp}}
+                <p class="align-self-center m-0 me-2">{{timestamp}}</p>
+            {{/timestamp}}
+            {{#settings_link}}
+                <a href="{{settings_link}}" target="_blank" class="btn btn-icon btn-light icon-no-margin me-2" aria-label="settings">
+                    {{#pix}}i/settings,core{{/pix}}
+                </a>
+            {{/settings_link}}
+            {{#plugin_description}}
+                <button class="btn btn-icon btn-light icon-no-margin me-2" data-bs-toggle="popover" data-bs-container="body" data-bs-placement="top" data-bs-content="{{plugin_description}}">
+                    {{#pix}}e/question,core{{/pix}}
+                </button>
+            {{/plugin_description}}
+            {{^check_is_running}}
+                <form method="get" action="{{action_url}}">
+                    <input type="hidden" name="action" value="run_check">
+                    <input type="hidden" name="check_name" value="{{check_name}}">
+                    <input type="hidden" name="courseid" value="{{courseid}}">
+                    <input type="hidden" name="sesskey" value="{{sesskey}}">
+                    {{#returnurl}}
+                        <input type="hidden" name="returnurl" value="{{returnurl}}">
+                    {{/returnurl}}
+                    <button type="submit" class="btn btn-icon btn-light icon-no-margin me-2" aria-label="rerun">
+                        {{#pix}}t/reset,core{{/pix}}
+                    </button>
+                </form>
+            {{/check_is_running}}
+            {{#check_is_running}}
+                <button class="btn btn-icon btn-light icon-no-margin me-2" aria-label="check running">
+                    {{#pix}}i/loading,core{{/pix}}
+                </button>
+            {{/check_is_running}}
+            {{#result}}
+                <a class="btn btn-icon btn-light bg-light me-2 icons-collapse-expand collapsed justify-content-center" data-bs-toggle="collapse" data-for="sectiontoggler" href="#{{check_name}}" id="toggle{{check_name}}" aria-expanded="false" aria-controls="{{check_name}}" aria-label="{{check_name}}">
+                        <span class="expanded-icon icon-no-margin" title="{{#str}} collapse, core{{/str}}">
+                        {{#pix}}t/expandedchevron,core{{/pix}}
+                    </span>
+                    <span class="collapsed-icon icon-no-margin" title="{{#str}} expand, core{{/str}}">
+                        {{#pix}}t/collapsedchevron_rtl,core{{/pix}}
+                    </span>
+                </a>
+            {{/result}}
+        </div>
+    </div>
+    {{#result}}
+        <div id="{{check_name}}" class="collapse">
+            {{#error}}{{{.}}}{{/error}}
+            {{#failed}}{{{.}}}{{/failed}}
+            {{#warning}}{{{.}}}{{/warning}}
+            {{#successful}}{{{.}}}{{/successful}}
+        </div>
+    {{/result}}
+</div>

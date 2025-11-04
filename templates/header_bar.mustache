@@ -1,0 +1,52 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_course_checker/header_bar
+
+    Renders the top action bar of the course checker, showing the last run status
+    and a button to re-run all checks unless a check is already in progress.
+
+    Example context (json):
+    {
+        "timestamp": "Monday, 2024-05-13 14:23",
+        "in_progress": false,
+        "action_url": "/local/course_checker/action.php",
+        "courseid": 123,
+        "sesskey": "ABC123XYZ",
+        "returnurl": "/course/view.php?id=123"
+    }
+}}
+<div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+    <span class="text-left">{{#str}}checker_last_run, local_course_checker, {{#timestamp}}{{timestamp}}{{/timestamp}}{{^timestamp}}{{#str}}checker_never_run, local_course_checker{{/str}}{{/timestamp}}{{/str}}</span>
+    <div class="d-flex">
+       <!--<button type="button" class="btn btn-primary me-2" disabled>Save Version</button>-->
+        {{#in_progress}}
+            <button type="button" class="btn btn-primary" disabled>{{#str}}check_course_in_progress, local_course_checker{{/str}}</button>
+        {{/in_progress}}
+        {{^in_progress}}
+            <form method="get" action="{{action_url}}">
+                <input type="hidden" name="action" value="run_all_checks">
+                <input type="hidden" name="courseid" value="{{courseid}}">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                {{#returnurl}}
+                    <input type="hidden" name="returnurl" value="{{returnurl}}">
+                {{/returnurl}}
+                <button type="submit" class="btn btn-primary">{{#str}}check_course, local_course_checker{{/str}}</button>
+            </form>
+        {{/in_progress}}
+    </div>
+</div>
