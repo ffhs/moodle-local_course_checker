@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_blocks'.
+ * Strings for component 'coursechecker_groups'.
  *
- * @package    checker_blocks
+ * @package    coursechecker_groups
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,13 +25,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Blocks check';
-$string['pluginname_help'] = 'This plugin compares the enabled blocks in a course against a reference course to ensure consistent block layout. It checks for missing or mismatched blocks and helps maintain a standardized course structure across the platform.';
+$string['pluginname'] = 'Group submission check';
+$string['pluginname_help'] = 'This plugin checks assignment activities in a course to ensure correct group submission configuration. It verifies that group mode is properly set, a valid grouping is assigned, and that the grouping contains at least two groups.';
+$string['privacy:metadata'] = 'The group submission check does not store any personal data. The check results are stored in the course checker plugin.';
 
-$string['blocks_setting'] = 'Enabled blocks';
-$string['blocks_setting_help'] =
-        'Define the allowed blocks (must be enabled in <a href="/admin/blocks.php" target="_blank">Manage blocks</a>) to be checked.';
-$string['blocks_comparison'] = '(Reference course: "{$a->valuereference}" | Current course: "{$a->valuecurrent}")';
-$string['blocks_success'] = 'The block is correctly inserted in the current course';
-$string['blocks_error'] = 'The block is present by mistake or is missing in the current course.';
-$string['blocks_activity'] = 'Block "{$a->name}"';
+// String specific for the group checker.
+$string['groups_deactivated'] = 'Group submission setting is deactivated';
+$string['groups_idmissing'] = 'Group submission is active, but no grouping is set';
+$string['groups_missing'] = 'Grouping has not been set up correctly';
+$string['groups_lessthantwogroups'] = 'Less than 2 groups have been set up for the active grouping';
+$string['groups_success'] = 'Group submission setting is well defined';
+$string['groups_activity'] = 'Activity "{$a->name}"';

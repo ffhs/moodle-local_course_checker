@@ -1,4 +1,4 @@
-# 📚 Moodle Course Checker
+# Course Checker [![Moodle Plugin CI](https://github.com/ffhs/moodle-local_course_checker/actions/workflows/moodle-plugin-ci.yml/badge.svg?branch=main)](https://github.com/ffhs/moodle-local_course_checker/actions/workflows/moodle-plugin-ci.yml)
 ## A Moodle course checker plugin that improves the quality and eliminate human routine tasks in online courses
 This plugin provides a framework that can check a course based on independent checkers. Each checker is an independent [subplugin](https://docs.moodle.org/dev/Subplugins). It will help you find misconfiguration in your courses and follow your internal guidelines by displaying a structured report. The checkers can be triggered manually an will be executed by the Moodle AdHoc task system. A check can also be triggered via the companion plugin [block_course_checker_info](https://moodle.org/plugins/plugin/block_course_checker_info).
 
@@ -11,7 +11,7 @@ This plugin provides a framework that can check a course based on independent ch
 
 - Import and adapt settings from deprecated `block_course_checker`.
 - Automatic checks of course configurations (e.g., activity names, due dates, completion).
-- Easily extendable via [subplugins](https://docs.moodle.org/dev/Subplugins) (`checker_xyz`).
+- Easily extendable via [subplugins](https://docs.moodle.org/dev/Subplugins) (`coursechecker_xyz`).
 - Accordion-based display using Mustache templates and Bootstrap.
 - Display a changes log since last check on top of the report.
 - Adhoc tasks for parallel check execution.
@@ -32,55 +32,55 @@ This plugin provides a framework that can check a course based on independent ch
   </thead>
   <tbody>
     <tr>
-      <td><a href="https://moodle.org/plugins/checker_attendance">moodle-checker_attendance</a></td>
+      <td><a href="https://github.com/ffhs/moodle-coursechecker_attendance">moodle-coursechecker_attendance</a></td>
       <td>No, because of mod_attendance dependecy.</td>
       <td><a href="https://moodle.org/plugins/mod_attendance">mod_attendance</a></td>
       <td>This plugin checks whether a course contains exactly one visible attendance activity and that it does not contain any preconfigured sessions. It ensures consistent setup of attendance tracking across courses.</td>
     </tr>
     <tr>
-      <td>moodle-checker_activedates</td>
+      <td>moodle-coursechecker_activedates</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin checks whether a course has both a <strong>start date</strong> and an <strong>end date</strong> defined. It is designed to be part of a course quality assurance workflow, ensuring that all courses have clearly set temporal boundaries.</td>
     </tr>
     <tr>
-      <td>moodle-checker_blocks</td>
+      <td>moodle-coursechecker_blocks</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin compares the enabled blocks in a course against a reference course to ensure consistent block layout. It checks for missing or mismatched blocks and helps maintain a standardized course structure across the platform.</td>
     </tr>
     <tr>
-      <td>moodle-checker_data</td>
+      <td>moodle-coursechecker_data</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin checks all database activities in a course to ensure they contain at least one defined field. It helps prevent incomplete configurations by flagging empty database modules.</td>
     </tr>
     <tr>
-      <td>moodle-checker_groups</td>
+      <td>moodle-coursechecker_groups</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin checks assignment activities in a course to ensure correct group submission configuration. It verifies that group mode is properly set, a valid grouping is assigned, and that the grouping contains at least two groups.</td>
     </tr>
     <tr>
-      <td>moodle-checker_links</td>
+      <td>moodle-coursechecker_links</td>
       <td>Yes</td>
       <td>PHP extension <code>curl</code></td>
       <td>This plugin scans course content (including summaries, modules, books, wikis, and URLs) for hyperlinks and checks their validity. It helps identify broken or unreachable links to ensure a reliable learning experience.</td>
     </tr>
     <tr>
-      <td>moodle-checker_quiz</td>
+      <td>moodle-coursechecker_quiz</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin checks whether each quiz's “Maximum grade” matches the “Total of marks” assigned to its questions. It helps prevent grading inconsistencies and ensures quizzes are correctly configured.</td>
     </tr>
     <tr>
-      <td>moodle-checker_referencesettings</td>
+      <td>moodle-coursechecker_referencesettings</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>This plugin compares general course settings (such as category, format, language, filters, and format options) of the current course with those of a reference course. It ensures consistency across courses, which is especially useful in standardized learning environments.</td>
     </tr>
     <tr>
-      <td>moodle-checker_subheadings</td>
+      <td>moodle-coursechecker_subheadings</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>The Subheading Checker verifies that all **label resources** in a course follow consistent formatting standards. Specifically, it checks whether each label:
@@ -92,7 +92,7 @@ This plugin provides a framework that can check a course based on independent ch
       </td>
     </tr>
     <tr>
-      <td>moodle-checker_userdata</td>
+      <td>moodle-coursechecker_userdata</td>
       <td>Yes</td>
       <td>Nothing</td>
       <td>Checks course activities for residual user data such as submissions, forum posts, or logs. Helps ensure that no personal user content is left in template or duplicated courses.</td>

@@ -63,7 +63,7 @@ class notification {
 
         $checksnames = [];
         foreach ($checks as $check) {
-            $checksnames[] = get_string('pluginname', 'checker_' . $check);
+            $checksnames[] = get_string('pluginname', 'coursechecker_' . $check);
         }
 
         $data = [

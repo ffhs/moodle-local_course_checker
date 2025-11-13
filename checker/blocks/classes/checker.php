@@ -17,14 +17,14 @@
 /**
  * Checking if blocks are present in a course.
  *
- * @package    checker_blocks
+ * @package    coursechecker_blocks
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_blocks;
+namespace coursechecker_blocks;
 
 use dml_exception;
 use local_course_checker\model\check_plugin_interface;
@@ -97,7 +97,7 @@ class checker implements check_plugin_interface {
             $targetcontext = (object) ["name" => strip_tags($block)];
             $title = translation_manager::generate(
                 "blocks_activity",
-                "checker_blocks",
+                "coursechecker_blocks",
                 $targetcontext
             );
             $resolutionlink = resolution_link_helper::get_link_to_course_view_page($course->id);
@@ -112,13 +112,13 @@ class checker implements check_plugin_interface {
 
             // When there aren't two blocks and blockname is not equal (for whatever reason - should not).
             if ((!$courseblock || !$refblock) || ($courseblock->blockname != $refblock->blockname)) {
-                $message = translation_manager::generate('blocks_error', 'checker_blocks');
+                $message = translation_manager::generate('blocks_error', 'coursechecker_blocks');
                 $this->check->add_failed($title, $resolutionlink, $message . ' ' . $comparison);
                 $this->check->set('status', 'failed');
                 continue;
             }
 
-            $message = translation_manager::generate('blocks_success', 'checker_blocks');
+            $message = translation_manager::generate('blocks_success', 'coursechecker_blocks');
             $this->check->add_successful($title, $resolutionlink, $message);
         }
     }
@@ -133,7 +133,7 @@ class checker implements check_plugin_interface {
             self::REFERENCE_COURSE,
             self::REFERENCE_COURSE_DEFAULT
         );
-        $this->enabledblocks = explode(',', $this->get_config('checker_blocks/blocks'));
+        $this->enabledblocks = explode(',', $this->get_config('coursechecker_blocks/blocks'));
     }
 
     /**
@@ -163,7 +163,7 @@ class checker implements check_plugin_interface {
     private function get_comparison_string(mixed $refblock, mixed $courseblock): string {
         return translation_manager::generate(
             'blocks_comparison',
-            'checker_blocks',
+            'coursechecker_blocks',
             [
                 'valuereference' => ($refblock !== false) ? '1' : '0',
                 'valuecurrent' => ($courseblock !== false) ? '1' : '0',

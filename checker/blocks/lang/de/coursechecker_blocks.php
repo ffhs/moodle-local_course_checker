@@ -17,7 +17,7 @@
 /**
  * Strings for component 'local_course_checker'.
  *
- * @package    checker_blocks
+ * @package    coursechecker_blocks
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -27,10 +27,11 @@
 
 $string['pluginname'] = 'Block Überprüfung';
 $string['pluginname_help'] = 'Dieses Plugin vergleicht die aktivierten Blöcke eines Kurses mit einem Referenzkurs, um ein einheitliches Blocklayout sicherzustellen. Es prüft auf fehlende oder nicht übereinstimmende Blöcke und trägt dazu bei, eine standardisierte Kursstruktur auf der gesamten Plattform aufrechtzuerhalten.';
+$string['privacy:metadata'] = 'Das Plugin „Block Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 $string['blocks_setting'] = 'Aktivierte Blöcke';
 $string['blocks_setting_help'] =
-    'Definieren Sie die erlaubten Blöcke (müssen in <a href="/admin/blocks.php" target="_blank">Blöcke verwalten</a> aktiviert sein), die geprüft werden sollen.';
+    'Definieren Sie die erlaubten Blöcke (müssen in <a href="{$a}" target="_blank">Blöcke verwalten</a> aktiviert sein), die geprüft werden sollen.';
 $string['blocks_comparison'] = '(Referenzkurs: "{$a->valuereference}" | Aktueller Kurs: "{$a->valuecurrent}")';
 $string['blocks_success'] = 'Der Block ist im aktuellen Kurs korrekt eingefügt.';
 $string['blocks_error'] = 'Der Block ist entweder fälschlicherweise vorhanden oder fehlt im aktuellen Kurs.';

@@ -17,7 +17,7 @@
 /**
  * Settings for checking the labels subheadings and the leading icons inside the course
  *
- * @package    checker_subheadings
+ * @package    coursechecker_subheadings
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use checker_subheadings\checker;
+use coursechecker_subheadings\checker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,8 +34,8 @@ defined('MOODLE_INTERNAL') || die();
 $settings;
 
 // Subheadings Checker Whitelist setting.
-$visiblename = get_string('checker_subheadings_setting_whitelist', 'checker_subheadings');
-$description = new lang_string('checker_subheadings_setting_whitelist_help', 'checker_subheadings');
+$visiblename = get_string('subheadings_setting_whitelist', 'coursechecker_subheadings');
+$description = new lang_string('subheadings_setting_whitelist_help', 'coursechecker_subheadings');
 $domainwhitelist = new admin_setting_configtextarea(
     checker::WHITELIST_SETTING,
     $visiblename,

@@ -49,32 +49,32 @@ class import_settings {
     public function init_arrays(): void {
         $this->settings = [
                 'block_course_checker/referencecourseid' => 'local_course_checker/referencecourseid',
-                'block_course_checker/checker_referencesettings_checklist' => 'checker_referencesettings/checklist',
-                'block_course_checker/checker_referencesettings_filter' => 'checker_referencesettings/filter',
-                'block_course_checker/checker_referencesettings_formatoptions' => 'checker_referencesettings/formatoptions',
-                'block_course_checker/blocks' => 'checker_blocks/blocks',
-                'block_course_checker/userdata_modules' => 'checker_userdata/userdata_modules',
-                'block_course_checker/checker_links_connect_timeout' => 'checker_links/connect_timeout',
-                'block_course_checker/checker_links_timeout' => 'checker_links/timeout',
-                'block_course_checker/checker_links_whitelist' => 'checker_links/domain_whitelist',
-                'block_course_checker/activedates_modules' => 'checker_activedates/modules',
-                'block_course_checker/checker_subheadings_whitelist' => 'checker_subheadings/whitelist',
+                'block_course_checker/checker_referencesettings_checklist' => 'coursechecker_referencesettings/checklist',
+                'block_course_checker/checker_referencesettings_filter' => 'coursechecker_referencesettings/filter',
+                'block_course_checker/checker_referencesettings_formatoptions' => 'coursechecker_referencesettings/formatoptions',
+                'block_course_checker/blocks' => 'coursechecker_blocks/blocks',
+                'block_course_checker/userdata_modules' => 'coursechecker_userdata/userdata_modules',
+                'block_course_checker/checker_links_connect_timeout' => 'coursechecker_links/connect_timeout',
+                'block_course_checker/checker_links_timeout' => 'coursechecker_links/timeout',
+                'block_course_checker/checker_links_whitelist' => 'coursechecker_links/domain_whitelist',
+                'block_course_checker/activedates_modules' => 'coursechecker_activedates/modules',
+                'block_course_checker/checker_subheadings_whitelist' => 'coursechecker_subheadings/whitelist',
         ];
         $this->disabled = [
-                'block_course_checker/checker_referencesettings_status' => 'checker_referencesettings/disabled',
-                'block_course_checker/checker_quiz_status' => 'checker_quiz/disabled',
-                'block_course_checker/checker_data_status' => 'checker_data/disabled',
-                'block_course_checker/checker_blocks_status' => 'checker_blocks/disabled',
-                'block_course_checker/checker_userdata_status' => 'checker_blocks/disabled',
-                'block_course_checker/checker_links_status' => 'checker_links/disabled',
-                'block_course_checker/checker_groups_status' => 'checker_groups/disabled',
-                'block_course_checker/checker_activedates_status' => 'checker_activedates/disabled',
-                'block_course_checker/checker_subheadings_status' => 'checker_subheadings/disabled',
-                'block_course_checker/checker_attendance_status' => 'checker_attendance/disabled',
+                'block_course_checker/checker_referencesettings_status' => 'coursechecker_referencesettings/disabled',
+                'block_course_checker/checker_quiz_status' => 'coursechecker_quiz/disabled',
+                'block_course_checker/checker_data_status' => 'coursechecker_data/disabled',
+                'block_course_checker/checker_blocks_status' => 'coursechecker_blocks/disabled',
+                'block_course_checker/checker_userdata_status' => 'coursechecker_blocks/disabled',
+                'block_course_checker/checker_links_status' => 'coursechecker_links/disabled',
+                'block_course_checker/checker_groups_status' => 'coursechecker_groups/disabled',
+                'block_course_checker/checker_activedates_status' => 'coursechecker_activedates/disabled',
+                'block_course_checker/checker_subheadings_status' => 'coursechecker_subheadings/disabled',
+                'block_course_checker/checker_attendance_status' => 'coursechecker_attendance/disabled',
         ];
         $this->courseregex = [
-                'block_course_checker/checker_activedates_coursesregex' => 'checker_activedates/coursesregex',
-                'block_course_checker/checker_userdata_coursesregex' => 'checker_userdata/userdata_coursesregex',
+                'block_course_checker/checker_activedates_coursesregex' => 'coursechecker_activedates/coursesregex',
+                'block_course_checker/checker_userdata_coursesregex' => 'coursechecker_userdata/userdata_coursesregex',
         ];
     }
 
@@ -87,7 +87,7 @@ class import_settings {
     public function start(): bool {
         // Check if the old plugin is installed.
         $pluginmanager = core_plugin_manager::instance();
-        if (in_array('course_checker', $pluginmanager->get_installed_plugins('block'))) {
+        if (!array_key_exists('course_checker', $pluginmanager->get_installed_plugins('block'))) {
             \core\notification::info('Block Plugin not found. Settings Import stopped.');
             return false; // Exit if the plugin is not installed.
         }
@@ -134,7 +134,7 @@ class import_settings {
                 set_config($newsetting, $cleanedvalue, $newplugin);
             }
         }
-        \core\notification::info('Settings Import finished.');
+        \core\notification::info('Settings imported successfully. You can now safely uninstall "block_course_checker".');
         return true;
     }
 }

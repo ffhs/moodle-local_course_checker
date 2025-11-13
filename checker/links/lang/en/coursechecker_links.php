@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_links'.
+ * Strings for component 'coursechecker_links'.
  *
- * @package    checker_links
+ * @package    coursechecker_links
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -27,6 +27,7 @@
 
 $string['pluginname'] = 'Links check';
 $string['pluginname_help'] = 'This plugin scans course content—including summaries, modules, books, wikis, and URLs—for hyperlinks and checks their validity.';
+$string['privacy:metadata'] = 'The links check does not store any personal data. The check results are stored in the course checker plugin.';
 
 // Results.
 $string['course_summary'] = 'Course summary';

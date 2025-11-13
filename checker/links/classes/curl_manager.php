@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace checker_links;
+namespace coursechecker_links;
 
 use curl;
 use Exception;
@@ -25,7 +25,7 @@ use local_course_checker\translation_manager;
 /**
  * Fetch an url and return true if the code is between 200 and 400.
  *
- * @package    checker_links
+ * @package    coursechecker_links
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -36,23 +36,23 @@ class curl_manager {
     use checker_config_trait;
 
     /** @var string Configuration path for the URL request timeout. */
-    const TIMEOUT_SETTING = 'checker_links/timeout';
+    const TIMEOUT_SETTING = 'coursechecker_links/timeout';
     /** @var int Default value for total CURL request timeout in seconds. */
     const TIMEOUT_DEFAULT = 13;
     /** @var string Configuration path for the CURL connection timeout. */
-    const CONNECT_TIMEOUT_SETTING = 'checker_links/connect_timeout';
+    const CONNECT_TIMEOUT_SETTING = 'coursechecker_links/connect_timeout';
     /** @var int Default value for CURL connection timeout in seconds. */
     const CONNECT_TIMEOUT_DEFAULT = 5;
     /** @var string Configuration path for the URL whitelist setting. */
-    const URL_WHITELIST_SETTING = 'checker_links/url_whitelist';
+    const URL_WHITELIST_SETTING = 'coursechecker_links/url_whitelist';
     /** @var string Default value for URL whitelist (newline-separated). */
     const URL_WHITELIST_DEFAULT = '';
     /** @var string Configuration path for the domain whitelist setting. */
-    const DOMAIN_WHITELIST_SETTING = 'checker_links/domain_whitelist';
+    const DOMAIN_WHITELIST_SETTING = 'coursechecker_links/domain_whitelist';
     /** @var string Default value for domain whitelist*/
     const DOMAIN_WHITELIST_DEFAULT = 'www.w3.org';
     /** @var string Configuration path for the CURL user agent string. */
-    const USERAGENT_SETTING = 'checker_links/useragent';
+    const USERAGENT_SETTING = 'coursechecker_links/useragent';
     /** @var string Default user agent string for CURL requests. */
     const USERAGENT_DEFAULT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
 
@@ -98,7 +98,7 @@ class curl_manager {
         $parseurl = parse_url($url);
         if (!array_key_exists("host", $parseurl) || $parseurl["host"] == null) {
             $this->check->set('status', 'failed');
-            $this->check->add_failed($title, $link, translation_manager::generate("error_undefined", "checker_links"));
+            $this->check->add_failed($title, $link, translation_manager::generate("error_undefined", "coursechecker_links"));
             return;
         }
         // Check URL against Moodle HTTP security settings.
@@ -107,7 +107,7 @@ class curl_manager {
             $this->check->add_successful(
                 $title,
                 $link,
-                translation_manager::generate("error_httpsecurity", "checker_links", $url)
+                translation_manager::generate("error_httpsecurity", "coursechecker_links", $url)
             );
             return;
         }
@@ -116,7 +116,7 @@ class curl_manager {
             $this->check->add_successful(
                 $title,
                 $link,
-                translation_manager::generate("domain_is_whitelisted", "checker_links", $parseurl + ["url" => $url])
+                translation_manager::generate("domain_is_whitelisted", "coursechecker_links", $parseurl + ["url" => $url])
             );
             return;
         }
@@ -125,7 +125,7 @@ class curl_manager {
             $this->check->add_successful(
                 $title,
                 $link,
-                translation_manager::generate("url_is_whitelisted", "checker_links", $parseurl + ["url" => $url])
+                translation_manager::generate("url_is_whitelisted", "coursechecker_links", $parseurl + ["url" => $url])
             );
             return;
         }
@@ -159,14 +159,14 @@ class curl_manager {
             // Code 0: timeout or other curl error.
             $this->check->set('status', 'failed');
             $context = $parseurl + ["url" => $url, "curl_errno" => $curl->get_errno(), "curl_error" => $curl->error];
-            $message = translation_manager::generate("error_curl", "checker_links", $context);
+            $message = translation_manager::generate("error_curl", "coursechecker_links", $context);
             $this->check->add_failed($title, $link, $message);
             return;
         }
 
         $context = $parseurl + ["url" => $url, "http_code" => $code];
         if ($code >= 200 && $code < 400) {
-            $message = translation_manager::generate("url_code_valid", "checker_links", $context);
+            $message = translation_manager::generate("url_code_valid", "coursechecker_links", $context);
             $this->check->add_successful($title, $link, $message);
             return;
         }
@@ -177,7 +177,7 @@ class curl_manager {
         }
 
         // Code != 0 means it's a http error.
-        $message = translation_manager::generate("error_code", "checker_links", $context);
+        $message = translation_manager::generate("error_code", "coursechecker_links", $context);
         $this->check->set('status', 'failed');
         $this->check->add_failed($title, $link, $message);
     }
@@ -202,7 +202,7 @@ class curl_manager {
 
             if (isset($httpresponse['reponse_code']) && (int) $httpresponse['reponse_code'] == 200) {
                 $context = $parseurl + ["url" => $url, "http_code" => "200"];
-                $message = translation_manager::generate("url_code_valid", "checker_links", $context) . " (file_get_contents)";
+                $message = translation_manager::generate("url_code_valid", "coursechecker_links", $context) . " (file_get_contents)";
                 $this->check->add_successful($title, $link, $message);
                 return true;
             }

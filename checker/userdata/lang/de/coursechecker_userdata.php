@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_userdata'.
+ * Strings for component 'coursechecker_userdata'.
  *
- * @package    checker_userdata
+ * @package    coursechecker_userdata
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -27,11 +27,12 @@
 
 $string['pluginname'] = 'Benutzerdaten Überprüfung';
 $string['pluginname_help'] = 'Überprüft Kursaktivitäten auf verbleibende Nutzerdaten wie Beiträge, Forenbeiträge oder Protokolle.';
+$string['privacy:metadata'] = 'Das Plugin „Benutzerdaten Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // String spezifisch für die Überprüfung der Benutzerdaten.
 $string['userdata_setting_modules'] = 'Aktivierte Module';
 $string['userdata_setting_modules_help'] =
-    'Definieren Sie die erlaubten Module (müssen unter <a href="/admin/modules.php" target="_blank">Aktivitäten verwalten</a> aktiviert sein, die Methode reset_userdata in <code>mod/{modname}/lib.php</code> enthalten und von diesem Plugin unterstützt werden), die auf Benutzerdaten überprüft werden sollen.';
+    'Definieren Sie die erlaubten Module (müssen unter <a href="{$a}" target="_blank">Aktivitäten verwalten</a> aktiviert sein, die Methode reset_userdata in <code>mod/{modname}/lib.php</code> enthalten und von diesem Plugin unterstützt werden), die auf Benutzerdaten überprüft werden sollen.';
 $string['userdata_error'] = 'Es sollten keine Benutzerdaten in der Aktivität {$a} vorhanden sein.';
 $string['userdata_success'] = 'Die Aktivität {$a} enthält keine Benutzerdaten.';
 $string['userdata_help'] =

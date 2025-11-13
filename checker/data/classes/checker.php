@@ -18,14 +18,14 @@
  * Checking the group submission settings on
  * assignments for a course.
  *
- * @package    checker_data
+ * @package    coursechecker_data
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Christoph Karlen, Fernfachhochschule Schweiz (FFHS) <christoph.karlen@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_data;
+namespace coursechecker_data;
 
 use local_course_checker\translation_manager;
 use local_course_checker\mod_type_interface;
@@ -81,7 +81,7 @@ class checker implements check_plugin_interface, mod_type_interface {
                 continue;
             }
 
-            $message = translation_manager::generate('data_success', 'checker_data');
+            $message = translation_manager::generate('data_success', 'coursechecker_data');
             $check->add_successful($titel, $link, $message);
         }
     }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace checker_referencesettings;
+namespace coursechecker_referencesettings;
 
 use coding_exception;
 use context_course;
@@ -30,7 +30,7 @@ use stdClass;
 /**
  * Checking the course settings compared to a reference course
  *
- * @package    checker_referencesettings
+ * @package    coursechecker_referencesettings
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -45,15 +45,15 @@ class checker implements check_plugin_interface {
     /** Default value for the reference course ID. */
     const REFERENCE_COURSE_DEFAULT = 1;
     /** Config path for the reference course settings (e.g., checklist of options). */
-    const REFERENCE_COURSE_SETTINGS = 'checker_referencesettings/checklist';
+    const REFERENCE_COURSE_SETTINGS = 'coursechecker_referencesettings/checklist';
     /** Default value for the reference course settings. */
     const REFERENCE_COURSE_SETTINGS_DEFAULT = ['format' => 1];
     /** Config path for enabling filtering of reference course settings. */
-    const REFERENCE_COURSE_FILTER_ENABLED = 'checker_referencesettings/filter';
+    const REFERENCE_COURSE_FILTER_ENABLED = 'coursechecker_referencesettings/filter';
     /** Default value for enabling the reference course filter. */
     const REFERENCE_COURSE_FILTER_ENABLED_DEFAULT = false;
     /** Config path for enabling comparison of course format options. */
-    const REFERENCE_COURSE_FORMAT_OPTION_ENABLED = 'checker_referencesettings/formatoptions';
+    const REFERENCE_COURSE_FORMAT_OPTION_ENABLED = 'coursechecker_referencesettings/formatoptions';
     /** Default value for enabling course format option comparison. */
     const REFERENCE_COURSE_FORMAT_OPTION_ENABLED_DEFAULT = false;
 
@@ -136,8 +136,8 @@ class checker implements check_plugin_interface {
      */
     private function get_comparison_string(string $setting, stdClass $referencecourse, stdClass $currentcourse): string {
         return translation_manager::generate(
-            'checker_referencesettings_comparison',
-            'checker_referencesettings',
+            'referencesettings_comparison',
+            'coursechecker_referencesettings',
             ['settingvaluereference' => $referencecourse->$setting, 'settingvaluecurrent' => $currentcourse->$setting]
         );
     }
@@ -151,8 +151,8 @@ class checker implements check_plugin_interface {
      */
     private function get_filter_comparison_string(object $filterinforeference, object $filterinfocurrent): string {
         return translation_manager::generate(
-            'checker_referencefilter_comparison',
-            'checker_referencesettings',
+            'referencefilter_comparison',
+            'coursechecker_referencesettings',
             [
                 'filtervaluereference' => $filterinforeference->localstate,
                 'filtervaluecurrent' => $filterinfocurrent->localstate,
@@ -176,8 +176,8 @@ class checker implements check_plugin_interface {
             // Does the attribute exist on both courses?
             if (!property_exists($referencecourse, $setting) || !property_exists($currentcourse, $setting)) {
                 $message = translation_manager::generate(
-                    'checker_referencesettings_settingismissing',
-                    'checker_referencesettings',
+                    'referencesettings_settingismissing',
+                    'coursechecker_referencesettings',
                     ['setting' => $setting]
                 );
                 $this->check->add_failed('', '', $message);
@@ -194,8 +194,8 @@ class checker implements check_plugin_interface {
             // When the settings are not equal.
             if ($referencecourse->$setting != $currentcourse->$setting) {
                 $message = translation_manager::generate(
-                    'checker_referencesettings_failing',
-                    'checker_referencesettings',
+                    'referencesettings_failing',
+                    'coursechecker_referencesettings',
                     [
                         'setting' => $setting,
                         'comparison' => $comparison,
@@ -208,8 +208,8 @@ class checker implements check_plugin_interface {
 
             // When everything is okay.
             $message = translation_manager::generate(
-                'checker_referencesettings_success',
-                'checker_referencesettings',
+                'referencesettings_success',
+                'coursechecker_referencesettings',
                 ['setting' => $setting]
             );
             $this->check->add_successful('', $link, $message);
@@ -248,8 +248,8 @@ class checker implements check_plugin_interface {
         foreach ($referenceavailablefilters as $filterkey => $referencefilterinfo) {
             if (!isset($currentavailablefilters[$filterkey])) {
                 $message = translation_manager::generate(
-                    'checker_referencefilter_filternotsetincurrentcourse',
-                    'checker_referencesettings',
+                    'referencefilter_filternotsetincurrentcourse',
+                    'coursechecker_referencesettings',
                     ['filterkey' => $filterkey]
                 );
                 $this->check->add_failed('', $link, $message);
@@ -260,8 +260,8 @@ class checker implements check_plugin_interface {
                 // What are the differences? (if any).
                 $comparison = $this->get_filter_comparison_string($referencefilterinfo, $currentavailablefilters[$filterkey]);
                 $message = translation_manager::generate(
-                    'checker_referencefilter_failing',
-                    'checker_referencesettings',
+                    'referencefilter_failing',
+                    'coursechecker_referencesettings',
                     ['filterkey' => $filterkey,
                     'comparison' => $comparison]
                 );
@@ -275,8 +275,8 @@ class checker implements check_plugin_interface {
         // When everything is okay.
         if ($occurringfilterproblems === 0) {
             $message = translation_manager::generate(
-                'checker_referencefilter_success',
-                'checker_referencesettings'
+                'referencefilter_success',
+                'coursechecker_referencesettings'
             );
 
             $this->check->add_successful('', $link, $message);
@@ -313,13 +313,13 @@ class checker implements check_plugin_interface {
                 continue;
             }
             $comparison = translation_manager::generate(
-                'checker_referencesettings_comparison',
-                'checker_referencesettings',
+                'referencesettings_comparison',
+                'coursechecker_referencesettings',
                 ['settingvaluereference' => $value, 'settingvaluecurrent' => $current[$optionkey]]
             );
             $message = translation_manager::generate(
-                'checker_referenceformatoptions_failing',
-                'checker_referencesettings',
+                'referenceformatoptions_failing',
+                'coursechecker_referencesettings',
                 ['optionkey' => $optionkey, 'comparison' => $comparison]
             );
             $this->check->add_failed('', $link, $message);
@@ -331,8 +331,8 @@ class checker implements check_plugin_interface {
         // When everything is okay.
         if ($occurringoptionproblems === 0) {
             $message = translation_manager::generate(
-                'checker_referenceformatoptions_success',
-                'checker_referencesettings'
+                'referenceformatoptions_success',
+                'coursechecker_referencesettings'
             );
             $this->check->add_successful('', $link, $message);
         }
