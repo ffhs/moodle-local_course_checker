@@ -15,17 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_data'.
+ * Strings for component 'coursechecker_quiz'.
  *
- * @package    checker_data
+ * @package    coursechecker_quiz
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
- * @copyright  based on work by 2020 Christoph Karlen, Fernfachhochschule Schweiz (FFHS) <christoph.karlen@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Data activity check';
-$string['pluginname_help'] = 'This plugin checks all database activities in a course to ensure they contain at least one defined field. It helps prevent incomplete configurations by flagging empty database modules.';
-// String specific for the data checker.
-$string['data_success'] = 'The database activity is configured correctly and fields are defined';
+$string['pluginname'] = 'Quiz check';
+$string['pluginname_help'] = 'This plugin checks whether each quiz\'s “Maximum grade” matches the “Total of marks” assigned to its questions. It helps prevent grading inconsistencies and ensures quizzes are correctly configured.';
+$string['privacy:metadata'] = 'The quiz check does not store any personal data. The check results are stored in the course checker plugin.';
+
+$string['quiz_grade_sum_error'] =
+        'Maximum grade ({$a->grade}) and Total of marks ({$a->sumgrades}) should be the same number in this quiz';
+$string['quiz_grade_sum_success'] = 'This quiz is configured correctly';
+$string['quiz_activity'] = 'Activity: {$a->name}  ({$a->modname})';

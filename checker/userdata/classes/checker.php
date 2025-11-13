@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace checker_userdata;
+namespace coursechecker_userdata;
 
 use local_course_checker\translation_manager;
 use local_course_checker\mod_type_interface;
@@ -27,7 +27,7 @@ use local_course_checker\resolution_link_helper;
 /**
  * Checking if course contains user data in activities.
  *
- * @package    checker_userdata
+ * @package    coursechecker_userdata
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -50,7 +50,7 @@ class checker implements check_plugin_interface, mod_type_interface {
     public function run(\stdClass $course, check $check): void {
 
         // Initialize check result array.
-        if (!$this->is_course_check_required('checker_userdata/userdata_coursesregex', $course)) {
+        if (!$this->is_course_check_required('coursechecker_userdata/userdata_coursesregex', $course)) {
             $title = translation_manager::generate('admin_setting_coursesregex_skip_course', 'local_course_checker');
             $message = translation_manager::generate('admin_setting_coursesregex_skip_course_desc', 'local_course_checker');
             $check->add_successful($title, '', $message);
@@ -58,7 +58,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         }
 
         // Get modules from checker setting that are allowed.
-        $enabledmodules = explode(',', get_config('checker_userdata', 'userdata_modules'));
+        $enabledmodules = explode(',', get_config('coursechecker_userdata', 'userdata_modules'));
         // Get all activities in the course.
         $modinfo = get_fast_modinfo($course);
         foreach ($modinfo->cms as $cm) {
@@ -78,13 +78,13 @@ class checker implements check_plugin_interface, mod_type_interface {
             $fetchuserdata = new fetch_userdata();
             $records = $fetchuserdata->check_for_userdata_in_module($cm);
             if (!empty($records)) {
-                $message = translation_manager::generate('userdata_error', 'checker_userdata', $cm->modname);
+                $message = translation_manager::generate('userdata_error', 'coursechecker_userdata', $cm->modname);
                 $check->add_warning($title, $link, $message);
                 $check->set('status', 'warning');
                 continue;
             }
 
-            $message = translation_manager::generate('userdata_success', 'checker_userdata', $cm->modname);
+            $message = translation_manager::generate('userdata_success', 'coursechecker_userdata', $cm->modname);
             $check->add_successful($title, $link, $message);
         }
     }

@@ -39,7 +39,7 @@ class plugin_management_table extends \core_admin\table\plugin_management_table 
      * {@inheritDoc}
      */
     protected function get_plugintype(): string {
-        return 'checker';
+        return 'coursechecker';
     }
 
     /**

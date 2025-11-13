@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_activedates'.
+ * Strings for component 'coursechecker_data'.
  *
- * @package    checker_activedates
+ * @package    coursechecker_data
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,14 +25,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
-$string['pluginname'] = 'Active dates check';
-$string['pluginname_help'] = 'This plugin checks whether a course has both a start date and an end date defined. It is designed to be part of a course quality assurance workflow, ensuring that all courses have clearly set temporal boundaries.';
-// String specific for the activedates checker.
-$string['activedates_setting_modules'] = 'Enabled modules';
-$string['activedates_setting_modules_help'] =
-    'Define the allowed modules (must be enabled in <a href="/admin/modules.php" target="_blank">Manage activities</a>) to be checked for active dates.';
-$string['activedates_noactivedates'] = 'There shouldn\'t be enabled dates in the "activity completion" section.';
-$string['activedates_noactivedatesinactivity'] =
-    'There shouldn\'t be enabled dates in the {$a->modtype} activity, look for the following fields: {$a->adateissetin}';
-$string['activedates_success'] = 'The {$a} activity is configured correctly';
+$string['pluginname'] = 'Data activity check';
+$string['pluginname_help'] = 'This plugin checks all database activities in a course to ensure they contain at least one defined field. It helps prevent incomplete configurations by flagging empty database modules.';
+$string['privacy:metadata'] = 'The data activity check does not store any personal data. The check results are stored in the course checker plugin.';
+// String specific for the data checker.
+$string['data_success'] = 'The database activity is configured correctly and fields are defined';

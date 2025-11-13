@@ -17,14 +17,14 @@
 /**
  * Checking if all dates are disabled. In reference courses no dates should be enabled.
  *
- * @package    checker_activedates
+ * @package    coursechecker_activedates
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Christoph Karlen, Fernfachhochschule Schweiz (FFHS) <christoph.karlen@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_activedates;
+namespace coursechecker_activedates;
 
 use cm_info;
 use coding_exception;
@@ -121,7 +121,7 @@ class checker implements check_plugin_interface, mod_type_interface {
     public function run(stdClass $course, check $check): void {
         $this->check = $check;
 
-        if (!$this->is_course_check_required('checker_activedates/coursesregex', $course)) {
+        if (!$this->is_course_check_required('coursechecker_activedates/coursesregex', $course)) {
             $title = translation_manager::generate('admin_setting_coursesregex_skip_course', 'local_course_checker');
             $message = translation_manager::generate('admin_setting_coursesregex_skip_course_desc', 'local_course_checker');
             $this->check->add_successful($title, '', $message);
@@ -129,7 +129,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         }
 
         // Get modules from checker setting that are allowed.
-        $enabledmodules = explode(',', get_config('checker_activedates', 'modules'));
+        $enabledmodules = explode(',', get_config('coursechecker_activedates', 'modules'));
         // Get all activities for the course.
         $modinfo = get_fast_modinfo($course);
         foreach ($modinfo->cms as $cm) {
@@ -147,7 +147,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             if ($cm->completionexpected !== 0) {
                 $title = resolution_link_helper::get_target($cm);
                 $link = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id);
-                $message = translation_manager::generate('activedates_noactivedates', 'checker_activedates');
+                $message = translation_manager::generate('activedates_noactivedates', 'coursechecker_activedates');
                 $this->check->set('status', 'failed');
                 $this->check->add_failed($title, $link, $message);
             }
@@ -202,7 +202,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         if (!empty($adateissetin)) {
             $message = translation_manager::generate(
                 "activedates_noactivedatesinactivity",
-                "checker_activedates",
+                "coursechecker_activedates",
                 [
                     'modtype' => $modtype,
                     'adateissetin' => implode(', ', $adateissetin),
@@ -211,7 +211,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             $this->check->set('status', 'failed');
             $this->check->add_failed($title, $link, $message);
         } else {
-            $message = translation_manager::generate('activedates_success', 'checker_activedates', $modtype);
+            $message = translation_manager::generate('activedates_success', 'coursechecker_activedates', $modtype);
             $this->check->add_successful($title, $link, $message);
         }
     }

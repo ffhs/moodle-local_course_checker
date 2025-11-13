@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace checker_subheadings;
+namespace coursechecker_subheadings;
 
 use local_course_checker\translation_manager;
 use local_course_checker\model\check_plugin_interface;
@@ -25,7 +25,7 @@ use local_course_checker\resolution_link_helper;
 /**
  * Checking the labels subheadings and the leading icons inside the course
  *
- * @package    checker_subheadings
+ * @package    coursechecker_subheadings
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -44,9 +44,9 @@ class checker implements check_plugin_interface {
     /** HTML tag expected for the first heading element in label content. */
     const FIRST_ITEM_HTML_TAG = 'h4';
     /** Config setting path for whitelisted subheading content. */
-    const WHITELIST_SETTING = 'checker_subheadings/whitelist';
+    const WHITELIST_SETTING = 'coursechecker_subheadings/whitelist';
     /** Config setting path for whitelisted heading content. */
-    const WHITELIST_HEADING = 'checker_subheadings/whitelist_heading';
+    const WHITELIST_HEADING = 'coursechecker_subheadings/whitelist_heading';
     /** Default value for the whitelist config settings. */
     const WHITELIST_DEFAULT = '';
     /**
@@ -109,7 +109,7 @@ class checker implements check_plugin_interface {
             foreach ($this->ignoredstrings as $ignoredstring) {
                 $pos = strpos($cmcontentwithoutnewlines, $ignoredstring);
                 if ($pos !== false) {
-                    $message = translation_manager::generate("subheadings_labelignored", "checker_subheadings");
+                    $message = translation_manager::generate("subheadings_labelignored", "coursechecker_subheadings");
                     $this->check->add_successful($link, $title, $message);
                     continue 2;
                 }
@@ -118,7 +118,7 @@ class checker implements check_plugin_interface {
             if (!isset($firstitem->tagName) || $firstitem->tagName != self::FIRST_ITEM_HTML_TAG) {
                 $message = translation_manager::generate(
                     "subheadings_wrongfirsthtmltag",
-                    "checker_subheadings",
+                    "coursechecker_subheadings",
                     (object) ["htmltag" => self::FIRST_ITEM_HTML_TAG]
                 );
                 $this->check->add_failed($link, $title, $message);
@@ -129,13 +129,13 @@ class checker implements check_plugin_interface {
             $search = "(\[((?:icon\s)?fa-[a-z0-9 -]+)\])is";
             preg_match($search, $firstitem->textContent, $matches);
             if (empty($matches)) {
-                $message = translation_manager::generate("subheadings_iconmissing", "checker_subheadings");
+                $message = translation_manager::generate("subheadings_iconmissing", "coursechecker_subheadings");
                 $this->check->add_failed($link, $title, $message);
                 $this->check->set('status', 'failed');
                 continue;
             }
             // When there are no problems.
-            $message = translation_manager::generate('subheadings_success', 'checker_subheadings');
+            $message = translation_manager::generate('subheadings_success', 'coursechecker_subheadings');
             $this->check->add_successful($link, $title, $message);
         }
     }
@@ -151,7 +151,7 @@ class checker implements check_plugin_interface {
      * @throws \coding_exception If the translation string is missing or invalid.
      */
     private function add_general_error($title, $link) {
-        $message = translation_manager::generate("subheadings_generalerror", "checker_subheadings");
+        $message = translation_manager::generate("subheadings_generalerror", "coursechecker_subheadings");
         $this->check->add_failed($link, $title, $message);
         $this->check->set('status', 'failed');
     }

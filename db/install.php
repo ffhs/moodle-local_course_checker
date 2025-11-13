@@ -32,8 +32,6 @@ function xmldb_local_course_checker_install() {
     $importsettings = new \local_course_checker\import_settings();
     $importsettings->start();
 
-    \core\notification::info('Settings imported: You are free to delete "block_course_checker".');
-
     // Transfer done.
     return true;
 }

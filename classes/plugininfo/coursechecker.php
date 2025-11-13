@@ -36,7 +36,7 @@ use local_course_checker\db\model\check;
 use part_of_admin_tree;
 
 /**
- * Class checker
+ * Class coursechecker
  *
  * Handles enabling, disabling, and managing the lifecycle of checker plugins.
  * This class provides functions to retrieve enabled plugins, manage their state,
@@ -44,7 +44,7 @@ use part_of_admin_tree;
  *
  * @package    local_course_checker
  */
-class checker extends base {
+class coursechecker extends base {
     /**
      * Determines whether this plugin type supports disabling plugins.
      *
@@ -73,7 +73,7 @@ class checker extends base {
         if (!file_exists($this->full_path('settings.php'))) {
             return null;
         }
-        return "checker_{$this->name}_settings";
+        return "coursechecker_{$this->name}_settings";
     }
 
 
@@ -85,14 +85,14 @@ class checker extends base {
      */
     public static function get_enabled_plugins(): array {
         $pluginmanager = core_plugin_manager::instance();
-        $plugins = $pluginmanager->get_installed_plugins('checker');
+        $plugins = $pluginmanager->get_installed_plugins('coursechecker');
         if (!$plugins) {
             return [];
         }
         // Filter to return only enabled plugins.
         $enabled = [];
         foreach (array_keys($plugins) as $pluginname) {
-            $disabled = get_config('checker_' . $pluginname, 'disabled');
+            $disabled = get_config('coursechecker_' . $pluginname, 'disabled');
             if (empty($disabled)) {
                 $enabled[$pluginname] = $pluginname;
             }
@@ -108,7 +108,7 @@ class checker extends base {
      * @throws dml_exception
      */
     public static function is_plugin_enabled(string $pluginname): bool {
-        $disabled = get_config('checker_' . $pluginname, 'disabled');
+        $disabled = get_config('coursechecker_' . $pluginname, 'disabled');
         if (empty($disabled)) {
             return true;
         }
@@ -124,7 +124,7 @@ class checker extends base {
      * @throws dml_exception
      */
     public static function enable_plugin(string $pluginname, int $enabled): bool {
-        $checkerpluginname = 'checker_' . $pluginname;
+        $checkerpluginname = 'coursechecker_' . $pluginname;
 
         $oldvalue = !empty(get_config($checkerpluginname, 'disabled'));
         $disabled = empty($enabled);
@@ -173,7 +173,7 @@ class checker extends base {
         $section = $this->get_settings_section_name();
 
         // Check if the plugin is disabled using the `get_config` function.
-        $disabled = get_config('checker_' . $this->name, 'disabled');
+        $disabled = get_config('coursechecker_' . $this->name, 'disabled');
         if (!empty($disabled)) {
             $settings = new admin_settingpage($section, $this->displayname, 'moodle/site:config', true);
         } else {

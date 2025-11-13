@@ -17,14 +17,14 @@
 /**
  * Checking quizzes inside the course
  *
- * @package    checker_quiz
+ * @package    coursechecker_quiz
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Christoph Karlen, Fernfachhochschule Schweiz (FFHS) <christoph.karlen@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_quiz;
+namespace coursechecker_quiz;
 
 use coding_exception;
 use local_course_checker\mod_type_interface;
@@ -82,7 +82,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         if ($mod->grade != $mod->sumgrades) {
             $message = translation_manager::generate(
                 'quiz_grade_sum_error',
-                'checker_quiz',
+                'coursechecker_quiz',
                 [
                     'grade' => $mod->grade,
                     'sumgrades' => $mod->sumgrades,
@@ -93,7 +93,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         } else {
             $message = translation_manager::generate(
                 'quiz_grade_sum_success',
-                'checker_quiz'
+                'coursechecker_quiz'
             );
             $this->check->add_successful($title, $link, $message);
         }

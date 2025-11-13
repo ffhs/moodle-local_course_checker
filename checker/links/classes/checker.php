@@ -17,7 +17,7 @@
 /**
  * Checking links inside the course
  *
- * @package    checker_links
+ * @package    coursechecker_links
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_links;
+namespace coursechecker_links;
 
 use coding_exception;
 use course_modinfo;
@@ -96,7 +96,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         $instances = get_all_instances_in_courses($modname, [$course->id => $course]);
         foreach ($instances as $mod) {
             $cm = $modinfo->get_cm($mod->coursemodule);
-            $target = resolution_link_helper::get_target($cm, 'checker_links');
+            $target = resolution_link_helper::get_target($cm, 'coursechecker_links');
             $resolutionlink = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id);
 
             switch ($modname) {
@@ -157,7 +157,7 @@ class checker implements check_plugin_interface, mod_type_interface {
                 $course->summary
             ),
             $courseurl,
-            translation_manager::generate("course_summary", "checker_links")
+            translation_manager::generate("course_summary", "coursechecker_links")
         );
     }
 
@@ -228,7 +228,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         global $DB;
         $chapters = $DB->get_records('book_chapters', ['bookid' => $mod->id], '', 'id,title,content');
         foreach ($chapters as $chapter) {
-            $target = translation_manager::generate('book_chapter', 'checker_links', (object) ["title" => $chapter->title]);
+            $target = translation_manager::generate('book_chapter', 'coursechecker_links', (object) ["title" => $chapter->title]);
             $url = (new moodle_url('/mod/book/edit.php', ['cmid' => $mod->coursemodule, 'id' => $chapter->id]))->out(false);
             $this->check_urls_with_resolution_url($this->get_urls_from_text($chapter->content), $url, $target);
         }
@@ -260,7 +260,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         $pages = $DB->get_records('wiki_pages', ['subwikiid' => $id], '', 'id, title, cachedcontent');
 
         foreach ($pages as $page) {
-            $target = translation_manager::generate('wiki_page', 'checker_links', (object) ['title' => $page->title]);
+            $target = translation_manager::generate('wiki_page', 'coursechecker_links', (object) ['title' => $page->title]);
             $resolutionlink = new moodle_url('/mod/wiki/edit.php', ['pageid' => $page->id]);
 
             $this->check_urls_with_resolution_url($this->get_urls_from_text($page->cachedcontent), $resolutionlink, $target);

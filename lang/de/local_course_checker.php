@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Kurs Checker';
-$string['subplugintype_checker'] = 'Kurs Checker';
-$string['subplugintype_checker_plural'] = 'Kurs Checkers';
+$string['subplugintype_coursechecker'] = 'Kurs Checker';
+$string['subplugintype_coursechecker_plural'] = 'Kurs Checkers';
 $string['settings_name'] = 'Allgemeine Einstellungen für den Kurs Checker';
 $string['plugin_enabled'] = '{$a} aktiviert.';
 $string['plugin_disabled'] = '{$a} deaktiviert.';

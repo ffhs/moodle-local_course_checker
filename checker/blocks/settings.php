@@ -17,7 +17,7 @@
 /**
  * Settings for checking blocks inside the course
  *
- * @package    checker_blocks
+ * @package    coursechecker_blocks
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -28,10 +28,13 @@ use local_course_checker\admin\admin_setting_pickblocks;
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+
 /** @var admin_settingpage $settings */
 $settings;
 
-$visiblename = get_string('blocks_setting', 'checker_blocks');
-$description = get_string('blocks_setting_help', 'checker_blocks');
-$blocks = new admin_setting_pickblocks('checker_blocks/blocks', $visiblename, $description, []);
+$visiblename = get_string('blocks_setting', 'coursechecker_blocks');
+$url = $CFG->wwwroot . '/admin/blocks.php';
+$description = get_string('blocks_setting_help', 'coursechecker_blocks', $url);
+$blocks = new admin_setting_pickblocks('coursechecker_blocks/blocks', $visiblename, $description, []);
 $settings->add($blocks);

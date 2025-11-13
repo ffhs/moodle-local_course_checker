@@ -17,14 +17,14 @@
 /**
  * Fetch user data and return records if entries exists
  *
- * @package    checker_userdata
+ * @package    coursechecker_userdata
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2020 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_userdata;
+namespace coursechecker_userdata;
 
 use local_course_checker\mod_type_interface;
 
@@ -33,7 +33,7 @@ use local_course_checker\mod_type_interface;
  *
  * Implements the {@see mod_type_interface} to define which activity modules support user data checks.
  *
- * @package local_course_checker\checkers\checker_userdata
+ * @package local_course_checker\checkers\coursechecker_userdata
  */
 class fetch_userdata implements mod_type_interface {
     /**

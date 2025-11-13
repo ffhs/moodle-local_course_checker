@@ -41,8 +41,8 @@ require_login();
 require_capability('moodle/site:config', context_system::instance());
 require_sesskey();
 
-$coursecheckermanager = \core_plugin_manager::resolve_plugininfo_class('checker');
-$pluginname = get_string('pluginname', "checker_{$plugin}");
+$coursecheckermanager = \core_plugin_manager::resolve_plugininfo_class('coursechecker');
+$pluginname = get_string('pluginname', "coursechecker_{$plugin}");
 
 switch ($action) {
     case 'disable':

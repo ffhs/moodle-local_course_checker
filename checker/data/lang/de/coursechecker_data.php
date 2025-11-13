@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_groups'.
+ * Strings for component 'coursechecker_data'.
  *
- * @package    checker_groups
+ * @package    coursechecker_data
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,13 +25,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Überprüfung der Gruppenabgabe';
-$string['pluginname_help'] = 'This plugin checks assignment activities in a course to ensure correct group submission configuration. It verifies that group mode is properly set, a valid grouping is assigned, and that the grouping contains at least two groups.';
-
-// String specific for the group checker.
-$string['groups_deactivated'] = 'Group submission setting is deactivated';
-$string['groups_idmissing'] = 'Group submission is active, but no grouping is set';
-$string['groups_missing'] = 'Grouping has not been set up correctly';
-$string['groups_lessthantwogroups'] = 'Less than 2 groups have been set up for the active grouping';
-$string['groups_success'] = 'Group submission setting is well defined';
-$string['groups_activity'] = 'Activity "{$a->name}"';
+$string['pluginname'] = 'Datenbank Überprüfung';
+$string['pluginname_help'] = 'Dieses Plugin überprüft alle Datenbankaktivitäten eines Kurses, um sicherzustellen, dass sie mindestens ein definiertes Feld enthalten. Es hilft, unvollständige Konfigurationen zu vermeiden, indem es leere Datenbankmodule kennzeichnet.';
+$string['privacy:metadata'] = 'Das Plugin „Datenbank Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+// String specific for the data checker.
+$string['data_success'] = 'Die Datenbankaktivität ist korrekt konfiguriert und die Felder sind definiert.';
