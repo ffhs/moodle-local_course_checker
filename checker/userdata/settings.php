@@ -17,7 +17,7 @@
 /**
  * Settings for checking user data of activities inside the course
  *
- * @package    checker_userdata
+ * @package    coursechecker_userdata
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2020 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,14 +28,16 @@ use local_course_checker\admin\admin_setting_pickmodules;
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
 
 /** @var admin_settingpage $settings */
 $settings;
 
-$coursesregex = new admin_setting_courseregex('checker_userdata/userdata_coursesregex');
+$coursesregex = new admin_setting_courseregex('coursechecker_userdata/userdata_coursesregex');
 $settings->add($coursesregex);
 
-$visiblename = get_string('userdata_setting_modules', 'checker_userdata');
-$description = get_string('userdata_setting_modules_help', 'checker_userdata');
-$modules = new admin_setting_pickmodules('checker_userdata/userdata_modules', $visiblename, $description, []);
+$visiblename = get_string('userdata_setting_modules', 'coursechecker_userdata');
+$url = $CFG->wwwroot . '/admin/modules.php';
+$description = get_string('userdata_setting_modules_help', 'coursechecker_userdata', $url);
+$modules = new admin_setting_pickmodules('coursechecker_userdata/userdata_modules', $visiblename, $description, []);
 $settings->add($modules);

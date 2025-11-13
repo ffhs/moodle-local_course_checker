@@ -17,7 +17,7 @@
 /**
  * Settings for checking links inside the course
  *
- * @package    checker_links
+ * @package    coursechecker_links
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use checker_links\curl_manager;
+use coursechecker_links\curl_manager;
 use local_course_checker\admin\admin_setting_linklist;
 use local_course_checker\admin\admin_setting_restrictedint;
 
@@ -34,8 +34,8 @@ use local_course_checker\admin\admin_setting_restrictedint;
 $settings;
 
 // CURL Connect timeout setting.
-$visiblename = get_string('connect_timeout_setting', 'checker_links');
-$description = get_string('connect_timeout_setting_desc', 'checker_links');
+$visiblename = get_string('connect_timeout_setting', 'coursechecker_links');
+$description = get_string('connect_timeout_setting_desc', 'coursechecker_links');
 $timeout = new admin_setting_restrictedint(
     curl_manager::CONNECT_TIMEOUT_SETTING,
     $visiblename,
@@ -46,8 +46,8 @@ $timeout->set_maximum(300)->set_minimum(0);
 $settings->add($timeout);
 
 // CURL Timeout setting.
-$visiblename = get_string('timeout_setting', 'checker_links');
-$description = get_string('timeout_setting_desc', 'checker_links');
+$visiblename = get_string('timeout_setting', 'coursechecker_links');
+$description = get_string('timeout_setting_desc', 'coursechecker_links');
 $timeout = new admin_setting_restrictedint(
     curl_manager::TIMEOUT_SETTING,
     $visiblename,
@@ -58,8 +58,8 @@ $timeout->set_maximum(300)->set_minimum(0);
 $settings->add($timeout);
 
 // Link Checker Useragent setting.
-$visiblename = get_string('useragent_setting', 'checker_links');
-$description = get_string('useragent_setting_desc', 'checker_links');
+$visiblename = get_string('useragent_setting', 'coursechecker_links');
+$description = get_string('useragent_setting_desc', 'coursechecker_links');
 $useragent = new admin_setting_configtext(
     curl_manager::USERAGENT_SETTING,
     $visiblename,
@@ -70,8 +70,8 @@ $useragent = new admin_setting_configtext(
 $settings->add($useragent);
 
 // Link Checker Urlwhitelist setting.
-$visiblename = get_string('url_whitelist_setting', 'checker_links');
-$description = get_string('url_whitelist_setting_desc', 'checker_links');
+$visiblename = get_string('url_whitelist_setting', 'coursechecker_links');
+$description = get_string('url_whitelist_setting_desc', 'coursechecker_links');
 $urlwhitelist = new admin_setting_linklist(
     curl_manager::URL_WHITELIST_SETTING,
     $visiblename,
@@ -83,8 +83,8 @@ $urlwhitelist = new admin_setting_linklist(
 $settings->add($urlwhitelist);
 
 // Link Checker Domainwhitelist setting.
-$visiblename = get_string('domain_whitelist_setting', 'checker_links');
-$description = get_string('domain_whitelist_setting_desc', 'checker_links');
+$visiblename = get_string('domain_whitelist_setting', 'coursechecker_links');
+$description = get_string('domain_whitelist_setting_desc', 'coursechecker_links');
 $domainwhitelist = new admin_setting_linklist(
     curl_manager::DOMAIN_WHITELIST_SETTING,
     $visiblename,

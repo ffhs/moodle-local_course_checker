@@ -1,7 +1,7 @@
 ﻿checker/*
 .gitmodules
 
-!checker/activdates
+!checker/activedates
 !checker/blocks
 !checker/data
 !checker/groups
@@ -11,7 +11,7 @@
 !checker/subheadings
 !checker/userdata
 
-!checker/activdates/*
+!checker/activedates/*
 !checker/blocks/*
 !checker/data/*
 !checker/groups/*

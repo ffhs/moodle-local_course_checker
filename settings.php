@@ -24,7 +24,6 @@
  */
 
 use local_course_checker\admin\admin_setting_courseid_selector;
-use local_course_checker\plugininfo\checker;
 use local_course_checker\table\plugin_management_table;
 
 defined('MOODLE_INTERNAL') || die();
@@ -46,7 +45,7 @@ if ($hassiteconfig) {
 
         // Subplugin Manager.
         $settings->add(new \core_admin\admin\admin_setting_plugin_manager(
-            'checker',
+            'coursechecker',
             plugin_management_table::class,
             'local_course_checker_settings',
             get_string('settings_name', 'local_course_checker'),
@@ -59,7 +58,7 @@ if ($hassiteconfig) {
     $ADMIN->add('local_course_checker', $settings);
     unset($settings);
 
-    $checkers = core_plugin_manager::instance()->get_plugins_of_type('checker');
+    $checkers = core_plugin_manager::instance()->get_plugins_of_type('coursechecker');
 
     if (!empty($checkers)) {
         /** @var checker $plugin */

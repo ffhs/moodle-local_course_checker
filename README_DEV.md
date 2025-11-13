@@ -34,13 +34,13 @@ With the help of `stdClass $course` of the run function, you can run your check 
 
 ## Read your settings
 
-Inside the `checker` class, you can use the `checker_config_trait` to help read your subplugin settings. Then instead of `get_config` you would use `$this->get_config`. You would only need to specify the full path to the setting, like `checker_links/timeout`.
+Inside the `checker` class, you can use the `checker_config_trait` to help read your subplugin settings. Then instead of `get_config` you would use `$this->get_config`. You would only need to specify the full path to the setting, like `coursechecker_links/timeout`.
 
 Example:
 ```php
 // settings.php
-$visiblename = get_string('connect_timeout_setting', 'checker_links');
-$description = get_string('connect_timeout_setting_desc', 'checker_links');
+$visiblename = get_string('connect_timeout_setting', 'coursechecker_links');
+$description = get_string('connect_timeout_setting_desc', 'coursechecker_links');
 $timeout = new admin_setting_restrictedint(curl_manager::CONNECT_TIMEOUT_SETTING,
         $visiblename, $description, curl_manager::CONNECT_TIMEOUT_DEFAULT);
 $timeout->set_maximum(300)->set_minimum(0);
@@ -50,7 +50,7 @@ $settings->add($timeout);
 class curl_manager {
     use checker_config_trait;
 	/** @var string Configuration path for the URL request timeout. */
-    const TIMEOUT_SETTING = 'checker_links/timeout';
+    const TIMEOUT_SETTING = 'coursechecker_links/timeout';
     /** @var int Default value for total CURL request timeout in seconds. */
     const TIMEOUT_DEFAULT = 13;
 

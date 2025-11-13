@@ -17,7 +17,7 @@
 /**
  * Settings for checking the course settings compared to a reference course
  *
- * @package    checker_referencesettings
+ * @package    coursechecker_referencesettings
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
@@ -25,7 +25,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use checker_referencesettings\checker;
+use coursechecker_referencesettings\checker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -58,8 +58,8 @@ $choices = [
 ];
 
 // Referencesettings Checker Checklist settings.
-$visiblename = get_string('checker_referencesettings_checklist', 'checker_referencesettings');
-$description = new lang_string('checker_referencesettings_checklist_help', 'checker_referencesettings');
+$visiblename = get_string('referencesettings_checklist', 'coursechecker_referencesettings');
+$description = new lang_string('referencesettings_checklist_help', 'coursechecker_referencesettings');
 $checklist = new admin_setting_configmulticheckbox(
     checker::REFERENCE_COURSE_SETTINGS,
     $visiblename,
@@ -70,8 +70,8 @@ $checklist = new admin_setting_configmulticheckbox(
 $settings->add($checklist);
 
 // Referencesettings Checker Filter settings.
-$visiblename = get_string('checker_referencefilter_enabled', 'checker_referencesettings');
-$description = new lang_string('checker_referencefilter_enabled_help', 'checker_referencesettings');
+$visiblename = get_string('referencefilter_enabled', 'coursechecker_referencesettings');
+$description = new lang_string('referencefilter_enabled_help', 'coursechecker_referencesettings');
 $settings->add(new admin_setting_configcheckbox(
     checker::REFERENCE_COURSE_FILTER_ENABLED,
     $visiblename,
@@ -80,8 +80,8 @@ $settings->add(new admin_setting_configcheckbox(
 ));
 
 // Referencesettings Checker Form Options settings.
-$visiblename = get_string('checker_referenceformatoptions_enabled', 'checker_referencesettings');
-$description = new lang_string('checker_referenceformatoptions_enabled_help', 'checker_referencesettings');
+$visiblename = get_string('referenceformatoptions_enabled', 'coursechecker_referencesettings');
+$description = new lang_string('referenceformatoptions_enabled_help', 'coursechecker_referencesettings');
 $settings->add(new admin_setting_configcheckbox(
     checker::REFERENCE_COURSE_FORMAT_OPTION_ENABLED,
     $visiblename,

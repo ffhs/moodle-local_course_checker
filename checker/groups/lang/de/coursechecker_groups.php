@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_groups'.
+ * Strings for component 'coursechecker_groups'.
  *
- * @package    checker_groups
+ * @package    coursechecker_groups
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -27,6 +27,7 @@
 
 $string['pluginname'] = 'Gruppenabgabe Überprüfung';
 $string['pluginname_help'] = 'Dieses Plugin überprüft die Aufgabenaktivitäten in einem Kurs, um die korrekte Konfiguration der Gruppenübermittlung sicherzustellen. Es überprüft, ob der Gruppenmodus korrekt eingestellt ist, eine gültige Gruppierung zugewiesen ist und ob die Gruppierung mindestens zwei Gruppen enthält.';
+$string['privacy:metadata'] = 'Das Plugin „Gruppenabgabe Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // String specific for the group checker.
 $string['groups_deactivated'] = 'Die Einstellung für die Gruppenabgabe ist deaktiviert.';

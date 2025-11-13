@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_subheadings'.
+ * Strings for component 'coursechecker_subheadings'.
  *
- * @package    checker_subheadings
+ * @package    coursechecker_subheadings
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,15 +25,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Label-Untertitel Überprüfung';
-$string['pluginname_help'] = 'Der Subheading Checker prüft, ob alle Label-Ressourcen in einem Kurs einheitliche Formatierungsstandards einhalten.';
+$string['pluginname'] = 'Label subheadings check';
+$string['pluginname_help'] = 'The Subheading Checker verifies that all label resources in a course follow consistent formatting standards.';
+$string['privacy:metadata'] = 'The label subheadings check does not store any personal data. The check results are stored in the course checker plugin.';
 
 // String specific for the subheadings checker.
-$string['subheadings_wrongfirsthtmltag'] = 'Das erste HTML-Tag ist kein {$a->htmltag}.';
-$string['subheadings_iconmissing'] = 'Das Icon fehlt im ersten HTML-Tag.';
-$string['subheadings_generalerror'] = 'Es gab ein Problem bei der Ausführung dieser Prüfung.';
-$string['subheadings_success'] = 'Dieses Label hat eine passende Untertitel und ein Icon.';
-$string['subheadings_labelignored'] = 'Dieses Label wird aufgrund der Whitelist in der Plugin-Konfiguration ignoriert.';
+$string['subheadings_wrongfirsthtmltag'] = 'The first html-tag is not a {$a->htmltag}';
+$string['subheadings_iconmissing'] = 'The icon is missing in the first html-tag';
+$string['subheadings_generalerror'] = 'There was a problem executing this check';
+$string['subheadings_success'] = 'This label has a nice subheading and icon';
+$string['subheadings_labelignored'] = 'This label is ignored due to whitelist in plugin configuration.';
 
-$string['checker_subheadings_setting_whitelist'] = 'Whitelist für Untertitel';
-$string['checker_subheadings_setting_whitelist_help'] = 'Bitte fügen Sie eine Zeichenfolge pro Zeile hinzu. Beispiel: "Liebe(r) Modulentwickler".';
+$string['subheadings_setting_whitelist'] = 'Subheading checker strings whitelist';
+$string['subheadings_setting_whitelist_help'] = 'Please add one string per line. Example: "Liebe(r) Modulentwickler".';

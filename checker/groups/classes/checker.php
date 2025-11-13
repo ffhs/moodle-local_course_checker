@@ -18,14 +18,14 @@
  * Checking the group submission settings on
  * assignments for a course.
  *
- * @package    checker_groups
+ * @package    coursechecker_groups
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace checker_groups;
+namespace coursechecker_groups;
 
 use local_course_checker\translation_manager;
 use local_course_checker\mod_type_interface;
@@ -69,7 +69,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             if (!$cm->uservisible || !$cm->has_view()) {
                 continue;
             }
-            $title = resolution_link_helper::get_target($cm, 'checker_groups');
+            $title = resolution_link_helper::get_target($cm, 'coursechecker_groups');
             $link = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id);
             // Get the assignment record from the assignment table.
             // The instance of the course_modules table is used as a foreign key to the assign table.
@@ -84,7 +84,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             // These are the settings of assignment group submission in the corresponding activity.
             // Case 1: the group mode is deactivated -> check okay.
             if ($groupmode == 0) {
-                $message = translation_manager::generate('groups_deactivated', 'checker_groups');
+                $message = translation_manager::generate('groups_deactivated', 'coursechecker_groups');
                 $check->add_successful($title, $link, $message);
                 continue;
             }
@@ -92,7 +92,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             // Case 2: the group mode is activated.
             // If the groupingid is not set -> check fails.
             if ($groupingid == 0) {
-                $message = translation_manager::generate('groups_idmissing', 'checker_groups');
+                $message = translation_manager::generate('groups_idmissing', 'coursechecker_groups');
                 $check->add_failed($title, $link, $message);
                 $check->set('status', 'failed');
                 continue;
@@ -100,7 +100,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             // If the grouping does not exist -> check fails.
             $groupingexists = $DB->record_exists('groupings', ['id' => $groupingid]);
             if (!$groupingexists) {
-                $message = translation_manager::generate('groups_missing', 'checker_groups');
+                $message = translation_manager::generate('groups_missing', 'coursechecker_groups');
                 $check->add_failed($title, $link, $message);
                 $check->set('status', 'failed');
                 continue;
@@ -108,13 +108,13 @@ class checker implements check_plugin_interface, mod_type_interface {
             // If the grouping has less then 2 groups -> check fails.
             $groupcount = $DB->count_records('groupings_groups', ['groupingid' => $groupingid]);
             if ($groupcount < 2) {
-                $message = translation_manager::generate('groups_lessthantwogroups', 'checker_groups');
+                $message = translation_manager::generate('groups_lessthantwogroups', 'coursechecker_groups');
                 $check->add_failed($title, $link, $message);
                 $check->set('status', 'failed');
                 continue;
             }
             // The group submission is activated and all checks have passed -> check okay.
-            $message = translation_manager::generate('groups_success', 'checker_groups');
+            $message = translation_manager::generate('groups_success', 'coursechecker_groups');
             $check->add_successful($title, $link, $message);
         }
     }
