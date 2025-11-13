@@ -31,7 +31,7 @@ use Exception;
 use local_course_checker\db\model\checker as checkerModel;
 use local_course_checker\db\model\check as checkModel;
 use local_course_checker\model\check_plugin_interface;
-use local_course_checker\plugininfo\checker;
+use local_course_checker\plugininfo\coursechecker;
 use stdClass;
 
 /**
@@ -73,8 +73,8 @@ class run_checker extends adhoc_task {
         mtrace("User triggering the checks: $user->email");
         mtrace("Checker_id: $checkerid");
 
-        if (checker::is_plugin_enabled($checkname)) {
-            $classnamespace = 'checker_' . $checkname . '\checker';
+        if (coursechecker::is_plugin_enabled($checkname)) {
+            $classnamespace = 'coursechecker_' . $checkname . '\checker';
 
             if (class_exists($classnamespace)) {
                 $checker = new $classnamespace();

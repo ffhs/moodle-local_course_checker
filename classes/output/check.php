@@ -78,13 +78,13 @@ class check implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output): stdClass {
         // ToDo: Search for avaiable settings, check permissions and then display settings link.
-        // ('settings_link' => (new moodle_url('/admin/settings.php',['section' => 'checker_' . $this->check->get('check_name') . '_settings']))->out(false),).
+        // ('settings_link' => (new moodle_url('/admin/settings.php',['section' => 'coursechecker_' . $this->check->get('check_name') . '_settings']))->out(false),).
 
         $data = [
             'status' => $this->check->get('status'),
             'check_name' => $this->check->get('check_name'),
-            'plugin_check_name' => get_string('pluginname', 'checker_' . $this->check->get('check_name')),
-            'plugin_description' => get_string('pluginname_help', 'checker_' . $this->check->get('check_name')),
+            'plugin_check_name' => get_string('pluginname', 'coursechecker_' . $this->check->get('check_name')),
+            'plugin_description' => get_string('pluginname_help', 'coursechecker_' . $this->check->get('check_name')),
             'timestamp' => userdate($this->check->get('timestamp'), '%A, %x %R'),
             'result' => $this->renderedresults,
             'check_is_running' => $this->inprogress,

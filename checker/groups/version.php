@@ -17,14 +17,14 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     checker_groups
+ * @package     coursechecker_groups
  * @copyright   2024 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'checker_groups';
+$plugin->component = 'coursechecker_groups';
 $plugin->version = 2025050500;
 $plugin->requires = 2024042203;
 $plugin->release = 'v4.4-r1';

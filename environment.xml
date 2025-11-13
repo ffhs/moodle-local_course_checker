@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<COMPATIBILITY_MATRIX>
+  <!-- Moodle 5.0 -->
+  <MOODLE version="5.0">
+    <PHP version="8.3" level="required" />
+    <PHP_EXTENSIONS>
+      <PHP_EXTENSION name="curl" level="required" />
+    </PHP_EXTENSIONS>
+  </MOODLE>
+
+  <!-- Moodle 5.1 -->
+  <MOODLE version="5.1">
+    <PHP version="8.3" level="required" />
+    <PHP_EXTENSIONS>
+      <PHP_EXTENSION name="curl" level="required" />
+    </PHP_EXTENSIONS>
+  </MOODLE>
+
+  <!-- For all other Moodle versions -->
+  <PLUGIN name="local_course_checker">
+    <PHP_EXTENSIONS>
+      <PHP_EXTENSION name="curl" level="required" />
+    </PHP_EXTENSIONS>
+  </PLUGIN>
+</COMPATIBILITY_MATRIX>

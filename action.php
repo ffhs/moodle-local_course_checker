@@ -24,7 +24,7 @@
 
 // Include Moodle's config file to initialize the Moodle environment.
 use core\task\manager;
-use local_course_checker\plugininfo\checker;
+use local_course_checker\plugininfo\coursechecker;
 use local_course_checker\task\queue_check_task;
 
 require_once(__DIR__ . '/../../config.php');
@@ -60,7 +60,7 @@ switch ($action) {
             // User does not have the required authorization.
             throw new moodle_exception('nopermissions', 'error', '', 'run this check');
         }
-        $checks = checker::get_enabled_plugins();
+        $checks = coursechecker::get_enabled_plugins();
         $adhoc = queue_check_task::instance($user, $course, $checks);
         manager::queue_adhoc_task($adhoc, true);
         break;

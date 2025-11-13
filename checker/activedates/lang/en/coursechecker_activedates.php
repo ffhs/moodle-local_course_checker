@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_activedates'.
+ * Strings for component 'coursechecker_activedates'.
  *
- * @package    checker_activedates
+ * @package    coursechecker_activedates
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,13 +25,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Aktive Termine Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin prüft, ob für einen Kurs sowohl ein Startdatum als auch ein Enddatum definiert ist. Es ist als Teil eines Workflows zur Kursqualitätssicherung konzipiert und stellt sicher, dass alle Kurse klar definierte zeitliche Grenzen haben.';
+
+$string['pluginname'] = 'Active dates check';
+$string['pluginname_help'] = 'This plugin checks whether a course has both a start date and an end date defined. It is designed to be part of a course quality assurance workflow, ensuring that all courses have clearly set temporal boundaries.';
+$string['privacy:metadata'] = 'The active dates check does not store any personal data. The check results are stored in the course checker plugin.';
 // String specific for the activedates checker.
-$string['activedates_setting_modules'] = 'Aktivierte Module';
+$string['activedates_setting_modules'] = 'Enabled modules';
 $string['activedates_setting_modules_help'] =
-    'Definieren Sie die erlaubten Module  (müssen in <a href="/admin/modules.php" target="_blank">Aktivitäten verwalten</a> aktiviert sein), die auf aktive Termine geprüft werden sollen.';
-$string['activedates_noactivedates'] = 'Es sollten keine aktivierten Termine im Abschnitt "Aktivitätsabschluss" vorhanden sein.';
+    'Define the allowed modules (must be enabled in <a href="{$a}" target="_blank">Manage activities</a>) to be checked for active dates.';
+$string['activedates_noactivedates'] = 'There shouldn\'t be enabled dates in the "activity completion" section.';
 $string['activedates_noactivedatesinactivity'] =
-    'Es sollten keine aktivierten Termine in der Aktivität vom Typ {$a->modtype} vorhanden sein. Überprüfen Sie die folgenden Felder: {$a->adateissetin}';
-$string['activedates_success'] = 'Die Aktivität {$a} ist korrekt konfiguriert.';
+    'There shouldn\'t be enabled dates in the {$a->modtype} activity, look for the following fields: {$a->adateissetin}';
+$string['activedates_success'] = 'The {$a} activity is configured correctly';

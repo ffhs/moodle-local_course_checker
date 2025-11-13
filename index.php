@@ -58,7 +58,6 @@ $PAGE->set_course($course);
 $PAGE->set_url(new moodle_url('/local/course_checker/index.php', ['courseid' => $courseid]));
 $PAGE->set_title(get_string('pluginname', 'local_course_checker'));
 $PAGE->set_heading(get_string('pluginname', 'local_course_checker'));
-$PAGE->requires->css('/local/course_checker/css/styles.css');
 // Data for the Mustache template.
 
 $output = $PAGE->get_renderer('local_course_checker');

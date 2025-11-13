@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'checker_data'.
+ * Strings for component 'coursechecker_blocks'.
  *
- * @package    checker_data
+ * @package    coursechecker_blocks
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
  * @copyright  based on work by 2019 Liip SA <elearning@liip.ch>
  * @copyright  based on work by 2019 Adrian Perez, Fernfachhochschule Schweiz (FFHS) <adrian.perez@ffhs.ch>
@@ -25,7 +25,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Datenbank Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin überprüft alle Datenbankaktivitäten eines Kurses, um sicherzustellen, dass sie mindestens ein definiertes Feld enthalten. Es hilft, unvollständige Konfigurationen zu vermeiden, indem es leere Datenbankmodule kennzeichnet.';
-// String specific for the data checker.
-$string['data_success'] = 'Die Datenbankaktivität ist korrekt konfiguriert und die Felder sind definiert.';
+$string['pluginname'] = 'Blocks check';
+$string['pluginname_help'] = 'This plugin compares the enabled blocks in a course against a reference course to ensure consistent block layout. It checks for missing or mismatched blocks and helps maintain a standardized course structure across the platform.';
+$string['privacy:metadata'] = 'The blocks check does not store any personal data. The check results are stored in the course checker plugin.';
+
+$string['blocks_setting'] = 'Enabled blocks';
+$string['blocks_setting_help'] =
+        'Define the allowed blocks (must be enabled in <a href="{$a}" target="_blank">Manage blocks</a>) to be checked.';
+$string['blocks_comparison'] = '(Reference course: "{$a->valuereference}" | Current course: "{$a->valuecurrent}")';
+$string['blocks_success'] = 'The block is correctly inserted in the current course';
+$string['blocks_error'] = 'The block is present by mistake or is missing in the current course.';
+$string['blocks_activity'] = 'Block "{$a->name}"';
