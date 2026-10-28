@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,9 +19,9 @@ namespace coursechecker_referencesettings;
 use coding_exception;
 use context_course;
 use dml_exception;
-use local_course_checker\model\check_plugin_interface;
+use local_course_checker\config;
 use local_course_checker\db\model\check;
-use local_course_checker\model\checker_config_trait;
+use local_course_checker\model\check_plugin_interface;
 use local_course_checker\resolution_link_helper;
 use local_course_checker\translation_manager;
 use moodle_exception;
@@ -38,8 +38,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class checker implements check_plugin_interface {
-    use checker_config_trait;
-
     /** Config path for the reference course ID. */
     const REFERENCE_COURSE = 'local_course_checker/referencecourseid';
     /** Default value for the reference course ID. */
@@ -75,28 +73,6 @@ class checker implements check_plugin_interface {
     protected array|bool $referenceformatoptionsenabled;
 
     /**
-     * Initialize checker by setting it up with the configuration
-     *
-     * @throws dml_exception
-     */
-    public function init(): void {
-        // Load settings.
-        $this->referencecourseid = (int) $this->get_config(self::REFERENCE_COURSE, self::REFERENCE_COURSE_DEFAULT);
-        $this->referencesettings = explode(',', $this->get_config(
-            self::REFERENCE_COURSE_SETTINGS,
-            self::REFERENCE_COURSE_SETTINGS_DEFAULT
-        ));
-        $this->referencefilterenabled = $this->get_config(
-            self::REFERENCE_COURSE_FILTER_ENABLED,
-            self::REFERENCE_COURSE_FILTER_ENABLED_DEFAULT
-        );
-        $this->referenceformatoptionsenabled = $this->get_config(
-            self::REFERENCE_COURSE_FORMAT_OPTION_ENABLED,
-            self::REFERENCE_COURSE_FORMAT_OPTION_ENABLED_DEFAULT
-        );
-    }
-
-    /**
      * Runs the check
      *
      * @param stdClass $course
@@ -127,36 +103,26 @@ class checker implements check_plugin_interface {
     }
 
     /**
-     * Generates a translated string comparing a setting between the reference and current course.
+     * Initialize checker by setting it up with the configuration
      *
-     * @param string $setting The name of the setting to compare.
-     * @param stdClass $referencecourse The reference course object.
-     * @param stdClass $currentcourse The current course object.
-     * @return string The translated comparison string.
+     * @throws dml_exception
      */
-    private function get_comparison_string(string $setting, stdClass $referencecourse, stdClass $currentcourse): string {
-        return translation_manager::generate(
-            'referencesettings_comparison',
-            'coursechecker_referencesettings',
-            ['settingvaluereference' => $referencecourse->$setting, 'settingvaluecurrent' => $currentcourse->$setting]
+    public function init(): void {
+        // Load settings.
+        $this->referencecourseid = (int) config::get(self::REFERENCE_COURSE, self::REFERENCE_COURSE_DEFAULT);
+        $referencesettings = config::get(self::REFERENCE_COURSE_SETTINGS, self::REFERENCE_COURSE_SETTINGS_DEFAULT);
+        if (is_array($referencesettings)) {
+            $this->referencesettings = $referencesettings;
+        } else {
+            $this->referencesettings = explode(',', $referencesettings);
+        }
+        $this->referencefilterenabled = config::get(
+            self::REFERENCE_COURSE_FILTER_ENABLED,
+            self::REFERENCE_COURSE_FILTER_ENABLED_DEFAULT
         );
-    }
-
-    /**
-     * Generates a translated string comparing a filter setting between two courses.
-     *
-     * @param object $filterinforeference The filter info from the reference course.
-     * @param object $filterinfocurrent The filter info from the current course.
-     * @return string The translated filter comparison string.
-     */
-    private function get_filter_comparison_string(object $filterinforeference, object $filterinfocurrent): string {
-        return translation_manager::generate(
-            'referencefilter_comparison',
-            'coursechecker_referencesettings',
-            [
-                'filtervaluereference' => $filterinforeference->localstate,
-                'filtervaluecurrent' => $filterinfocurrent->localstate,
-            ]
+        $this->referenceformatoptionsenabled = config::get(
+            self::REFERENCE_COURSE_FORMAT_OPTION_ENABLED,
+            self::REFERENCE_COURSE_FORMAT_OPTION_ENABLED_DEFAULT
         );
     }
 
@@ -167,8 +133,6 @@ class checker implements check_plugin_interface {
      * @param stdClass $course The course object used for linking.
      * @param stdClass $referencecourse The reference course object.
      * @param stdClass $currentcourse The current course object.
-     * @throws coding_exception
-     * @throws moodle_exception
      */
     protected function compare_default_course_settings(stdClass $course, stdClass $referencecourse, stdClass $currentcourse): void {
         // Run comparison for every attribute.
@@ -181,7 +145,6 @@ class checker implements check_plugin_interface {
                     ['setting' => $setting]
                 );
                 $this->check->add_failed('', '', $message);
-                $this->check->set('status', 'failed');
                 continue;
             }
 
@@ -202,7 +165,6 @@ class checker implements check_plugin_interface {
                     ]
                 );
                 $this->check->add_failed('', $link, $message);
-                $this->check->set('status', 'failed');
                 continue;
             }
 
@@ -217,13 +179,28 @@ class checker implements check_plugin_interface {
     }
 
     /**
+     * Generates a translated string comparing a setting between the reference and current course.
+     *
+     * @param string $setting The name of the setting to compare.
+     * @param stdClass $referencecourse The reference course object.
+     * @param stdClass $currentcourse The current course object.
+     * @return string The translated comparison string.
+     */
+    private function get_comparison_string(string $setting, stdClass $referencecourse, stdClass $currentcourse): string {
+        return translation_manager::generate(
+            'referencesettings_comparison',
+            'coursechecker_referencesettings',
+            ['settingvaluereference' => $referencecourse->$setting, 'settingvaluecurrent' => $currentcourse->$setting]
+        );
+    }
+
+    /**
      * Compares enabled filters between current and reference courses.
      * Reports mismatches and sets check status accordingly.
      *
      * @param stdClass $currentcourse The current course object.
      * @param stdClass $referencecourse The reference course object.
      * @throws coding_exception
-     * @throws moodle_exception
      */
     protected function compare_course_level_filters(stdClass $currentcourse, stdClass $referencecourse): void {
         if (!$this->referencefilterenabled) {
@@ -253,7 +230,6 @@ class checker implements check_plugin_interface {
                     ['filterkey' => $filterkey]
                 );
                 $this->check->add_failed('', $link, $message);
-                $this->check->set('status', 'failed');
                 continue;
             }
             if ($currentavailablefilters[$filterkey]->localstate != $referencefilterinfo->localstate) {
@@ -263,10 +239,9 @@ class checker implements check_plugin_interface {
                     'referencefilter_failing',
                     'coursechecker_referencesettings',
                     ['filterkey' => $filterkey,
-                    'comparison' => $comparison]
+                        'comparison' => $comparison]
                 );
                 $this->check->add_failed('', $link, $message);
-                $this->check->set('status', 'failed');
 
                 $occurringfilterproblems++;
             }
@@ -284,13 +259,30 @@ class checker implements check_plugin_interface {
     }
 
     /**
+     * Generates a translated string comparing a filter setting between two courses.
+     *
+     * @param object $filterinforeference The filter info from the reference course.
+     * @param object $filterinfocurrent The filter info from the current course.
+     * @return string The translated filter comparison string.
+     */
+    private function get_filter_comparison_string(object $filterinforeference, object $filterinfocurrent): string {
+        return translation_manager::generate(
+            'referencefilter_comparison',
+            'coursechecker_referencesettings',
+            [
+                'filtervaluereference' => $filterinforeference->localstate,
+                'filtervaluecurrent' => $filterinfocurrent->localstate,
+            ]
+        );
+    }
+
+    /**
      * Compares format options between the current and reference course.
      * Reports differences and marks the check as failed if mismatches are found.
      *
      * @param stdClass $currentcourse The current course object.
      * @param stdClass $referencecourse The reference course object.
      * @throws coding_exception
-     * @throws moodle_exception
      */
     protected function compare_course_format_options(stdClass $currentcourse, stdClass $referencecourse): void {
         global $PAGE, $COURSE;
@@ -323,7 +315,6 @@ class checker implements check_plugin_interface {
                 ['optionkey' => $optionkey, 'comparison' => $comparison]
             );
             $this->check->add_failed('', $link, $message);
-            $this->check->set('status', 'failed');
 
             $occurringoptionproblems++;
         }

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@
 
 // Include Moodle's config file to initialize the Moodle environment.
 use core\task\manager;
+use local_course_checker\config;
+use local_course_checker\db\model\checker as checker_model;
+use local_course_checker\output\report_renderer;
 use local_course_checker\plugininfo\coursechecker;
 use local_course_checker\task\queue_check_task;
 
@@ -36,7 +39,11 @@ require_sesskey(); // Prevents unauthorized requests.
 
 $action = required_param('action', PARAM_ALPHAEXT);
 $courseid = required_param('courseid', PARAM_INT);
-$returnurl = optional_param('returnurl', new moodle_url('/local/course_checker/index.php', ['courseid' => $courseid]), PARAM_URL);
+$selectedversion = optional_param('selected_version', 'latest', PARAM_TEXT);
+$returnurl = optional_param('returnurl', new moodle_url('/local/course_checker/index.php', [
+    'courseid' => $courseid,
+    'version_name' => $selectedversion,
+]), PARAM_URL);
 
 try {
     // Attempt to retrieve the course.
@@ -61,10 +68,9 @@ switch ($action) {
             throw new moodle_exception('nopermissions', 'error', '', 'run this check');
         }
         $checks = coursechecker::get_enabled_plugins();
-        $adhoc = queue_check_task::instance($user, $course, $checks);
+        $adhoc = queue_check_task::instance($user, $course, $checks, $selectedversion);
         manager::queue_adhoc_task($adhoc, true);
         break;
-
     case 'run_check':
         try {
             require_capability('local/course_checker:runcheck', $context);
@@ -73,10 +79,96 @@ switch ($action) {
             throw new moodle_exception('nopermissions', 'error', '', 'run individual check');
         }
         $checkname = required_param('check_name', PARAM_ALPHAEXT);
-        $adhoc = queue_check_task::instance($user, $course, [$checkname => $checkname]);
+        $adhoc = queue_check_task::instance($user, $course, [$checkname => $checkname], $selectedversion);
         manager::queue_adhoc_task($adhoc, true);
         break;
+    case 'delete_all_results':
+        if (!config::get(report_renderer::ENABLE_VERSIONING, report_renderer::ENABLE_VERSIONING_DEFAULT)) {
+            throw new moodle_exception('versioningdisabled', 'local_course_checker');
+        }
+        try {
+            require_capability('local/course_checker:managereportversions', $context);
+        } catch (required_capability_exception $e) {
+            throw new moodle_exception('nopermissions', 'error', '', 'delete course check results');
+        }
 
+        $checker = checker_model::get_record(['course_id' => $courseid, 'version_name' => $selectedversion]);
+        if ($checker) {
+            $checker->delete();
+        }
+        break;
+    case 'save_results':
+        if (!config::get(report_renderer::ENABLE_VERSIONING, report_renderer::ENABLE_VERSIONING_DEFAULT)) {
+            throw new moodle_exception('versioningdisabled', 'local_course_checker');
+        }
+        try {
+            require_capability('local/course_checker:managereportversions', $context);
+        } catch (required_capability_exception $e) {
+            throw new moodle_exception('nopermissions', 'error', '', 'save course check results');
+        }
+        $versionname = trim(required_param('version_name', PARAM_TEXT));
+        $overwrite = optional_param('overwrite', false, PARAM_BOOL);
+        if ($versionname === '') {
+            throw new moodle_exception('version_name_required', 'local_course_checker');
+        }
+        if (core_text::strlen($versionname) > 20) {
+            throw new moodle_exception('version_name_too_long', 'local_course_checker');
+        }
+
+        // Load all versions once and derive the source, destination, count, and oldest saved version from that result.
+        $versions = checker_model::get_records(['course_id' => $courseid]);
+        $checker = null;
+        $existing = null;
+        $oldestsavedversion = null;
+        $savedreportcount = 0;
+        foreach ($versions as $version) {
+            $name = $version->get('version_name');
+            if ($name === $selectedversion) {
+                $checker = $version;
+            }
+            if ($name === $versionname) {
+                $existing = $version;
+            }
+            if ($name !== 'latest') {
+                $savedreportcount++;
+                if ($oldestsavedversion === null || $version->get('timestamp') < $oldestsavedversion->get('timestamp')) {
+                    $oldestsavedversion = $version;
+                }
+            }
+        }
+
+        if (!$checker) {
+            throw new moodle_exception('invalidrecord', 'error');
+        }
+
+        if ($checker->get('version_name') !== $versionname) {
+            if ($existing && !$overwrite) {
+                throw new moodle_exception('version_name_exists', 'local_course_checker');
+            }
+
+            $maxsavedreports = (int) config::get(report_renderer::MAXSAVEDREPORTS, report_renderer::MAXSAVEDREPORTS_DEFAULT);
+            $limitreached =
+                $selectedversion === 'latest' && !$existing && $maxsavedreports > 0 && $savedreportcount >= $maxsavedreports;
+            if ($limitreached && !$overwrite) {
+                throw new moodle_exception('saved_report_limit_reached', 'local_course_checker');
+            }
+
+            $transaction = $DB->start_delegated_transaction();
+            if ($existing) {
+                $existing->delete();
+            } else if ($limitreached && $oldestsavedversion) {
+                $oldestsavedversion->delete();
+            }
+            $checker->set('version_name', $versionname);
+            $checker->update();
+            $transaction->allow_commit();
+        }
+
+        $returnurl = new moodle_url('/local/course_checker/index.php', [
+            'courseid' => $courseid,
+            'version_name' => $versionname,
+        ]);
+        break;
     default:
         // Handle invalid or unsupported actions.
         throw new moodle_exception('invalidaction', 'error', '', $action);

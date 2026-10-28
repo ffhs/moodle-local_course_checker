@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 
 namespace local_course_checker\task;
 
-use core\task\manager;
 use core\task\adhoc_task;
+use core\task\manager;
 use local_course_checker\db\model\checker;
 use stdClass;
 
@@ -39,15 +39,16 @@ class queue_check_task extends adhoc_task {
      * @param stdClass $user
      * @param stdClass $course
      * @param array $checks
+     * @param string $versionname
      * @return self
      */
-    public static function instance(stdClass $user, stdClass $course, array $checks): self {
+    public static function instance(stdClass $user, stdClass $course, array $checks, string $versionname = 'latest'): self {
         // We don't set_next_run_time, because this adhoc task needs to run directly after the queuing.
         // Lock is also not needed because the task uses the default lock.
         $task = new self();
         // Pass userid to set_userid. This allows to filter via usernames inside the tasklogs.
         $task->set_userid($user->id);
-        $data = ['user' => $user, 'course' => $course, 'checks' => $checks];
+        $data = ['user' => $user, 'course' => $course, 'checks' => $checks, 'version_name' => $versionname];
         $task->set_custom_data($data);
         return $task;
     }
@@ -59,14 +60,15 @@ class queue_check_task extends adhoc_task {
         $data = $this->get_custom_data();
         $course = $data->course;
         $user = $data->user;
-        $checks = (array)$data->checks;
+        $checks = (array) $data->checks;
+        $versionname = $data->version_name ?? 'latest';
         mtrace('Queuing course checks.');
         mtrace('Course: ' . $course->fullname . ' (' . $course->id . ').');
         mtrace('User triggering the checks: ' . $user->email);
 
         $checkcount = count($checks);
 
-        $checker = checker::create_or_update($course->id);
+        $checker = checker::create_or_update($course->id, $versionname);
 
         if ($checkcount > 1) {
             // Delete Checks and Events.

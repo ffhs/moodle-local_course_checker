@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,6 +18,11 @@ namespace local_course_checker;
 
 /**
  * Class translation_manager
+ *
+ * Translation structures can contain user-provided placeholder values. By default, {@see self::resolve()}
+ * escapes those values with {@see s()} and returns HTML-safe output. Callers may disable escaping only
+ * when the next output layer performs context-appropriate escaping, for example Mustache's {{value}} syntax.
+ * An unescaped result must never be passed to raw Mustache output ({{{value}}}) or echoed directly.
  *
  * @package    local_course_checker
  * @copyright  2025 Stefan Dani, Fernfachhochschule Schweiz (FFHS) <stefan.dani@ffhs.ch>
@@ -44,26 +49,81 @@ class translation_manager {
     }
 
     /**
+     * Concatenate multiple translation strings or plain strings.
+     *
+     * @param array $inputs Array of translation strings or plain strings.
+     * @return string JSON-encoded structure.
+     */
+    public static function concat(array $inputs): string {
+        $data = [
+            'type' => 'concat',
+            'items' => $inputs,
+        ];
+        return json_encode($data);
+    }
+
+    /**
+     * Append a suffix to a translation string or plain string.
+     *
+     * @param string $input Original translation string or plain string.
+     * @param string $suffix Suffix to append.
+     * @return string JSON-encoded structure.
+     */
+    public static function append(string $input, string $suffix): string {
+        return self::concat([$input, $suffix]);
+    }
+
+    /**
+     * Prepend a prefix to a translation string or plain string.
+     *
+     * @param string $input Original translation string or plain string.
+     * @param string $prefix Prefix to prepend.
+     * @return string JSON-encoded structure.
+     */
+    public static function prepend(string $input, string $prefix): string {
+        return self::concat([$prefix, $input]);
+    }
+
+    /**
      * Resolve a stored translation string into a translated message.
      *
      * If the string is not valid JSON or missing required keys, it is returned as-is.
+     * Supports single translations and concatenated structures. The selected escaping mode is applied
+     * recursively to plain strings in translation placeholders and concatenated items.
+     *
+     * Escaping is enabled by default for backwards compatibility and safe direct HTML output. Set
+     * `$escape` to false only when the returned value is immediately passed to an output layer that escapes
+     * it for its destination context. For example, a value resolved without escaping may be rendered with
+     * Mustache's escaped `{{title}}` syntax, but not with raw `{{{title}}}` syntax.
      *
      * @param string|null $input The stored JSON translation structure or plain text.
-     * @return string Translated string, or fallback.
+     * @param bool $escape Whether to escape plain values with {@see s()}. Defaults to true.
+     * @return string Resolved translation. HTML-safe when `$escape` is true; otherwise unescaped.
      */
-    public static function resolve(?string $input): string {
-        if (is_null($input) || trim($input) === '') {
+    public static function resolve(?string $input, bool $escape = true): string {
+        if (is_null($input) || $input === '') {
             return '';
         }
 
-        $input = trim($input);
-
         // Try to decode full input.
-        $data = json_decode($input, true);
+        $data = json_decode(trim($input), true);
+
+        // On a recursive call, the input may be another translation structure or a user-provided value.
+        if (!is_array($data)) {
+            return $escape ? s($input) : $input;
+        }
+
+        // If it's a concatenation.
+        if (($data['type'] ?? null) === 'concat' && is_array($data['items'] ?? null)) {
+            $result = '';
+            foreach ($data['items'] as $item) {
+                $result .= self::resolve($item, $escape);
+            }
+            return $result;
+        }
 
         // If valid JSON with "identifier", process normally.
         if (
-            is_array($data) &&
             !empty($data['identifier']) &&
             array_key_exists('component', $data) &&
             array_key_exists('a', $data) &&
@@ -71,13 +131,13 @@ class translation_manager {
         ) {
             // Recursively translate $a.
             if (is_string($data['a'] ?? null)) {
-                $data['a'] = self::resolve($data['a']);
+                $data['a'] = self::resolve($data['a'], $escape);
             }
 
             if (is_array($data['a'] ?? null)) {
                 foreach ($data['a'] as $key => $value) {
                     if (is_string($value)) {
-                        $data['a'][$key] = self::resolve($value);
+                        $data['a'][$key] = self::resolve($value, $escape);
                     }
                 }
             }
@@ -87,22 +147,10 @@ class translation_manager {
             $component = $data['component'] ?? '';
             $lazyload = $data['lazyload'] ?? false;
 
-            return get_string($identifier, $component, $a, $lazyload);
+            return (string) get_string($identifier, $component, $a, $lazyload);
         }
 
-        // If the JSON is invalid or no identifier is included,
-        // try to recognize multiple JSON objects in a row.
-        preg_match_all('/\{(?:[^{}]|(?R))*\}/', $input, $matches);
-
-        if (count($matches[0]) > 1) {
-            $resolved = [];
-            foreach ($matches[0] as $part) {
-                $resolved[] = self::resolve($part);
-            }
-            return implode(' ', $resolved);
-        }
-
-        // Not a valid JSON with "identifier" -> return input as-is.
-        return $input;
+        // Not a recognised translation structure: return it using the requested escaping mode.
+        return $escape ? s($input) : $input;
     }
 }

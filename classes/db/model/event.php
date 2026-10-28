@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ namespace local_course_checker\db\model;
 use coding_exception;
 use core\event\base;
 use core\persistent;
+
 /**
  * Persistent model for storing course-related event logs from the checker.
  *

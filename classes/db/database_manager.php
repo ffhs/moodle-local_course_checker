@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,7 +44,11 @@ class database_manager {
      * @return array The list of planned adhoc tasks.
      * @throws dml_exception
      */
-    public static function planned_adhoc_tasks(string $classname, int $courseid, string $component = 'local_course_checker'): array {
+    public static function planned_adhoc_tasks(
+        string $classname,
+        int $courseid,
+        string $component = 'local_course_checker'
+    ): array {
         global $DB;
 
         $sql = "SELECT * FROM {task_adhoc}
@@ -53,9 +57,9 @@ class database_manager {
            AND customdata LIKE :courseid";
 
         $data = [
-                'component' => $component,
-                'classname' => $classname,
-                'courseid' => '%' . $DB->sql_like_escape('"course":{"id":"' . $courseid . '"') . '%',
+            'component' => $component,
+            'classname' => $classname,
+            'courseid' => '%' . $DB->sql_like_escape('"course":{"id":"' . $courseid . '"') . '%',
         ];
 
         return $DB->get_records_sql($sql, $data);

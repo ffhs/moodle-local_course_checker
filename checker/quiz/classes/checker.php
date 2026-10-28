@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Checking quizzes inside the course
+ * Checking quizzes inside the course if the sumgrade matches the grade.
  *
  * @package    coursechecker_quiz
  * @copyright  2025 Simon Gisler, Fernfachhochschule Schweiz (FFHS) <simon.gisler@ffhs.ch>
@@ -27,9 +27,10 @@
 namespace coursechecker_quiz;
 
 use coding_exception;
+use local_course_checker\config;
+use local_course_checker\db\model\check;
 use local_course_checker\mod_type_interface;
 use local_course_checker\model\check_plugin_interface;
-use local_course_checker\db\model\check;
 use local_course_checker\resolution_link_helper;
 use local_course_checker\translation_manager;
 use moodle_url;
@@ -39,6 +40,14 @@ use stdClass;
  * {@inheritDoc}
  */
 class checker implements check_plugin_interface, mod_type_interface {
+    /**
+     * Defines the path to the setting regex_whitelist.
+     */
+    const WHITELISTREGEX = 'coursechecker_quiz/regex_whitelist';
+    /**
+     * Defines the default of the setting regex_whitelist.
+     */
+    const WHITELISTREGEX_DEFAULT = "/Aufgaben zur Prüfungsvorbereitung/i";
     /**
      * @var check The result of the check.
      */
@@ -60,13 +69,22 @@ class checker implements check_plugin_interface, mod_type_interface {
         // Get all quiz activities in the course.
         $modinfo = get_fast_modinfo($course);
         $instances = get_all_instances_in_courses(self::MOD_TYPE_QUIZ, [$course->id => $course]);
+        $regex = config::get(self::WHITELISTREGEX, self::WHITELISTREGEX_DEFAULT);
         foreach ($instances as $mod) {
             // Get cm_info object to use for target and resolution link.
             $cm = $modinfo->get_cm($mod->coursemodule);
             $title = resolution_link_helper::get_target($cm);
             $resolutionlink = (new moodle_url('/mod/quiz/edit.php', ['cmid' => $cm->id]))->out(false);
             // For all quizzes we like to check if the "Maximum grade" and the "Total of marks" are the same numbers.
-            $this->check_quiz_maximum_grade($mod, $resolutionlink, $title);
+            if ($regex && preg_match($regex, $mod->name)) {
+                $this->check->add_info(
+                    $title,
+                    $resolutionlink,
+                    translation_manager::generate('quiz_in_whitelist', 'coursechecker_quiz')
+                );
+            } else {
+                $this->check_quiz_maximum_grade($mod, $resolutionlink, $title);
+            }
         }
     }
 
@@ -89,7 +107,6 @@ class checker implements check_plugin_interface, mod_type_interface {
                 ]
             );
             $this->check->add_failed($title, $link, $message);
-            $this->check->set('status', 'failed');
         } else {
             $message = translation_manager::generate(
                 'quiz_grade_sum_success',

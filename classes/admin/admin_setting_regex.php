@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,17 +26,14 @@ namespace local_course_checker\admin;
 
 use admin_setting_configtext;
 use coding_exception;
-use local_course_checker\model\checker_config_trait;
 
 /**
  * Class admin_setting_regex
  *
  * Defines an admin setting for validating regular expressions.
- * This setting extends {@see admin_setting_configtext} and integrates {@see checker_config_trait}.
+ * This setting extends {@see admin_setting_configtext}.
  */
 class admin_setting_regex extends admin_setting_configtext {
-    use checker_config_trait;
-
     /**
      * Validates the provided regular expression.
      *

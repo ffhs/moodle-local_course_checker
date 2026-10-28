@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ namespace local_course_checker;
 class checker_helper implements mod_type_interface {
     /** @var array list of modules which be supported by the checker_userdata */
     const array ACTIVITIES_WITH_USER_DATA = [
-            self::MOD_TYPE_DATA,
-            self::MOD_TYPE_FORUM,
-            self::MOD_TYPE_GLOSSARY,
+        self::MOD_TYPE_DATA,
+        self::MOD_TYPE_FORUM,
+        self::MOD_TYPE_GLOSSARY,
         // ToDo: "self::MOD_TYPE_JOURNAL" will be implemented later.
-            self::MOD_TYPE_WIKI,
+        self::MOD_TYPE_WIKI,
         // ToDo: "self::MOD_TYPE_WORKSHOP" will be implemented later.
     ];
 

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,40 +28,48 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-        'local/course_checker:runcheck' => [
-            'captype' => 'write',
-            'contextlevel' => CONTEXT_COURSE,
-            'archetypes' => [
-                'editingteacher' => CAP_ALLOW,
-                'manager' => CAP_ALLOW,
-                'student' => CAP_PROHIBIT,
-            ],
+    'local/course_checker:runcheck' => [
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PROHIBIT,
         ],
-        'local/course_checker:view' => [
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_COURSE,
-                'archetypes' => [
-                    'editingteacher' => CAP_ALLOW,
-                    'manager' => CAP_ALLOW,
-                ],
+    ],
+    'local/course_checker:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
         ],
-        'local/course_checker:view_notification' => [
-                'riskbitmask' => RISK_PERSONAL,
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_SYSTEM,
-                'archetypes' => [
-                    'teacher' => CAP_ALLOW,
-                    'editingteacher' => CAP_ALLOW,
-                    'manager' => CAP_ALLOW,
-                    'coursecreator' => CAP_ALLOW,
-                ],
-                'clonepermissionsfrom' => 'moodle/site:viewreports',
+    ],
+    'local/course_checker:managereportversions' => [
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PROHIBIT,
         ],
-        'local/course_checker:view_navigation' => [
-            'captype' => 'read',
-            'contextlevel' => CONTEXT_COURSE,
-            'archetypes' => [
-                'manager' => CAP_ALLOW,
-            ],
+    ],
+    'local/course_checker:view_notification' => [
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
         ],
+        'clonepermissionsfrom' => 'moodle/site:viewreports',
+    ],
+    'local/course_checker:view_navigation' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
 ];

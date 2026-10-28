@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,13 +27,11 @@
 
 
 $string['pluginname'] = 'Active dates check';
-$string['pluginname_help'] = 'This plugin checks whether a course has both a start date and an end date defined. It is designed to be part of a course quality assurance workflow, ensuring that all courses have clearly set temporal boundaries.';
-$string['privacy:metadata'] = 'The active dates check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname_help'] = 'This check examines visible, viewable activities of the configured types and reports enabled completion dates or activity-specific availability and deadline fields. Courses excluded by the configured course-name pattern, unconfigured activity types, and hidden or non-viewable activities are not checked.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 // String specific for the activedates checker.
 $string['activedates_setting_modules'] = 'Enabled modules';
-$string['activedates_setting_modules_help'] =
-    'Define the allowed modules (must be enabled in <a href="{$a}" target="_blank">Manage activities</a>) to be checked for active dates.';
-$string['activedates_noactivedates'] = 'There shouldn\'t be enabled dates in the "activity completion" section.';
-$string['activedates_noactivedatesinactivity'] =
-    'There shouldn\'t be enabled dates in the {$a->modtype} activity, look for the following fields: {$a->adateissetin}';
-$string['activedates_success'] = 'The {$a} activity is configured correctly';
+$string['activedates_setting_modules_help'] = 'Define the allowed modules (must be enabled in <a href="{$a}" target="_blank">Manage activities</a>) to be checked for active dates.';
+$string['activedates_noactivedates'] = 'The expected completion date must not be enabled.';
+$string['activedates_noactivedatesinactivity'] = 'The <b>{$a->modtype}</b> activity has enabled dates in the following fields: <b>{$a->adateissetin}</b>.';
+$string['activedates_success'] = 'The {$a} activity has no enabled dates.';

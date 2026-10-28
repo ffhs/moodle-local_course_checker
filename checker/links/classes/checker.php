@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ class checker implements check_plugin_interface, mod_type_interface {
      * @var check The result of the check.
      */
     protected check $check;
-
 
     /**
      * Runs the checker.

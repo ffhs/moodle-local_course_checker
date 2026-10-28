@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Datenbank Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin überprüft alle Datenbankaktivitäten eines Kurses, um sicherzustellen, dass sie mindestens ein definiertes Feld enthalten. Es hilft, unvollständige Konfigurationen zu vermeiden, indem es leere Datenbankmodule kennzeichnet.';
-$string['privacy:metadata'] = 'Das Plugin „Datenbank Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname'] = 'Datenbankaktivitäten Überprüfung';
+$string['pluginname_help'] = 'Diese Überprüfung untersucht alle sichtbaren und aufrufbaren Datenbankaktivitäten eines Kurses. Jede Datenbankaktivität muss mindestens ein Feld enthalten. Verborgene oder nicht aufrufbare Datenbankaktivitäten werden nicht überprüft.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 // String specific for the data checker.
-$string['data_success'] = 'Die Datenbankaktivität ist korrekt konfiguriert und die Felder sind definiert.';
+$string['data_success'] = 'Die Datenbankaktivität enthält mindestens ein Feld.';

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ class checker implements renderable, templatable {
      * @return stdClass A standard object containing template variables.
      */
     public function export_for_template(renderer_base $output): stdClass {
-        return (object)[
+        return (object) [
             'version_name' => $this->checker->get('version_name'),
             'timestamp' => userdate($this->checker->get('timestamp'), '%A, %x %R'),
             'checks' => $this->renderedchecks,

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,21 +40,21 @@ use stdClass;
 class resolution_link_helper implements mod_type_interface {
     /** @var array list of modules which can be linked directly to the module config page */
     const array DIRECT_MOD_NAMES = [
-            self::MOD_TYPE_ASSIGN,
-            self::MOD_TYPE_BOOK,
-            self::MOD_TYPE_CHOICE,
-            self::MOD_TYPE_CHOICEGROUP,
-            self::MOD_TYPE_DATA,
-            self::MOD_TYPE_FEEDBACK,
-            self::MOD_TYPE_FORUM,
-            self::MOD_TYPE_LABEL,
-            self::MOD_TYPE_LESSON,
-            self::MOD_TYPE_PAGE,
-            self::MOD_TYPE_QUESTIONNAIRE,
-            self::MOD_TYPE_QUIZ,
-            self::MOD_TYPE_RESOURCE,
-            self::MOD_TYPE_URL,
-            self::MOD_TYPE_WIKI,
+        self::MOD_TYPE_ASSIGN,
+        self::MOD_TYPE_BOOK,
+        self::MOD_TYPE_CHOICE,
+        self::MOD_TYPE_CHOICEGROUP,
+        self::MOD_TYPE_DATA,
+        self::MOD_TYPE_FEEDBACK,
+        self::MOD_TYPE_FORUM,
+        self::MOD_TYPE_LABEL,
+        self::MOD_TYPE_LESSON,
+        self::MOD_TYPE_PAGE,
+        self::MOD_TYPE_QUESTIONNAIRE,
+        self::MOD_TYPE_QUIZ,
+        self::MOD_TYPE_RESOURCE,
+        self::MOD_TYPE_URL,
+        self::MOD_TYPE_WIKI,
     ];
 
     /**
@@ -66,13 +66,17 @@ class resolution_link_helper implements mod_type_interface {
      * @return string The generated URL as a string.
      * @throws coding_exception
      */
-    public static function get_link_to_modedit_or_view_page(string $modname, int $coursemoduleid, ?bool $gotoeditsettingspage = true): string {
+    public static function get_link_to_modedit_or_view_page(
+        string $modname,
+        int $coursemoduleid,
+        ?bool $gotoeditsettingspage = true
+    ): string {
         // We open the edit settings page instead of the mod/view itself.
         if (in_array($modname, self::DIRECT_MOD_NAMES) && $gotoeditsettingspage) {
             $url = new moodle_url('/course/mod.php', [
-                    "update" => $coursemoduleid,
-                    "sesskey" => sesskey(),
-                    "sr" => 0,
+                "update" => $coursemoduleid,
+                "sesskey" => sesskey(),
+                "sr" => 0,
             ]);
         } else {
             $url = new moodle_url('/mod/' . $modname . '/view.php', ['id' => $coursemoduleid]);
@@ -88,7 +92,7 @@ class resolution_link_helper implements mod_type_interface {
      */
     public static function get_link_to_course_view_page(int $courseid): string {
         return (new moodle_url('/course/view.php', [
-                'id' => $courseid,
+            'id' => $courseid,
         ]))->out(false);
     }
 
@@ -100,7 +104,7 @@ class resolution_link_helper implements mod_type_interface {
      */
     public static function get_link_to_course_edit_page(stdClass $course): string {
         return (new moodle_url('/course/edit.php', [
-                'id' => $course->id,
+            'id' => $course->id,
         ]))->out(false);
     }
 
@@ -120,6 +124,7 @@ class resolution_link_helper implements mod_type_interface {
         }
         return (new moodle_url('/group/index.php', $urlparam))->out(false);
     }
+
     /**
      * Returns a URL to the course filter management page.
      *
@@ -128,7 +133,7 @@ class resolution_link_helper implements mod_type_interface {
      */
     public static function get_link_to_course_filter_page(context $coursecontext): string {
         return (new moodle_url('/filter/manage.php', [
-                'contextid' => $coursecontext->id,
+            'contextid' => $coursecontext->id,
         ]))->out(false);
     }
 
