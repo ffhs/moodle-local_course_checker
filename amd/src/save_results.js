@@ -98,6 +98,7 @@ export const init = () => {
         const modal = await ModalSaveCancel.create({
             title: getString('save_results_title', 'local_course_checker'),
             body: Templates.render('local_course_checker/save_results_modal', {
+                // eslint-disable-next-line camelcase -- Must match the template context field.
                 version_name: trigger.dataset.defaultVersionName || '',
             }),
             buttons: {
