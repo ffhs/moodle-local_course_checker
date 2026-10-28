@@ -11,7 +11,7 @@ const SELECTORS = {
  * Initialise the delete confirmation modal.
  */
 export const init = () => {
-    document.addEventListener('click', async (event) => {
+    document.addEventListener('click', async(event) => {
         const trigger = event.target.closest(SELECTORS.trigger);
         if (!trigger) {
             return;
@@ -29,7 +29,7 @@ export const init = () => {
             title: getString('delete_all_results_title', 'local_course_checker'),
             body: getString('delete_all_results_confirm', 'local_course_checker'),
             buttons: {
-                delete: getString('delete_all_results', 'local_course_checker'),
+                'delete': getString('delete_all_results', 'local_course_checker'),
             },
             show: false,
             removeOnClose: true,
