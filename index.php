@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,9 +27,9 @@ require_once(__DIR__ . '/../../config.php');
 
 require_login();
 
-
 // Get the course ID from the URL.
 $courseid = required_param('courseid', PARAM_INT);
+$versionname = optional_param('version_name', 'latest', PARAM_TEXT);
 
 // Try to get the course from the database.
 try {
@@ -53,20 +53,27 @@ try {
 $PAGE->set_context($context);
 $PAGE->set_course($course);
 
-
 // Set up the page.
-$PAGE->set_url(new moodle_url('/local/course_checker/index.php', ['courseid' => $courseid]));
+$PAGE->set_url(new moodle_url('/local/course_checker/index.php', [
+    'courseid' => $courseid,
+    'version_name' => $versionname,
+]));
 $PAGE->set_title(get_string('pluginname', 'local_course_checker'));
 $PAGE->set_heading(get_string('pluginname', 'local_course_checker'));
 // Data for the Mustache template.
 
-$output = $PAGE->get_renderer('local_course_checker');
+$output = $PAGE->get_renderer('local_course_checker', 'report');
 
 // Output the page header.
 echo $OUTPUT->header();
 
-$checkerexists = $output->init($course);
-echo $output->render_header();
+$checkerexists = $output->init($course, $versionname);
+if (has_capability('local/course_checker:runcheck', $context)) {
+    echo $output->render_header();
+}
+if (has_capability('local/course_checker:managereportversions', $context)) {
+    echo $output->render_versioning_bar();
+}
 if ($checkerexists) {
     echo $output->render_activity();
     echo $output->render_result();

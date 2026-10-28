@@ -65,7 +65,7 @@ jobs:
           moodle-plugin-ci install --plugin ./plugin --db-host=127.0.0.1
         env:
           DB: ${{ matrix.database }}
-          MOODLE_BRANCH: MOODLE_404_STABLE #${{ github.ref_name }}
+          MOODLE_BRANCH: MOODLE_405_STABLE #${{ github.ref_name }}
 
       - name: PHP Lint
         if: ${{ always() }}

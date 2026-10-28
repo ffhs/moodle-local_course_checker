@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
  */
 
 $string['pluginname'] = 'Data activity check';
-$string['pluginname_help'] = 'This plugin checks all database activities in a course to ensure they contain at least one defined field. It helps prevent incomplete configurations by flagging empty database modules.';
-$string['privacy:metadata'] = 'The data activity check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname_help'] = 'This check examines all visible and accessible database activities in a course. Each database activity must contain at least one field. Hidden or inaccessible database activities are not checked.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 // String specific for the data checker.
-$string['data_success'] = 'The database activity is configured correctly and fields are defined';
+$string['data_success'] = 'The database activity contains at least one field.';

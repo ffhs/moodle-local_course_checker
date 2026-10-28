@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@
  */
 
 $string['pluginname'] = 'Reference settings check';
-$string['pluginname_help'] = 'This plugin compares general course settings (such as category, format, language, filters, and format options) of the current course with those of a reference course.';
-$string['privacy:metadata'] = 'The reference settings check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname_help'] = 'This check compares the selected general course settings with a reference course and can additionally compare course-level filter states and course-format options. Only configured setting groups are checked; unavailable selected course properties are reported as failures.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
 // String specific for the reference course settings checker.
 $string['referencesettings_comparison'] =
         ' (Reference course: "{$a->settingvaluereference}" | Current course: "{$a->settingvaluecurrent}")';
-$string['referencesettings_settingismissing'] = 'The "{$a->setting}" is not a coursesetting';
+$string['referencesettings_settingismissing'] = '"{$a->setting}" is not an available course setting.';
 $string['referencesettings_failing'] = 'The setting "{$a->setting}" is not correct {$a->comparison}';
 $string['referencesettings_success'] = 'The setting "{$a->setting}" is correct';
 $string['referencesettings_checklist'] = 'Reference course checker settings checklist';

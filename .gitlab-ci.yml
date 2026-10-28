@@ -4,7 +4,7 @@ variables:
   COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.cache/composer"
   NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.cache/npm"
   CI_BUILD_DIR: '/tmp/plugin'
-  MOODLE_BRANCH: "MOODLE_404_STABLE"
+  MOODLE_BRANCH: "MOODLE_405_STABLE"
   MOODLE_BEHAT_WWWROOT: 'http://localhost:8000'
   MOODLE_BEHAT_WDHOST: 'http://behat:4444'
   MOODLE_START_BEHAT_SERVERS: 'no'
@@ -24,25 +24,11 @@ variables:
       - .cache/composer/
       - .cache/npm/
     policy: pull-push
-  image: moodlehq/moodle-php-apache:${PHP_VERSION}
+  image: ffhs/moodle-lms-plugin-ci:${PHP_VERSION}
   before_script:
     - mkdir -pv "$CI_BUILD_DIR"
     - cp -ru "$CI_PROJECT_DIR/"* "$CI_BUILD_DIR"
-    # Update and Install to Node 22 (Moodle 5.0 requires >=22.11)
-    - curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
-    - apt-get update -yqq
-    - apt-get -yqq install --no-install-suggests default-jre-headless mariadb-client git unzip curl locales nodejs rsync postgresql-client
-    # Install Composer
-    - php -r "copy('https://getcomposer.org/installer','composer-setup.php');"
-    - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-    - composer --version
-    # Setup Moodle Plugin CI and locales
-    - locale-gen en_AU.UTF-8
-    - export LANG=en_AU.UTF-8
-    - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci "^4.5.9"
-    # Add Moodle Plugin CI executables to PATH
-    - export PATH="$(pwd)/ci/bin:$(pwd)/ci/vendor/bin:$PATH"
-    - moodle-plugin-ci -V
+    # Setup test
     - moodle-plugin-ci install --db-type=${DB_TYPE} --db-host=${DB_TYPE}
     # Run Webserver for Behat
     - '{ php -S 0.0.0.0:8000 -t "$CI_PROJECT_DIR/moodle" >/dev/null 2>&1 & }'
@@ -52,9 +38,9 @@ variables:
 mariadb:
   extends: .moodle_plugin_base
   services:
-  - name: mariadb:10
-    alias: mariadb
-    variables:
+    - name: mariadb:10
+      alias: mariadb
+      variables:
         MYSQL_USER: root
         MYSQL_ALLOW_EMPTY_PASSWORD: "true"
         MYSQL_CHARACTER_SET_SERVER: "utf8mb4"

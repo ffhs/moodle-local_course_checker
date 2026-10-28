@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Block Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin vergleicht die aktivierten Blöcke eines Kurses mit einem Referenzkurs, um ein einheitliches Blocklayout sicherzustellen. Es prüft auf fehlende oder nicht übereinstimmende Blöcke und trägt dazu bei, eine standardisierte Kursstruktur auf der gesamten Plattform aufrechtzuerhalten.';
-$string['privacy:metadata'] = 'Das Plugin „Block Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname'] = 'Blockleiste Überprüfung';
+$string['pluginname_help'] = 'Diese Überprüfung vergleicht für jeden konfigurierten Block, ob er im aktuellen Kurs und im Referenzkurs vorhanden ist, und meldet Blöcke, die nur in einem der beiden Kurse vorkommen. Blöcke, die in beiden Kursen fehlen, werden ignoriert; Blockkonfiguration, Position und Region werden nicht verglichen.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 $string['blocks_setting'] = 'Aktivierte Blöcke';
 $string['blocks_setting_help'] =

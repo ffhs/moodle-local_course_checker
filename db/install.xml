@@ -22,7 +22,8 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="checker_id" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key of local_course_checker.id."/>
         <FIELD NAME="check_name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="successful" SEQUENCE="false" COMMENT="Defines the overall state of the check. 'successful' is the default state because the state can't be empty."/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="error" SEQUENCE="false" COMMENT="Defines the overall state of the check. 'error' is the default state because the state can't be empty."/>
+        <FIELD NAME="custom_data" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains custom data in JSON format so that subplugins can use said data to create custom views."/>
         <FIELD NAME="timestamp" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -38,10 +39,11 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="check_id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Foreign key index of local_course_checker_check.id."/>
-        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="successful" SEQUENCE="false" COMMENT="Defines the overall state of the single result. 'successful' is the default state because the state can't be empty."/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="error" SEQUENCE="false" COMMENT="Defines the overall state of the single result. 'error' is the default state because the state can't be empty."/>
         <FIELD NAME="title" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the title that gets displayed in the result view."/>
         <FIELD NAME="link" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the link that gets added to the title on the result view."/>
         <FIELD NAME="message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains the message that gets colored with the status color on the result view."/>
+        <FIELD NAME="custom_data" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Contains custom data in JSON format so that subplugins can use said data to create custom views."/>
         <FIELD NAME="timestamp" TYPE="int" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>

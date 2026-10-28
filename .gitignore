@@ -8,7 +8,9 @@
 !checker/links
 !checker/quiz
 !checker/referencesettings
+!checker/rubrics_settings
 !checker/subheadings
+!checker/submission_feedbacktype
 !checker/userdata
 
 !checker/activedates/*
@@ -18,5 +20,7 @@
 !checker/links/*
 !checker/quiz/*
 !checker/referencesettings/*
+!checker/rubrics_settings/*
 !checker/subheadings/*
+!checker/submission_feedbacktype/*
 !checker/userdata/*

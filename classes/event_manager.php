@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ class event_manager {
      */
     public static function course_event_trigger(base $event): void {
         if ($event->eventname === '\core\event\course_deleted') {
-            $checker = checker::get_record(['course_id' => $event->courseid]);
-            if ($checker) {
+            $checkers = checker::get_record(['course_id' => $event->courseid]);
+            foreach ($checkers as $checker) {
                 $checker->delete();
             }
             return;

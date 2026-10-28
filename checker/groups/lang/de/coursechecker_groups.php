@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
  */
 
 $string['pluginname'] = 'Gruppenabgabe Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin überprüft die Aufgabenaktivitäten in einem Kurs, um die korrekte Konfiguration der Gruppenübermittlung sicherzustellen. Es überprüft, ob der Gruppenmodus korrekt eingestellt ist, eine gültige Gruppierung zugewiesen ist und ob die Gruppierung mindestens zwei Gruppen enthält.';
-$string['privacy:metadata'] = 'Das Plugin „Gruppenabgabe Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname_help'] = 'Diese Überprüfung untersucht jede für Nutzende sichtbare Aufgabe mit einer Ansichtsseite. Aufgaben ohne Gruppenabgabe bestehen; bei aktivierter Gruppenabgabe ist eine gültige Gruppierung mit mindestens zwei Gruppen erforderlich. Ausgeblendete oder anderweitig nicht zugängliche Aufgaben werden nicht überprüft.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // String specific for the group checker.
 $string['groups_deactivated'] = 'Die Einstellung für die Gruppenabgabe ist deaktiviert.';

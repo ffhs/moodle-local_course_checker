@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,20 +27,17 @@
 
 namespace coursechecker_data;
 
-use local_course_checker\translation_manager;
+use local_course_checker\db\model\check;
 use local_course_checker\mod_type_interface;
 use local_course_checker\model\check_plugin_interface;
-use local_course_checker\db\model\check;
-use local_course_checker\model\checker_config_trait;
 use local_course_checker\resolution_link_helper;
+use local_course_checker\translation_manager;
 use stdClass;
 
 /**
  * {@inheritDoc}
  */
 class checker implements check_plugin_interface, mod_type_interface {
-    use checker_config_trait;
-
     /**
      * @var check The result of the check.
      */

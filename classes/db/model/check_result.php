@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ use core\persistent;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class check_result extends persistent {
+    use has_custom_data;
+
     /**
      * {@inheritDoc}
      */
@@ -41,6 +43,7 @@ class check_result extends persistent {
             'title' => ['type' => PARAM_TEXT, 'default' => null, 'null' => NULL_ALLOWED],
             'link' => ['type' => PARAM_TEXT, 'default' => null, 'null' => NULL_ALLOWED],
             'message' => ['type' => PARAM_TEXT, 'default' => null, 'null' => NULL_ALLOWED],
+            'custom_data' => ['type' => PARAM_TEXT, 'default' => null, 'null' => NULL_ALLOWED],
             'timestamp' => ['type' => PARAM_INT],
         ];
     }

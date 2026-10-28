@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ use local_course_checker\db\model\check;
 use local_course_checker\mod_type_interface;
 use local_course_checker\model\admin_setting_courseregex_trait;
 use local_course_checker\model\check_plugin_interface;
-use local_course_checker\model\checker_config_trait;
 use local_course_checker\resolution_link_helper;
 use local_course_checker\translation_manager;
 use moodle_exception;
@@ -43,7 +42,6 @@ use stdClass;
  * {@inheritDoc}
  */
 class checker implements check_plugin_interface, mod_type_interface {
-    use checker_config_trait;
     use admin_setting_courseregex_trait;
 
     /**
@@ -55,58 +53,57 @@ class checker implements check_plugin_interface, mod_type_interface {
      * @var array
      */
     private array $modtypstocheck = [
-            self::MOD_TYPE_ASSIGN => [
-                    'allowsubmissionsfromdate' => false,
-                    'duedate' => false,
-                    'cutoffdate' => false,
-                    'gradingduedate' => false,
-            ],
-            self::MOD_TYPE_CHOICE => [
-                    'timeopen' => 'choiceopen',
-                    'timeclose' => 'choiceclose',
-            ],
-            self::MOD_TYPE_CHOICEGROUP => [
-                    'timeopen' => 'choicegroupopen',
-                    'timeclose' => 'choicegroupclose',
-            ],
-            self::MOD_TYPE_FEEDBACK => [
-                    'timeopen' => 'feedbackopen',
-                    'timeclose' => 'feedbackclose',
-            ],
-            self::MOD_TYPE_QUESTIONNAIRE => [
-                    'opendate' => false,
-                    'closedate' => false,
-            ],
-            self::MOD_TYPE_QUIZ => [
-                    'timeopen' => 'quizopen',
-                    'timeclose' => 'quizclose',
-            ],
-            self::MOD_TYPE_LESSON => [
-                    'available' => false,
-                    'deadline' => false,
-            ],
-            self::MOD_TYPE_DATA => [
-                    'timeavailablefrom' => 'availablefromdate',
-                    'timeavailableto' => 'availabletodate',
-                    'timeviewfrom' => 'viewfromdate',
-                    'timeviewto' => 'viewtodate',
-            ],
-            self::MOD_TYPE_FORUM => [
-                    'duedate' => false,
-                    'cutoffdate' => false,
-            ],
-            self::MOD_TYPE_SCORM => [
-                    'timeopen' => false,
-                    'timeclose' => false,
-            ],
-            self::MOD_TYPE_WORKSHOP => [
-                    'submissionstart' => false,
-                    'submissionend' => false,
-                    'assessmentstart' => false,
-                    'assessmentend' => false,
-            ],
+        self::MOD_TYPE_ASSIGN => [
+            'allowsubmissionsfromdate' => false,
+            'duedate' => false,
+            'cutoffdate' => false,
+            'gradingduedate' => false,
+        ],
+        self::MOD_TYPE_CHOICE => [
+            'timeopen' => 'choiceopen',
+            'timeclose' => 'choiceclose',
+        ],
+        self::MOD_TYPE_CHOICEGROUP => [
+            'timeopen' => 'choicegroupopen',
+            'timeclose' => 'choicegroupclose',
+        ],
+        self::MOD_TYPE_FEEDBACK => [
+            'timeopen' => 'feedbackopen',
+            'timeclose' => 'feedbackclose',
+        ],
+        self::MOD_TYPE_QUESTIONNAIRE => [
+            'opendate' => false,
+            'closedate' => false,
+        ],
+        self::MOD_TYPE_QUIZ => [
+            'timeopen' => 'quizopen',
+            'timeclose' => 'quizclose',
+        ],
+        self::MOD_TYPE_LESSON => [
+            'available' => false,
+            'deadline' => false,
+        ],
+        self::MOD_TYPE_DATA => [
+            'timeavailablefrom' => 'availablefromdate',
+            'timeavailableto' => 'availabletodate',
+            'timeviewfrom' => 'viewfromdate',
+            'timeviewto' => 'viewtodate',
+        ],
+        self::MOD_TYPE_FORUM => [
+            'duedate' => false,
+            'cutoffdate' => false,
+        ],
+        self::MOD_TYPE_SCORM => [
+            'timeopen' => false,
+            'timeclose' => false,
+        ],
+        self::MOD_TYPE_WORKSHOP => [
+            'submissionstart' => false,
+            'submissionend' => false,
+            'assessmentstart' => false,
+            'assessmentend' => false,
+        ],
     ];
-
 
     /**
      * Runs the checker.
@@ -120,7 +117,6 @@ class checker implements check_plugin_interface, mod_type_interface {
      */
     public function run(stdClass $course, check $check): void {
         $this->check = $check;
-
         if (!$this->is_course_check_required('coursechecker_activedates/coursesregex', $course)) {
             $title = translation_manager::generate('admin_setting_coursesregex_skip_course', 'local_course_checker');
             $message = translation_manager::generate('admin_setting_coursesregex_skip_course_desc', 'local_course_checker');
@@ -148,7 +144,6 @@ class checker implements check_plugin_interface, mod_type_interface {
                 $title = resolution_link_helper::get_target($cm);
                 $link = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id);
                 $message = translation_manager::generate('activedates_noactivedates', 'coursechecker_activedates');
-                $this->check->set('status', 'failed');
                 $this->check->add_failed($title, $link, $message);
             }
 
@@ -200,15 +195,26 @@ class checker implements check_plugin_interface, mod_type_interface {
         $link = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id);
 
         if (!empty($adateissetin)) {
+            // Add ', ' between fields so that the trasnlation generates a list.
+            $translatedfields = [];
+            foreach ($adateissetin as $fieldtranslation) {
+                if ($translatedfields) {
+                    $translatedfields[] = ', ';
+                }
+                $translatedfields[] = $fieldtranslation;
+            }
+
             $message = translation_manager::generate(
                 "activedates_noactivedatesinactivity",
                 "coursechecker_activedates",
                 [
-                    'modtype' => $modtype,
-                    'adateissetin' => implode(', ', $adateissetin),
+                    'modtype' => translation_manager::generate(
+                        'modulename',
+                        'mod_' . $modtype
+                    ),
+                    'adateissetin' => translation_manager::concat($translatedfields),
                 ]
             );
-            $this->check->set('status', 'failed');
             $this->check->add_failed($title, $link, $message);
         } else {
             $message = translation_manager::generate('activedates_success', 'coursechecker_activedates', $modtype);

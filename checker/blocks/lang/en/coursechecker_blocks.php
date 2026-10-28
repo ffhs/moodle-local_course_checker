@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Blocks check';
-$string['pluginname_help'] = 'This plugin compares the enabled blocks in a course against a reference course to ensure consistent block layout. It checks for missing or mismatched blocks and helps maintain a standardized course structure across the platform.';
-$string['privacy:metadata'] = 'The blocks check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname'] = 'Blockdrawer  check';
+$string['pluginname_help'] = 'This check compares the presence of each configured block in the current course with its presence in the reference course and reports blocks that exist in only one of them. Blocks absent from both courses are ignored, and block configuration, position, and region are not compared.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
 $string['blocks_setting'] = 'Enabled blocks';
 $string['blocks_setting_help'] =

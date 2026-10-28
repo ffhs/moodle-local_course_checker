@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,12 +40,11 @@ class checker extends persistent {
      */
     protected static function define_properties() {
         return [
-            'version_name' => ['type' => PARAM_ALPHANUMEXT, 'default' => 'latest'],
+            'version_name' => ['type' => PARAM_TEXT, 'default' => 'latest'],
             'course_id' => ['type' => PARAM_INT],
             'timestamp' => ['type' => PARAM_INT],
         ];
     }
-
 
     /**
      * Creates a new checker or updates the timestamp of an existing one for a course.
@@ -85,25 +84,8 @@ class checker extends persistent {
      * @throws dml_exception
      */
     public function before_delete(): void {
-        global $DB;
-
-        $checkerid = $this->get('id');
-
-        // 1. Delete all check_results.
-        $checkids = array_keys(check::get_records(['checker_id' => $checkerid]));
-        if (!empty($checkids)) {
-            [$insql, $inparams] = $DB->get_in_or_equal($checkids);
-            $DB->delete_records_select(check_result::TABLE, "check_id $insql", $inparams);
-            mtrace("Deleted check_results for checks of checker ID: $checkerid");
-        }
-
-        // 2. Delete all checks.
-        $DB->delete_records(check::TABLE, ['checker_id' => $checkerid]);
-        mtrace("Deleted checks for checker ID: $checkerid");
-
-        // 3. Delete all related events.
-        $DB->delete_records(event::TABLE, ['checker_id' => $checkerid]);
-        mtrace("Deleted events for checker ID: $checkerid");
+        $this->remove_checks();
+        $this->remove_events();
     }
 
     /**
@@ -117,7 +99,14 @@ class checker extends persistent {
         global $DB;
         $checkerid = $this->get('id');
 
+        $checkids = array_keys(check::get_records(['checker_id' => $checkerid, 'check_name' => $checkname]));
+        if (!empty($checkids)) {
+            [$insql, $inparams] = $DB->get_in_or_equal($checkids);
+            $DB->delete_records_select(check_result::TABLE, "check_id $insql", $inparams);
+            mtrace("Deleted check_results for checks of checker ID: $checkerid");
+        }
         $DB->delete_records(check::TABLE, ['checker_id' => $checkerid, 'check_name' => $checkname]);
+
         mtrace("Deleted checks for checker ID: $checkerid and checkname: $checkname");
     }
 
@@ -130,9 +119,17 @@ class checker extends persistent {
     public function remove_checks(): void {
         global $DB;
         $checkerid = $this->get('id');
+        // 1. Delete all check_results.
+        $checkids = array_keys(check::get_records(['checker_id' => $checkerid]));
+        if (!empty($checkids)) {
+            [$insql, $inparams] = $DB->get_in_or_equal($checkids);
+            $DB->delete_records_select(check_result::TABLE, "check_id $insql", $inparams);
+            // mtrace("Deleted check_results for checks of checker ID: $checkerid");
+        }
 
+        // 2. Delete all checks.
         $DB->delete_records(check::TABLE, ['checker_id' => $checkerid]);
-        mtrace("Deleted checks for checker ID: $checkerid");
+        // mtrace("Deleted checks for checker ID: $checkerid");
     }
 
     /**
@@ -146,7 +143,7 @@ class checker extends persistent {
         $checkerid = $this->get('id');
 
         $DB->delete_records(event::TABLE, ['checker_id' => $checkerid]);
-        mtrace("Deleted events for checker ID: $checkerid");
+        // mtrace("Deleted events for checker ID: $checkerid");
     }
 
     /**

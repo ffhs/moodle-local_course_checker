@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,11 +16,11 @@
 
 namespace coursechecker_subheadings;
 
-use local_course_checker\translation_manager;
-use local_course_checker\model\check_plugin_interface;
+use local_course_checker\config;
 use local_course_checker\db\model\check;
-use local_course_checker\model\checker_config_trait;
+use local_course_checker\model\check_plugin_interface;
 use local_course_checker\resolution_link_helper;
+use local_course_checker\translation_manager;
 
 /**
  * Checking the labels subheadings and the leading icons inside the course
@@ -33,8 +33,6 @@ use local_course_checker\resolution_link_helper;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class checker implements check_plugin_interface {
-    use checker_config_trait;
-
     /** @var \local_course_checker\db\model\check|null The check object associated with this checker. */
     protected $check = null;
     /** @var array list of ignored strings build from checker settings */
@@ -45,16 +43,15 @@ class checker implements check_plugin_interface {
     const FIRST_ITEM_HTML_TAG = 'h4';
     /** Config setting path for whitelisted subheading content. */
     const WHITELIST_SETTING = 'coursechecker_subheadings/whitelist';
-    /** Config setting path for whitelisted heading content. */
-    const WHITELIST_HEADING = 'coursechecker_subheadings/whitelist_heading';
     /** Default value for the whitelist config settings. */
     const WHITELIST_DEFAULT = '';
+
     /**
      * Initialize checker by setting it up with the configuration
      */
     public function init() {
         // Load settings.
-        $whitelist = (string) $this->get_config(self::WHITELIST_SETTING, self::WHITELIST_DEFAULT);
+        $whitelist = (string) config::get(self::WHITELIST_SETTING, self::WHITELIST_DEFAULT);
         $this->ignoredstrings = array_filter(array_map('trim', explode("\n", $whitelist)));
     }
 
@@ -70,7 +67,7 @@ class checker implements check_plugin_interface {
     public function run(\stdClass $course, check $check): void {
         $this->init();
         // Initialize check result array.
-        $this->check = new check();
+        $this->check = $check;
         // Get all labels activities for the course.
         $modinfo = get_fast_modinfo($course);
         // Get a dom document for html operations.
@@ -110,7 +107,7 @@ class checker implements check_plugin_interface {
                 $pos = strpos($cmcontentwithoutnewlines, $ignoredstring);
                 if ($pos !== false) {
                     $message = translation_manager::generate("subheadings_labelignored", "coursechecker_subheadings");
-                    $this->check->add_successful($link, $title, $message);
+                    $this->check->add_successful($title, $link, $message);
                     continue 2;
                 }
             }
@@ -121,8 +118,7 @@ class checker implements check_plugin_interface {
                     "coursechecker_subheadings",
                     (object) ["htmltag" => self::FIRST_ITEM_HTML_TAG]
                 );
-                $this->check->add_failed($link, $title, $message);
-                $this->check->set('status', 'failed');
+                $this->check->add_failed($title, $link, $message);
                 continue;
             }
             // Check if there is an icon in the first heading.
@@ -130,13 +126,12 @@ class checker implements check_plugin_interface {
             preg_match($search, $firstitem->textContent, $matches);
             if (empty($matches)) {
                 $message = translation_manager::generate("subheadings_iconmissing", "coursechecker_subheadings");
-                $this->check->add_failed($link, $title, $message);
-                $this->check->set('status', 'failed');
+                $this->check->add_failed($title, $link, $message);
                 continue;
             }
             // When there are no problems.
             $message = translation_manager::generate('subheadings_success', 'coursechecker_subheadings');
-            $this->check->add_successful($link, $title, $message);
+            $this->check->add_successful($title, $link, $message);
         }
     }
 
@@ -152,7 +147,6 @@ class checker implements check_plugin_interface {
      */
     private function add_general_error($title, $link) {
         $message = translation_manager::generate("subheadings_generalerror", "coursechecker_subheadings");
-        $this->check->add_failed($link, $title, $message);
-        $this->check->set('status', 'failed');
+        $this->check->add_failed($title, $link, $message);
     }
 }

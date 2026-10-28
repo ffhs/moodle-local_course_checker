@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,10 @@
 
 namespace local_course_checker\output;
 
+use core\context;
+use core\event\base;
 use core_user;
+use html_writer;
 use local_course_checker\db\model\event as event_model;
 use moodle_exception;
 use moodle_url;
@@ -24,9 +27,6 @@ use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
-use core\event\base;
-use core\context;
-use html_writer;
 use function fullname;
 
 /**
@@ -54,7 +54,6 @@ class event implements renderable, templatable {
         $this->event = $event;
     }
 
-
     /**
      * Prepares the event data for use in a Mustache template.
      *
@@ -63,7 +62,7 @@ class event implements renderable, templatable {
      * @throws moodle_exception
      */
     public function export_for_template(renderer_base $output) {
-        $event = (array)$this->event->to_record();
+        $event = (array) $this->event->to_record();
         // Unset what base::restore() doesn't need.
         unset($event["checker_id"]);
         unset($event["id"]);
@@ -103,7 +102,7 @@ class event implements renderable, templatable {
             $userlink = get_string('unknownuser', 'core');
         }
 
-        return (object)[
+        return (object) [
             'action' => $actionlink,
             'user' => $userlink,
             'context' => $contextname,
@@ -122,16 +121,20 @@ class event implements renderable, templatable {
         switch ($action) {
             case 'created':
                 $iconname = 't/add';
+                $alt = get_string('created', 'local_course_checker');
                 break;
             case 'updated':
                 $iconname = 'i/edit';
+                $alt = get_string('updated', 'local_course_checker');
                 break;
             case 'deleted':
                 $iconname = 't/delete';
+                $alt = get_string('deleted', 'local_course_checker');
                 break;
             default:
                 $iconname = 'docs';
+                $alt = get_string('unknown', 'local_course_checker');
         }
-        return $output->pix_icon($iconname, $action);
+        return $output->pix_icon($iconname, $alt);
     }
 }

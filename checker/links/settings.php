@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,8 +27,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 use coursechecker_links\curl_manager;
-use local_course_checker\admin\admin_setting_linklist;
+use local_course_checker\admin\admin_setting_domainlist;
+use local_course_checker\admin\admin_setting_regex;
 use local_course_checker\admin\admin_setting_restrictedint;
+use local_course_checker\admin\admin_setting_urllist;
 
 /** @var admin_settingpage $settings */
 $settings;
@@ -72,7 +74,7 @@ $settings->add($useragent);
 // Link Checker Urlwhitelist setting.
 $visiblename = get_string('url_whitelist_setting', 'coursechecker_links');
 $description = get_string('url_whitelist_setting_desc', 'coursechecker_links');
-$urlwhitelist = new admin_setting_linklist(
+$urlwhitelist = new admin_setting_urllist(
     curl_manager::URL_WHITELIST_SETTING,
     $visiblename,
     $description,
@@ -85,7 +87,7 @@ $settings->add($urlwhitelist);
 // Link Checker Domainwhitelist setting.
 $visiblename = get_string('domain_whitelist_setting', 'coursechecker_links');
 $description = get_string('domain_whitelist_setting_desc', 'coursechecker_links');
-$domainwhitelist = new admin_setting_linklist(
+$domainwhitelist = new admin_setting_domainlist(
     curl_manager::DOMAIN_WHITELIST_SETTING,
     $visiblename,
     $description,
@@ -94,3 +96,15 @@ $domainwhitelist = new admin_setting_linklist(
     600
 );
 $settings->add($domainwhitelist);
+
+// HTML error detection regex setting.
+$visiblename = get_string('html_error_regex_setting', 'coursechecker_links');
+$description = get_string('html_error_regex_setting_desc', 'coursechecker_links');
+$htmlerrorregex = new admin_setting_regex(
+    curl_manager::HTML_ERROR_REGEX_SETTING,
+    $visiblename,
+    $description,
+    curl_manager::HTML_ERROR_REGEX_DEFAULT,
+    PARAM_RAW_TRIMMED
+);
+$settings->add($htmlerrorregex);

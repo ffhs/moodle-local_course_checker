@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,15 +24,15 @@
 
 namespace local_course_checker\task;
 
-
 use coding_exception;
 use core\task\adhoc_task;
-use Exception;
-use local_course_checker\db\model\checker as checkerModel;
 use local_course_checker\db\model\check as checkModel;
+use local_course_checker\db\model\checker as checkerModel;
 use local_course_checker\model\check_plugin_interface;
 use local_course_checker\plugininfo\coursechecker;
+use local_course_checker\translation_manager;
 use stdClass;
+use Throwable;
 
 /**
  * Adhoc task to run a check.
@@ -68,10 +68,12 @@ class run_checker extends adhoc_task {
         $course = $data->course;
         $checkerid = $data->checker_id;
         $checkname = $data->checkname;
+        $faildelay = $this->get_fail_delay();
         mtrace("Run check: $checkname");
         mtrace("Course: $course->fullname ($course->id)");
         mtrace("User triggering the checks: $user->email");
         mtrace("Checker_id: $checkerid");
+        mtrace("Faildelay: $faildelay");
 
         if (coursechecker::is_plugin_enabled($checkname)) {
             $classnamespace = 'coursechecker_' . $checkname . '\checker';
@@ -80,10 +82,17 @@ class run_checker extends adhoc_task {
                 $checker = new $classnamespace();
                 if ($checker instanceof check_plugin_interface) {
                     $check = checkModel::create_or_update($checkerid, $checkname);
+                    if ($faildelay > 0) {
+                        $check->reset_for_rerun();
+                    }
                     try {
                         $checker->run($course, $check);
-                    } catch (Exception $e) {
-                        $check->add_error('Error:', '', 'Report incident to administrator.');
+                    } catch (Throwable $e) {
+                        $check->add_error(
+                            'Error:',
+                            '',
+                            translation_manager::generate('error_contact_admin', 'local_course_checker')
+                        );
                         throw $e;
                     } finally {
                         $check->update();

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,6 +35,42 @@ use stdClass;
  */
 class send_notification extends adhoc_task {
     /**
+     * {@inheritDoc}
+     */
+    public function execute(): void {
+        $data = $this->get_custom_data();
+        $course = $data->course;
+        $user = $data->user;
+        $checks = $data->checks;
+        $queuecheckclass = '\\' . queue_check_task::class;
+        $runcheckerclass = '\\' . run_checker::class;
+
+        // Check if queuing is done.
+        $queuechecktasks = dbm::planned_adhoc_tasks($queuecheckclass, $course->id);
+        $runcheckertasks = dbm::planned_adhoc_tasks($runcheckerclass, $course->id);
+
+        if ($runcheckertasks || $queuechecktasks) {
+            $tasks = array_merge($runcheckertasks, $queuechecktasks);
+            $running = 0;
+            foreach ($tasks as $task) {
+                if ((int) $task->faildelay === 0) {
+                    $running++;
+                }
+            }
+            if ($running >= 1) {
+                $sendnotificationadhoc = self::instance($user, $course, $checks);
+                mtrace('Running tasks detected. Reschedule task');
+                manager::queue_adhoc_task($sendnotificationadhoc);
+            } else {
+                notification::failed($user, $course);
+            }
+        } else {
+            mtrace('No running task detected. Send notification.');
+            notification::successful($user, $course, $checks);
+        }
+    }
+
+    /**
      * Create an instance and set next runtime.
      *
      * @param stdClass $user
@@ -49,41 +85,9 @@ class send_notification extends adhoc_task {
         $task->set_userid($user->id);
         $data = ['user' => $user, 'course' => $course, 'checks' => $checks];
         $task->set_custom_data($data);
-        // The task will run 5 sec from instancing.
-        $task->set_next_run_time(time() + 5);
-        $task->set_attempts_available(24);
+        // The task will run 10 sec from instancing.
+        $task->set_next_run_time(time() + 10);
         return $task;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function execute(): void {
-        $data = $this->get_custom_data();
-        $course = $data->course;
-        $user = $data->user;
-        $checks = $data->checks;
-        $queuecheckclass = '\\' . queue_check_task::class;
-        $runcheckerclass = '\\' . run_checker::class;
-
-        $attempts = $this->get_attempts_available();
-        mtrace("Attempts: " . $attempts);
-
-        // Check if queuing is done.
-
-        if (dbm::planned_adhoc_tasks($queuecheckclass, $course->id) || dbm::planned_adhoc_tasks($runcheckerclass, $course->id)) {
-            if ($attempts > 1) {
-                $sendnotificationadhoc = self::instance($user, $course, $checks);
-                $sendnotificationadhoc->set_attempts_available($attempts - 1);
-                mtrace('Running tasks detected. Reschedule task');
-                manager::queue_adhoc_task($sendnotificationadhoc);
-            } else {
-                notification::failed($user, $course);
-            }
-        } else {
-            mtrace('No running task detected. Send notification.');
-            notification::successful($user, $course, $checks);
-        }
     }
 
     /**
@@ -97,6 +101,6 @@ class send_notification extends adhoc_task {
      * {@inheritDoc}
      */
     public function get_name(): string {
-            return get_string('send_notification_task', 'local_course_checker');
+        return get_string('send_notification_task', 'local_course_checker');
     }
 }

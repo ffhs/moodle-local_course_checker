@@ -1,6 +1,11 @@
 # Course Checker [![Moodle Plugin CI](https://github.com/ffhs/moodle-local_course_checker/actions/workflows/moodle-plugin-ci.yml/badge.svg?branch=MOODLE_404_STABLE)](https://github.com/ffhs/moodle-local_course_checker/actions/workflows/moodle-plugin-ci.yml)
+
+> [!CAUTION]
+> Moodle 4.4 and 4.5 have reached end of life. Therefore, feature development for this plugin has stopped, and this is its final version. Only essential bug fixes and security fixes will be provided if needed.
+
+
 ## A Moodle course checker plugin that improves the quality and eliminate human routine tasks in online courses
-This plugin provides a framework that can check a course based on independent checkers. Each checker is an independent [subplugin](https://docs.moodle.org/dev/Subplugins). It will help you find misconfiguration in your courses and follow your internal guidelines by displaying a structured report. The checkers can be triggered manually an will be executed by the Moodle AdHoc task system. A check can also be triggered via the companion plugin [block_course_checker_info](https://moodle.org/plugins/plugin/block_course_checker_info).
+This plugin provides a framework that can check a course based on independent checkers. Each checker is an independent [subplugin](https://docs.moodle.org/dev/Subplugins). It will help you find misconfiguration in your courses and follow your internal guidelines by displaying a structured report. The checkers can be triggered manually and will be executed by the Moodle AdHoc task system. A check can also be triggered via the companion plugin [block_course_checker_info](https://moodle.org/plugins/block_course_checker_info).
 
 > [!NOTE]
 > This plugin is the official replacement for [block_course_checker](https://moodle.org/plugins/block_course_checker). When first installed, this plugin will import settings from [block_course_checker](https://moodle.org/plugins/block_course_checker). If the import of the settings is not wanted/needed, you can uninstall [block_course_checker](https://moodle.org/plugins/block_course_checker) before installing the [local_course_checker](https://moodle.org/plugins/local_course_checker).
@@ -9,96 +14,35 @@ This plugin provides a framework that can check a course based on independent ch
 
 ## 🚀 Features
 
-- Import and adapt settings from deprecated `block_course_checker`.
-- Automatic checks of course configurations (e.g., activity names, due dates, completion).
-- Easily extendable via [subplugins](https://docs.moodle.org/dev/Subplugins) (`coursechecker_xyz`).
-- Accordion-based display using Mustache templates and Bootstrap.
-- Display a changes log since last check on top of the report.
-- Adhoc tasks for parallel check execution.
-- Notification when the course check is completed.
+- Imports and adapts settings from the deprecated `block_course_checker` plugin during installation.
+- Runs all enabled checks or an individual check manually, with support for triggering checks from the companion `block_course_checker_info` plugin.
+- Executes checks in parallel using Moodle adhoc tasks and reports their running, successful, informational, warning, failed, and error states.
+- Provides an administration interface for enabling, disabling, and configuring independent checker subplugins.
+- Uses separate Moodle capabilities for viewing reports, running checks, and managing saved report versions.
+- Supports comparison-based checks against a configurable reference course.
+- Is easily extended through [subplugins](https://docs.moodle.org/dev/Subplugins) (`coursechecker_xyz`), including custom result data, renderers, and Mustache templates.
+- Displays structured, accordion-based reports with resolution links and a log of course changes recorded since the last check.
+- Notifies the user through Moodle messaging when the requested checks complete or fail.
+- Supports named report versions with configurable retention, deletion controls, and scheduled cleanup of obsolete versions and orphaned records.
 
 ---
 
 ## 🧪 Available Checkers
 
-<table>
-  <thead>
-    <tr>
-      <th>Checker</th>
-      <th>Integrated</th>
-      <th>Requires</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><a href="https://github.com/ffhs/moodle-coursechecker_attendance">moodle-coursechecker_attendance</a></td>
-      <td>No, because of mod_attendance dependecy.</td>
-      <td><a href="https://moodle.org/plugins/mod_attendance">mod_attendance</a></td>
-      <td>This plugin checks whether a course contains exactly one visible attendance activity and that it does not contain any preconfigured sessions. It ensures consistent setup of attendance tracking across courses.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_activedates</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin checks whether a course has both a <strong>start date</strong> and an <strong>end date</strong> defined. It is designed to be part of a course quality assurance workflow, ensuring that all courses have clearly set temporal boundaries.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_blocks</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin compares the enabled blocks in a course against a reference course to ensure consistent block layout. It checks for missing or mismatched blocks and helps maintain a standardized course structure across the platform.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_data</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin checks all database activities in a course to ensure they contain at least one defined field. It helps prevent incomplete configurations by flagging empty database modules.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_groups</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin checks assignment activities in a course to ensure correct group submission configuration. It verifies that group mode is properly set, a valid grouping is assigned, and that the grouping contains at least two groups.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_links</td>
-      <td>Yes</td>
-      <td>PHP extension <code>curl</code></td>
-      <td>This plugin scans course content (including summaries, modules, books, wikis, and URLs) for hyperlinks and checks their validity. It helps identify broken or unreachable links to ensure a reliable learning experience.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_quiz</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin checks whether each quiz's “Maximum grade” matches the “Total of marks” assigned to its questions. It helps prevent grading inconsistencies and ensures quizzes are correctly configured.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_referencesettings</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>This plugin compares general course settings (such as category, format, language, filters, and format options) of the current course with those of a reference course. It ensures consistency across courses, which is especially useful in standardized learning environments.</td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_subheadings</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>The Subheading Checker verifies that all **label resources** in a course follow consistent formatting standards. Specifically, it checks whether each label:
-      <ul>
-      <li>Begins with an <code>&lt;h4&gt;</code> heading (configurable in code).</li>
-      <li>Includes a FontAwesome icon (e.g., <code>[icon fa-book]</code>) in the heading.</li>
-      <li><strong>Is not whitelisted</strong> (certain labels can be excluded via configuration).</li>
-      </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>moodle-coursechecker_userdata</td>
-      <td>Yes</td>
-      <td>Nothing</td>
-      <td>Checks course activities for residual user data such as submissions, forum posts, or logs. Helps ensure that no personal user content is left in template or duplicated courses.</td>
-    </tr>
-  </tbody>
-</table>
+| **Checker** | **Integrated** | **Requires** | **Description** |  
+|-------------|:--------------:|:------------:|-----------------|  
+| [**coursechecker_attendance**](https://github.com/ffhs/moodle-coursechecker_attendance) | No, because of mod_attendance dependecy. | [mod_attendance](https://moodle.org/plugins/mod_attendance) | This check verifies that a course contains exactly one visible and viewable attendance activity and that no attendance sessions are configured. |  
+| **coursechecker_activedates** | Yes | Nothing | This check examines visible, viewable activities of the configured types and reports enabled completion dates or activity-specific availability and deadline fields. Courses excluded by the configured course-name pattern, unconfigured activity types, and hidden or non-viewable activities are not checked. |
+| **coursechecker_blocks** | Yes | Nothing | This check compares the presence of each configured block in the current course with its presence in the reference course and reports blocks that exist in only one of them. Blocks absent from both courses are ignored, and block configuration, position, and region are not compared. |
+| **coursechecker_data** | Yes | Nothing | This check examines all visible and accessible database activities in a course. Each database activity must contain at least one field. Hidden or inaccessible database activities are not checked. |
+| **coursechecker_groups** | Yes | Nothing | This check examines every user-visible assignment that has a view page. Assignments without group submission pass; when group submission is enabled, a valid grouping containing at least two groups is required. Hidden or otherwise inaccessible assignments are not checked. |
+| **coursechecker_links** | Yes | PHP extension curl | This check extracts HTTP and HTTPS links from the course summary, activity names, introductions and content, book chapters and wiki pages, and directly checks URL activities for reachability and configured HTML error-page patterns. Exact URLs and domains on the configured whitelists are skipped, as are requests blocked by Moodle security policies. |
+| **coursechecker_quiz** | Yes | Nothing | This check compares the maximum grade with the total question marks for every quiz in the course. Quizzes whose names match the configured whitelist regular expression are not compared. |
+| **coursechecker_referencesettings** | Yes | Nothing | This check compares the selected general course settings with a reference course and can additionally compare course-level filter states and course-format options. Only configured setting groups are checked; unavailable selected course properties are reported as failures. |
+| **coursechecker_rubrics_settings** | Yes | gradingform_rubric | This check examines assignments for which a rubric is enabled as the advanced grading method. The grade type must be set to points rather than a scale. An active rubric grading form must also be available. If the form is missing or still in draft status, a warning is issued. If the maximum rubric score does not match the maximum grade in the assignment settings, an error is reported. Assignments without an active rubric are not checked. |
+| **coursechecker_subheadings** | Yes | Nothing | This check examines visible Text and media area activities and requires their first content element to be an <code>h4</code> heading containing a Font Awesome icon token. Other activity types and hidden activities are ignored, and content containing a configured whitelist string is accepted without these criteria. |
+| **coursechecker_submission_feedbacktype** | Yes | mod_assign | This check examines assignments with an enabled Online text, File submissions, or Kaltura video submission type and requires at least one enabled feedback type. Assignments without any of these three submission types are ignored; other enabled submission types alone do not trigger the check.|
+| **coursechecker_userdata** | Yes | Nothing | This check searches visible, viewable activities of the configured supported types for existing database, glossary, wiki, or forum content. It runs only for courses matching the configured course pattern; unsupported or disabled types are ignored, and activities whose names match the configured regular-expression whitelist are skipped. |
 
 ---
 
@@ -154,7 +98,9 @@ Or complete the installation via the Moodle web interface: **Site administration
 
 ## ⚙️ For Developers
 
-[Developer Guide](README_DEV.md).
+- Have a look at our [Developer Guide](README_DEV.md).
+- Have you created a subplugin others can benefit from?
+  - Feel free to integrate it by linking it into the table above via a merge request.
 
 ---
 

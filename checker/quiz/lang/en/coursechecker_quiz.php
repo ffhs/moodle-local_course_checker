@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,10 +25,12 @@
  */
 
 $string['pluginname'] = 'Quiz check';
-$string['pluginname_help'] = 'This plugin checks whether each quiz\'s “Maximum grade” matches the “Total of marks” assigned to its questions. It helps prevent grading inconsistencies and ensures quizzes are correctly configured.';
-$string['privacy:metadata'] = 'The quiz check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname_help'] = 'This check compares the maximum grade with the total question marks for every quiz in the course. Quizzes whose names match the configured whitelist regular expression are not compared.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
-$string['quiz_grade_sum_error'] =
-        'Maximum grade ({$a->grade}) and Total of marks ({$a->sumgrades}) should be the same number in this quiz';
+$string['regex_whitelist'] = 'Regex quiz title whitelist';
+$string['regex_whitelist_desc'] = 'Enter a regex pattern. Quizzes matching this title pattern will be whitelisted and skip the check.';
+$string['quiz_in_whitelist'] = 'The quiz was not verified because it matches the whitelist pattern.';
+$string['quiz_grade_sum_error'] = 'Maximum grade ({$a->grade}) and Total of marks ({$a->sumgrades}) should be the same number in this quiz';
 $string['quiz_grade_sum_success'] = 'This quiz is configured correctly';
 $string['quiz_activity'] = 'Activity: {$a->name}  ({$a->modname})';

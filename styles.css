@@ -2,6 +2,14 @@
     background-clip: padding-box;
 }
 
+.local_course_checker__check-running {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(196, 196, 196, 1) 100%);
+}
+
+.local_course_checker__check-info {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(31, 92, 184, 1) 100%);
+}
+
 .local_course_checker__check-successful {
     background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(45, 153, 74, 1) 100%);
 }
@@ -13,4 +21,17 @@
 .local_course_checker__check-failed,
 .local_course_checker__check-error {
     background: linear-gradient(90deg, rgba(0, 0, 0, 0) 55%, rgba(183, 0, 5, 1) 100%);
+}
+
+.local_course_checker__check-info-color {
+    color: #1c52a3;
+}
+
+.local_course_checker__toggle-icon.btn-icon.icons-collapse-expand,
+.local_course_checker__toggle-icon.btn-icon.icons-collapse-expand:hover,
+.local_course_checker__toggle-icon.btn-icon.icons-collapse-expand:focus {
+    color: inherit;
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
 }
