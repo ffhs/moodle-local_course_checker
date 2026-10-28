@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,32 +29,30 @@ use coursechecker_referencesettings\checker;
 
 defined('MOODLE_INTERNAL') || die();
 
-
-
 /** @var admin_settingpage $settings */
 $settings;
 
 /** @var array of coursesettings_fields to check $choices */
 $choices = [
-        // General.
-        'category' => get_string('category'),
-        'visible' => get_string('visible'),
-        'startdate' => get_string('startdate'),
-        // Summary.
-        'summary' => get_string('summary'),
-        // Course Format.
-        'format' => get_string('format'),
-        // Appearance.
-        'showgrades' => get_string('showgrades'),
-        'newsitems' => get_string('newsitemsnumber'),
-        'lang' => get_string('forcelanguage'),
-        'showreports' => get_string('showreports'),
-        // Files and uploads.
-        'legacyfiles' => get_string('courselegacyfiles'),
-        'maxbytes' => get_string('maximumupload'),
-        // Completion Tracking.
-        'enablecompletion' => get_string('enablecompletion', 'completion'),
-        'groupmode' => get_string('groupmode'),
+    // General.
+    'category' => get_string('category'),
+    'visible' => get_string('visible'),
+    'startdate' => get_string('startdate'),
+    // Summary.
+    'summary' => get_string('summary'),
+    // Course Format.
+    'format' => get_string('format'),
+    // Appearance.
+    'showgrades' => get_string('showgrades'),
+    'newsitems' => get_string('newsitemsnumber'),
+    'lang' => get_string('forcelanguage'),
+    'showreports' => get_string('showreports'),
+    // Files and uploads.
+    'legacyfiles' => get_string('courselegacyfiles'),
+    'maxbytes' => get_string('maximumupload'),
+    // Completion Tracking.
+    'enablecompletion' => get_string('enablecompletion', 'completion'),
+    'groupmode' => get_string('groupmode'),
 ];
 
 // Referencesettings Checker Checklist settings.

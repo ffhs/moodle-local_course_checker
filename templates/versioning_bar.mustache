@@ -1,0 +1,95 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_course_checker/versioning_bar
+
+    Renders the versioning bar showing action like save and delete of the displayed report.
+    Also allows to see and view older reporst and save them under a new name or delete them.
+
+    Example context (json):
+    {
+      "saved_versions": [
+        {
+          "name": "YYYY_MM_DD_1"
+        }
+      ],
+      "version_dropdown": "<div></div>",
+      "action_url": "/local/course_checker/action.php",
+      "courseid": "1",
+      "sesskey": "sesskey",
+      "version_name": "YYYY_MM_DD",
+      "default_version_name": "YYYY_MM_DD",
+      "returnurl": "/local/course_checker/index.php?courseid=1&version_name=latest",
+      "max_saved_reports": "3",
+      "saved_report_count": 1,
+      "oldest_saved_version": "YYYY_MM_DD_1"
+    }
+}}
+<div class="d-flex justify-content-between align-items-center p-2 border-bottom">
+    <div class="d-flex align-items-center gap-3">
+        {{#str}}checker_report_version, local_course_checker{{/str}}{{{version_dropdown}}}
+    </div>
+    <div class="d-flex gap-2">
+        {{#locked}}
+            <button type="button" class="btn btn-danger icon-no-margin" aria-label="{{#str}}delete_all_results, local_course_checker{{/str}}" disabled>
+                {{#pix}}e/delete, core{{/pix}}
+            </button>
+            <button type="button" class="btn btn-secondary icon-no-margin" aria-label="{{#str}}save_results, local_course_checker{{/str}}" disabled>
+                {{#pix}}e/save, core{{/pix}}
+            </button>
+        {{/locked}}
+        {{^locked}}
+            <form method="post" action="{{action_url}}" data-region="delete-all-results-form">
+                <input type="hidden" name="action" value="delete_all_results">
+                <input type="hidden" name="courseid" value="{{courseid}}">
+                <input type="hidden" name="selected_version" value="{{version_name}}">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                {{#returnurl}}
+                    <input type="hidden" name="returnurl" value="{{returnurl}}">
+                {{/returnurl}}
+                <button type="button" class="btn btn-danger icon-no-margin" data-action="delete-all-results" aria-label="{{#str}}delete_all_results, local_course_checker{{/str}}">
+                    {{#pix}}e/delete, core{{/pix}}
+                </button>
+            </form>
+            <form method="post" action="{{action_url}}" data-region="save-results-form" data-max-saved-reports="{{max_saved_reports}}" data-saved-report-count="{{saved_report_count}}" data-oldest-saved-version="{{oldest_saved_version}}">
+                <input type="hidden" name="action" value="save_results">
+                <input type="hidden" name="courseid" value="{{courseid}}">
+                <input type="hidden" name="selected_version" value="{{version_name}}">
+                <input type="hidden" name="sesskey" value="{{sesskey}}">
+                <input type="hidden" name="version_name" value="{{default_version_name}}">
+                <input type="hidden" name="overwrite" value="0">
+                {{#saved_versions}}
+                    <input type="hidden" value="{{name}}" data-existing-version-name>
+                {{/saved_versions}}
+                {{#returnurl}}
+                    <input type="hidden" name="returnurl" value="{{returnurl}}">
+                {{/returnurl}}
+                <button type="button" class="btn btn-secondary icon-no-margin" data-action="save-results" data-default-version-name="{{default_version_name}}" aria-label="{{#str}}save_results, local_course_checker{{/str}}">
+                    {{#pix}}e/save, core{{/pix}}
+                </button>
+            </form>
+        {{/locked}}
+    </div>
+</div>
+{{#js}}
+require(['local_course_checker/delete_all_results'], function(module) {
+    module.init();
+});
+require(['local_course_checker/save_results'], function(module) {
+    module.init();
+});
+{{/js}}

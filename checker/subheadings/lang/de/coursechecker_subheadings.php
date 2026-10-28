@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,15 +25,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Label-Untertitel Überprüfung';
-$string['pluginname_help'] = 'Der Subheading Checker prüft, ob alle Label-Ressourcen in einem Kurs einheitliche Formatierungsstandards einhalten.';
-$string['privacy:metadata'] = 'Das Plugin „Label-Untertitel Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname'] = 'Untertitel in Text- und Medienfeldern Überprüfung';
+$string['pluginname_help'] = 'Diese Überprüfung untersucht sichtbare Text- und Medienfelder und verlangt als erstes Inhaltselement eine <code>h4</code>-Überschrift mit einem Font-Awesome-Icon-Token. Andere Aktivitätstypen und verborgene Aktivitäten werden ignoriert; Inhalte mit einer konfigurierten Whitelist-Zeichenfolge werden ohne diese Kriterien akzeptiert.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // String specific for the subheadings checker.
 $string['subheadings_wrongfirsthtmltag'] = 'Das erste HTML-Tag ist kein {$a->htmltag}.';
 $string['subheadings_iconmissing'] = 'Das Icon fehlt im ersten HTML-Tag.';
 $string['subheadings_generalerror'] = 'Es gab ein Problem bei der Ausführung dieser Prüfung.';
-$string['subheadings_success'] = 'Dieses Label hat eine passende Untertitel und ein Icon.';
+$string['subheadings_success'] = 'Dieses Text- und Medienfeld hat einen gültigen Untertitel und ein Icon.';
 $string['subheadings_labelignored'] = 'Dieses Label wird aufgrund der Whitelist in der Plugin-Konfiguration ignoriert.';
 
 $string['subheadings_setting_whitelist'] = 'Whitelist für Untertitel';

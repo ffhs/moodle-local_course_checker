@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,9 +25,12 @@
  */
 
 $string['pluginname'] = 'Quiz Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin prüft, ob die „Maximale Note“ eines jeden Quiz mit der „Summe der Noten“ übereinstimmt, die den Fragen zugewiesen wurde. Es hilft, Unstimmigkeiten bei der Benotung zu vermeiden und stellt sicher, dass Quizfragen korrekt konfiguriert sind.';
-$string['privacy:metadata'] = 'Das Plugin „Quiz Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname_help'] = 'Diese Überprüfung vergleicht bei jedem Quiz im Kurs die maximale Bewertung mit der Gesamtpunktzahl der Fragen. Quiz-Aktivitäten, deren Namen dem konfigurierten regulären Ausdruck der Ausnahmeliste entsprechen, werden nicht verglichen.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
+$string['regex_whitelist'] = 'Regex Quiz Titel Whitelist';
+$string['regex_whitelist_desc'] = 'Geben Sie einen regulären Ausdruck ein. Quiz-Aktivitäten, deren Namen diesem Muster entsprechen, werden von der Überprüfung ausgenommen.';
+$string['quiz_in_whitelist'] = 'Das Quiz wurde nicht überprüft, da es der Whitelist entspricht.';
 $string['quiz_grade_sum_error'] = 'Die maximale Bewertung ({$a->grade}) und die Gesamtsumme der Punkte ({$a->sumgrades}) sollten in diesem Quiz identisch sein.';
 $string['quiz_grade_sum_success'] = 'Dieses Quiz ist korrekt konfiguriert.';
 $string['quiz_activity'] = 'Aktivität: {$a->name} ({$a->modname})';

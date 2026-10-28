@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 namespace local_course_checker\model;
 
-use dml_exception;
+use local_course_checker\config;
 
 /**
  *
@@ -35,14 +35,14 @@ trait checker_config_trait {
      * @param string $name
      * @param mixed|null $defaultvalue
      * @return mixed|null
-     * @throws dml_exception
+     * @deprecated Use {@see \local_course_checker\config::get()} instead.
      */
     protected function get_config($name, $defaultvalue = null): mixed {
-        [$plugin, $name] = explode("/", $name);
-        $value = get_config($plugin, $name);
-        if (isset($value)) {
-            return $value;
-        }
-        return $defaultvalue;
+        debugging(
+            'get_config() is deprecated. Use local_course_checker\\config::get() instead.',
+            DEBUG_DEVELOPER,
+        );
+
+        return config::get($name, $defaultvalue);
     }
 }

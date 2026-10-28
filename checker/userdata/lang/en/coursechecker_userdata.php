@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,14 +26,15 @@
  */
 
 $string['pluginname'] = 'User data check';
-$string['pluginname_help'] = 'Checks course activities for residual user data such as submissions, forum posts, or logs.';
-$string['privacy:metadata'] = 'The User data check does not store any personal data. The check results are stored in the Course Checker plugin.';
+$string['pluginname_help'] = 'This check searches visible, viewable activities of the configured supported types for existing database, glossary, wiki, or forum content. It runs only for courses matching the configured course pattern; unsupported or disabled types are ignored, and activities whose names match the configured regular-expression whitelist are skipped.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
 // String specific for the userdata checker.
 $string['userdata_setting_modules'] = 'Enabled modules';
-$string['userdata_setting_modules_help'] =
-        'Define the allowed modules (must be enabled in <a href="{$a}" target="_blank">Manage activities</a>, contain reset_userdata method in <code>mod/{modname}/lib.php</code> and supported by this plugin) to be checked for user data.';
+$string['userdata_setting_modules_help'] = 'Define the allowed modules (must be enabled in <a href="{$a}" target="_blank">Manage activities</a>, contain reset_userdata method in <code>mod/{modname}/lib.php</code> and supported by this plugin) to be checked for user data.';
 $string['userdata_error'] = 'There shouldn\'t be any user data in the {$a} activity.';
 $string['userdata_success'] = 'The {$a} activity contains no user data.';
-$string['userdata_help'] =
-        'If you want this data to be copied to other courses, you have to import it manually. Here are some useful manuals: <a href="https://docs.moodle.org/38/en/Backup_of_user_data" target="_blank">Backup of user data</a> and <a href="https://docs.moodle.org/38/en/Reusing_activities" target="_blank">Reusing activities</a>.';
+$string['userdata_skip'] = 'The activity "{$a}" was skipped because it is on the whitelist.';
+$string['userdata_help'] = 'If you want this data to be copied to other courses, you have to import it manually. Here are some useful manuals: <a href="https://docs.moodle.org/38/en/Backup_of_user_data" target="_blank">Backup of user data</a> and <a href="https://docs.moodle.org/38/en/Reusing_activities" target="_blank">Reusing activities</a>.';
+$string['regex_forum_whitelist'] = 'Forum whitelist';
+$string['regex_forum_whitelist_desc'] = 'Forums whose names match the specified regular expression are excluded from the check.';

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,12 +16,12 @@
 
 namespace local_course_checker\output;
 
+use local_course_checker\db\model\check as check_model;
+use moodle_url;
 use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
-use moodle_url;
-use local_course_checker\db\model\check as check_model;
 
 /**
  * Templatable and renderable wrapper for a single check, including metadata and rendered results.
@@ -36,22 +36,26 @@ class check implements renderable, templatable {
     /**
      * @var check_model The persistent model for the check.
      */
-    private check_model $check;
+    protected check_model $check;
 
     /**
      * @var array Array of rendered result HTML strings grouped by status.
      */
-    private array $renderedresults;
+    protected array $renderedresults;
 
     /**
      * @var bool Whether the check is currently being re-executed.
      */
-    private bool $inprogress;
+    protected bool $inprogress;
 
     /**
      * @var int The course ID associated with this check.
      */
-    private int $courseid;
+    protected int $courseid;
+    /**
+     * @var string The version name of the checker.
+     */
+    private string $versionname;
 
     /**
      * Constructor.
@@ -60,12 +64,20 @@ class check implements renderable, templatable {
      * @param array $renderedresults Rendered HTML for individual results (grouped by status).
      * @param int $courseid The course ID.
      * @param bool $inprogress Whether this check is currently being run.
+     * @param string $versionname The checker version name.
      */
-    public function __construct(check_model $check, array $renderedresults, int $courseid, bool $inprogress = false) {
+    public function __construct(
+        check_model $check,
+        array $renderedresults,
+        int $courseid,
+        bool $inprogress = false,
+        string $versionname = 'latest'
+    ) {
         $this->check = $check;
         $this->renderedresults = $renderedresults;
         $this->inprogress = $inprogress;
         $this->courseid = $courseid;
+        $this->versionname = $versionname;
     }
 
     /**
@@ -89,12 +101,21 @@ class check implements renderable, templatable {
             'result' => $this->renderedresults,
             'check_is_running' => $this->inprogress,
         ];
+        if ($data['status'] === 'running') {
+            $data['check_is_running'] = true;
+        }
+        $data = array_merge($this->check->get('custom_data'), $data);
         if (!$this->inprogress) {
             $data['action_url'] = new moodle_url('/local/course_checker/action.php');
             $data['courseid'] = $this->courseid;
             $data['sesskey'] = sesskey();
+            $data['version_name'] = $this->versionname;
+            $data['returnurl'] = new moodle_url('/local/course_checker/index.php', [
+                'courseid' => $this->courseid,
+                'version_name' => $this->versionname,
+            ]);
         }
 
-        return (object)$data;
+        return (object) $data;
     }
 }

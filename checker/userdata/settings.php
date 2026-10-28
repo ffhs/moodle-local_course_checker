@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,8 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use coursechecker_userdata\checker;
 use local_course_checker\admin\admin_setting_courseregex;
 use local_course_checker\admin\admin_setting_pickmodules;
+use local_course_checker\admin\admin_setting_regex;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -41,3 +43,10 @@ $url = $CFG->wwwroot . '/admin/modules.php';
 $description = get_string('userdata_setting_modules_help', 'coursechecker_userdata', $url);
 $modules = new admin_setting_pickmodules('coursechecker_userdata/userdata_modules', $visiblename, $description, []);
 $settings->add($modules);
+
+$settings->add(new admin_setting_regex(
+    checker::FORUMWHITELISTREGEX,
+    get_string('regex_forum_whitelist', 'coursechecker_userdata'),
+    get_string('regex_forum_whitelist_desc', 'coursechecker_userdata'),
+    checker::FORUMWHITELISTREGEX_DEFAULT
+));

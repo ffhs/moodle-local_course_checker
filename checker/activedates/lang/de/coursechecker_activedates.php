@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,13 +26,11 @@
  */
 
 $string['pluginname'] = 'Aktive Termine Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin prüft, ob für einen Kurs sowohl ein Startdatum als auch ein Enddatum definiert ist. Es ist als Teil eines Workflows zur Kursqualitätssicherung konzipiert und stellt sicher, dass alle Kurse klar definierte zeitliche Grenzen haben.';
-$string['privacy:metadata'] = 'Das Plugin „Aktive Termine Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname_help'] = 'Diese Überprüfung untersucht sichtbare, aufrufbare Aktivitäten der konfigurierten Typen und meldet aktivierte Abschlussdaten sowie aktivitätsspezifische Verfügbarkeits- und Fristfelder. Kurse, die durch das konfigurierte Kursnamenmuster ausgeschlossen sind, nicht konfigurierte Aktivitätstypen sowie verborgene oder nicht aufrufbare Aktivitäten werden nicht überprüft.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 // String specific for the activedates checker.
 $string['activedates_setting_modules'] = 'Aktivierte Module';
-$string['activedates_setting_modules_help'] =
-    'Definieren Sie die erlaubten Module  (müssen in <a href="{$a}" target="_blank">Aktivitäten verwalten</a> aktiviert sein), die auf aktive Termine geprüft werden sollen.';
-$string['activedates_noactivedates'] = 'Es sollten keine aktivierten Termine im Abschnitt "Aktivitätsabschluss" vorhanden sein.';
-$string['activedates_noactivedatesinactivity'] =
-    'Es sollten keine aktivierten Termine in der Aktivität vom Typ {$a->modtype} vorhanden sein. Überprüfen Sie die folgenden Felder: {$a->adateissetin}';
-$string['activedates_success'] = 'Die Aktivität {$a} ist korrekt konfiguriert.';
+$string['activedates_setting_modules_help'] = 'Definieren Sie die erlaubten Module  (müssen in <a href="{$a}" target="_blank">Aktivitäten verwalten</a> aktiviert sein), die auf aktive Termine geprüft werden sollen.';
+$string['activedates_noactivedates'] = 'Das erwartete Abschlussdatum darf nicht aktiviert sein.';
+$string['activedates_noactivedatesinactivity'] = 'In der Aktivität vom Typ <b>{$a->modtype}</b> sind Termine in folgenden Feldern aktiviert: <b>{$a->adateissetin}</b>.';
+$string['activedates_success'] = 'In der Aktivität {$a} sind keine Termine aktiviert.';

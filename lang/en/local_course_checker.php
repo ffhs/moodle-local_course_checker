@@ -36,6 +36,7 @@ $string['settings_referencecourseid'] = 'Reference course id';
 $string['course_checker:view'] = 'View the course checker';
 $string['course_checker:runcheck'] = 'Can run the course checker';
 $string['course_checker:view_navigation'] = 'Show Course Checker in Navigation Menu';
+$string['course_checker:managereportversions'] = 'Manage and view saved course-check report versions';
 
 // Notification.
 $string['course_checker:view_notification'] = 'View the course checker notifications';
@@ -58,20 +59,55 @@ Unfortunately, the course checker for the course <strong>{$a->coursename}</stron
 Please contact the administrator.';
 $string['messageprovider_failed_notification_small'] = 'Course check could not be completed.';
 
+// Versioning bar.
+$string['checker_report_version'] = 'Report version:';
+$string['checker_version_latest'] = 'Latest';
+$string['delete_all_results'] = 'Delete all check results';
+$string['delete_all_results_title'] = 'Delete check results';
+$string['delete_all_results_confirm'] = 'Are you sure you want to delete all check results for this course?';
+$string['save_results'] = 'Save results';
+$string['save_results_title'] = 'Save check results';
+$string['overwrite_results'] = 'Overwrite';
+$string['overwrite_results_title'] = 'Overwrite saved results?';
+$string['overwrite_results_confirm'] = 'The report version "{$a}" already exists. Do you want to overwrite it?';
+$string['replace_oldest_report'] = 'Replace oldest report';
+$string['replace_oldest_report_title'] = 'Saved-report limit reached';
+$string['replace_oldest_report_confirm'] = 'The saved-report limit has been reached. Do you want to replace the oldest report, "{$a}"?';
+$string['saved_report_limit_reached'] = 'The saved-report limit has been reached. Confirm replacing the oldest report before saving.';
+$string['settings_enableversioning'] = 'Enable report versioning';
+$string['settings_enableversioning_desc'] = 'Enable the controls for selecting, saving and deleting report versions. If versioning is disabled, all reports except the newest report for each course will be deleted during the next cleanup.';
+$string['cleanup_reports_task'] = 'Clean up Course Checker reports';
+$string['settings_maxsavedreports'] = 'Maximum saved reports per course';
+$string['settings_maxsavedreports_desc'] = 'Maximum number of named reports stored for each course. Older excess reports are deleted during the next cleanup. Set this to 0 for no limit.';
+$string['version_name'] = 'Version name';
+$string['version_name_required'] = 'Enter a version name.';
+$string['version_name_exists'] = 'A report version with this name already exists.';
+$string['version_name_invalid'] = 'The version name may contain only letters, numbers, hyphens and underscores.';
+$string['version_name_too_long'] = 'The version name must not contain more than 20 characters.';
+$string['versioningdisabled'] = 'Report versioning is disabled.';
+
 // Result page.
 $string['checker_last_run'] = 'Last run: {$a}';
 $string['checker_never_run'] = 'Never';
 $string['failed_checks'] = 'Failed';
+$string['failed_checks_help'] = 'One or more checks identified issues that do not meet the required criteria and should be fixed.';
 $string['error_checks'] = 'Error';
+$string['error_checks_help'] = 'One or more checks encountered technical errors or code exceptions. Please contact your administrator.';
+$string['error_contact_admin'] = 'The check could not be completed due to an internal error. Please report this incident to your administrator.';
 $string['warning_checks'] = 'Warning';
+$string['warning_checks_help'] = 'One or more checks identified potential issues that may require attention, but are not necessarily critical.';
+$string['info_checks'] = 'Info';
+$string['info_checks_help'] = 'One or more checks provide informational notes or suggestions for improvement.';
 $string['successful_checks'] = 'Successful';
+$string['successful_checks_help'] = 'These checks completed successfully without finding any issues.';
+$string['running_checks'] = 'Running';
+$string['running_checks_help'] = 'These checks are currently being executed. Please wait for them to finish.';
 $string['check_course'] = 'Check this course';
 $string['check_course_in_progress'] = 'Check in progress...';
-$string['changes_last_check'] = 'Changes since last check: {$a}';
-$string['save_results'] = 'Save results'; // ToDo: this is only the translation, saving the result is not implemented yet.
 
 // Event log translations.
 $string['activity'] = 'Activity';
+$string['activity_help'] = 'The activity log shows changes made to the course (such as created, updated, or deleted activities) since the last time the course checker was run.';
 $string['last_modified_activity'] = 'Last modified activities since last check';
 $string['action'] = 'Action';
 $string['course'] = 'Course';

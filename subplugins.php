@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -65,5 +65,5 @@ switch ($action) {
 }
 
 redirect(new moodle_url('/admin/category.php', [
-        'category' => 'local_course_checker',
+    'category' => 'local_course_checker',
 ]));

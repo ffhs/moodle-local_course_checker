@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 
 namespace local_course_checker\model;
 
+use local_course_checker\config;
 use stdClass;
 
 /**
@@ -29,8 +30,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 trait admin_setting_courseregex_trait {
-    use checker_config_trait;
-
     /**
      * Determines if a course should be checked based on a configured regex pattern.
      *
@@ -42,9 +41,9 @@ trait admin_setting_courseregex_trait {
      * @return bool True if the course should be checked, false otherwise.
      */
     protected function is_course_check_required(string $name, stdClass $course): bool {
-        if (!empty($this->get_config($name))) {
+        if (!empty(config::get($name))) {
             // If the configuration value exists, validate the course fullname against the regex.
-            return (bool)preg_match($this->get_config($name), $course->fullname);
+            return (bool) preg_match(config::get($name), $course->fullname);
         }
         // If the configuration value does not exist, return false.
         return true;
