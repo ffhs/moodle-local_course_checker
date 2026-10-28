@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,7 +63,6 @@ class coursechecker extends base {
         return true;
     }
 
-
     /**
      * Returns the node name used in the admin settings menu for this plugin's settings.
      *
@@ -75,7 +74,6 @@ class coursechecker extends base {
         }
         return "coursechecker_{$this->name}_settings";
     }
-
 
     /**
      * Retrieves the list of enabled checker plugins.

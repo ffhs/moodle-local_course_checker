@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
 
 namespace coursechecker_userdata;
 
-use local_course_checker\translation_manager;
+use local_course_checker\config;
+use local_course_checker\db\model\check;
 use local_course_checker\mod_type_interface;
 use local_course_checker\model\admin_setting_courseregex_trait;
 use local_course_checker\model\check_plugin_interface;
-use local_course_checker\db\model\check;
-use local_course_checker\model\checker_config_trait;
 use local_course_checker\resolution_link_helper;
+use local_course_checker\translation_manager;
 
 /**
  * Checking if course contains user data in activities.
@@ -34,8 +34,16 @@ use local_course_checker\resolution_link_helper;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class checker implements check_plugin_interface, mod_type_interface {
-    use checker_config_trait;
     use admin_setting_courseregex_trait;
+
+    /**
+     * Define the path to the setting section_whitelist_regex.
+     */
+    const FORUMWHITELISTREGEX = 'coursechecker_userdata/forum_whitelist_regex';
+    /**
+     * Define the default of the setting section_whitelist_regex.
+     */
+    const FORUMWHITELISTREGEX_DEFAULT = '/Modulentwicklungsforum/i';
 
     /**
      * Runs the checker.
@@ -48,7 +56,6 @@ class checker implements check_plugin_interface, mod_type_interface {
      * @throws \moodle_exception
      */
     public function run(\stdClass $course, check $check): void {
-
         // Initialize check result array.
         if (!$this->is_course_check_required('coursechecker_userdata/userdata_coursesregex', $course)) {
             $title = translation_manager::generate('admin_setting_coursesregex_skip_course', 'local_course_checker');
@@ -61,6 +68,7 @@ class checker implements check_plugin_interface, mod_type_interface {
         $enabledmodules = explode(',', get_config('coursechecker_userdata', 'userdata_modules'));
         // Get all activities in the course.
         $modinfo = get_fast_modinfo($course);
+        $regex = config::get(self::FORUMWHITELISTREGEX, self::FORUMWHITELISTREGEX_DEFAULT);
         foreach ($modinfo->cms as $cm) {
             // Skip activities that are not visible.
             if (!$cm->uservisible || !$cm->has_view()) {
@@ -75,12 +83,17 @@ class checker implements check_plugin_interface, mod_type_interface {
             $title = resolution_link_helper::get_target($cm);
             $link = resolution_link_helper::get_link_to_modedit_or_view_page($cm->modname, $cm->id, false);
 
+            if ($regex && preg_match($regex, $cm->name)) {
+                $message = translation_manager::generate('userdata_skip', 'coursechecker_userdata', $cm->modname);
+                $check->add_info($title, $link, $message);
+                continue;
+            }
+
             $fetchuserdata = new fetch_userdata();
             $records = $fetchuserdata->check_for_userdata_in_module($cm);
             if (!empty($records)) {
                 $message = translation_manager::generate('userdata_error', 'coursechecker_userdata', $cm->modname);
                 $check->add_warning($title, $link, $message);
-                $check->set('status', 'warning');
                 continue;
             }
 

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 namespace local_course_checker\db\model;
 
 use coding_exception;
+use core\invalid_persistent_exception;
 use core\persistent;
 
 /**
@@ -30,27 +31,12 @@ use core\persistent;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class check extends persistent {
+    use has_custom_data;
+
     /**
      * {@inheritDoc}
      */
     const TABLE = 'local_course_checker_check';
-
-    /**
-     * Validates the status value before it's set.
-     *
-     * Prevents the check status from being downgraded if it's already set to 'error'.
-     *
-     * @param string $value The new status value.
-     * @return string|bool Returns true if valid, or false to reject.
-     */
-    protected function validate_status(string $value): string|bool {
-        // Prevent status downgrade from 'error'.
-        if ($this->raw_get('status') === 'error' && $value !== 'error') {
-            debugging("Status is already 'error'; can't be downgraded to '{$value}'", DEBUG_DEVELOPER);
-            return false; // Reject the change.
-        }
-        return true;
-    }
 
     /**
      * Creates or updates a check record for a given checker.
@@ -60,10 +46,10 @@ class check extends persistent {
      *
      * @param int $checkerid The ID of the checker this check belongs to.
      * @param string $checkname The name of the check.
-     * @param string $status The result status (default: 'successful').
+     * @param string $status The result status (default: 'running').
      * @return self The created or updated check object.
      */
-    public static function create_or_update(int $checkerid, string $checkname, string $status = 'successful'): self {
+    public static function create_or_update(int $checkerid, string $checkname, string $status = 'running'): self {
         $existing = self::get_record([
             'checker_id' => $checkerid,
             'check_name' => $checkname,
@@ -140,30 +126,10 @@ class check extends persistent {
         return [
             'checker_id' => ['type' => PARAM_INT],
             'check_name' => ['type' => PARAM_TEXT],
-            'status' => ['type' => PARAM_ALPHANUMEXT, 'default' => 'successful'],
+            'status' => ['type' => PARAM_ALPHANUMEXT, 'default' => 'running'],
+            'custom_data' => ['type' => PARAM_TEXT, 'default' => null, 'null' => NULL_ALLOWED],
             'timestamp' => ['type' => PARAM_INT],
         ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function before_delete(): void {
-        global $DB;
-        $DB->delete_records(check_result::TABLE, ['check_id' => $this->get('id')]);
-        mtrace("Deleted all check_result(s) for check ID: " . $this->get('id'));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function before_update(): void {
-        // Don't allow status downgrade if it's already "error".
-        if ($this->raw_get('status') === 'error' && $this->get('status') !== 'error') {
-            // Revert the status change silently.
-            $this->set('status', 'error');
-            mtrace("Attempted to downgrade status from 'error'. Reverted back.");
-        }
     }
 
     /**
@@ -172,10 +138,46 @@ class check extends persistent {
      * @param string $title The title of the error.
      * @param string $link A relevant link related to the error.
      * @param string $message The error message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
      */
-    public function add_error(string $title, string $link, string $message): check_result {
+    public function add_error(string $title, string $link, string $message, ?array $customdata = null): check_result {
         $this->set('status', 'error');
-        return $this->add_result('error', $title, $link, $message);
+        return $this->add_result('error', $title, $link, $message, $customdata);
+    }
+
+    /**
+     * Adds a result to the check under the given status category.
+     *
+     * @param string $status The status category ('error', 'failed', 'warning', 'successful', 'info').
+     * @param string $title The title of the result.
+     * @param string $link A relevant link related to the result.
+     * @param string $message The result message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws invalid_persistent_exception
+     * @throws coding_exception
+     */
+    public function add_result(
+        string $status,
+        string $title,
+        string $link,
+        string $message,
+        ?array $customdata = null
+    ): check_result {
+        // Clean Title and Message in case someone tries cross site scripting via them.
+        $checkresult = new check_result();
+        $checkresult->set('check_id', $this->get('id'));
+        $checkresult->set('status', $status);
+        $checkresult->set('title', trim(clean_param($title, PARAM_TEXT)));
+        $checkresult->set('link', $link);
+        $checkresult->set('message', trim(clean_param($message, PARAM_TEXT)));
+        $checkresult->set('custom_data', $customdata ?? []);
+        $checkresult->set('timestamp', time());
+        $checkresult->create();
+        return $checkresult;
     }
 
     /**
@@ -184,9 +186,14 @@ class check extends persistent {
      * @param string $title The title of the failure.
      * @param string $link A relevant link related to the failure.
      * @param string $message The failure message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
      */
-    public function add_failed(string $title, string $link, string $message): check_result {
-        return $this->add_result('failed', $title, $link, $message);
+    public function add_failed(string $title, string $link, string $message, ?array $customdata = null): check_result {
+        $this->set('status', 'failed');
+        return $this->add_result('failed', $title, $link, $message, $customdata);
     }
 
     /**
@@ -195,9 +202,14 @@ class check extends persistent {
      * @param string $title The title of the warning.
      * @param string $link A relevant link related to the warning.
      * @param string $message The warning message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
      */
-    public function add_warning(string $title, string $link, string $message): check_result {
-        return $this->add_result('warning', $title, $link, $message);
+    public function add_warning(string $title, string $link, string $message, ?array $customdata = null): check_result {
+        $this->set('status', 'warning');
+        return $this->add_result('warning', $title, $link, $message, $customdata);
     }
 
     /**
@@ -206,29 +218,30 @@ class check extends persistent {
      * @param string $title The title of the success.
      * @param string $link A relevant link related to the success.
      * @param string $message The success message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
      */
-    public function add_successful(string $title, string $link, string $message): check_result {
-        return $this->add_result('successful', $title, $link, $message);
+    public function add_successful(string $title, string $link, string $message, ?array $customdata = null): check_result {
+        $this->set('status', 'successful');
+        return $this->add_result('successful', $title, $link, $message, $customdata);
     }
 
     /**
-     * Adds a result to the check under the given status category.
+     * Adds a info result to the check.
      *
-     * @param string $status The status category ('error', 'failed', 'warning', 'successful').
-     * @param string $title The title of the result.
-     * @param string $link A relevant link related to the result.
-     * @param string $message The result message.
+     * @param string $title The title of the info.
+     * @param string $link A relevant link related to the info.
+     * @param string $message The info message.
+     * @param array|null $customdata
+     * @return check_result
+     * @throws coding_exception
+     * @throws invalid_persistent_exception
      */
-    public function add_result(string $status, string $title, string $link, string $message): check_result {
-        $checkresult = new check_result();
-        $checkresult->set('check_id', $this->get('id'));
-        $checkresult->set('status', $status);
-        $checkresult->set('title', $title);
-        $checkresult->set('link', $link);
-        $checkresult->set('message', $message);
-        $checkresult->set('timestamp', time());
-        $checkresult->create();
-        return $checkresult;
+    public function add_info(string $title, string $link, string $message, ?array $customdata = null): check_result {
+        $this->set('status', 'info');
+        return $this->add_result('info', $title, $link, $message, $customdata);
     }
 
     /**
@@ -238,5 +251,79 @@ class check extends persistent {
      */
     public function get_results(): array {
         return check_result::get_records(['check_id' => $this->get('id')]);
+    }
+
+    /**
+     * Deletes all results of the check and resets the status to 'running'.
+     *
+     * @return void
+     */
+    public function reset_for_rerun(): void {
+        $this->raw_set('status', 'running');
+        $this->set('timestamp', time());
+        $this->delete_results();
+        $this->update();
+    }
+
+    /**
+     * Deletes all results of the check.
+     *
+     * @return array The categorized results.
+     */
+    public function delete_results(): void {
+        global $DB;
+        $DB->delete_records(check_result::TABLE, ['check_id' => $this->get('id')]);
+        mtrace("Deleted all check_result(s) for check ID: " . $this->get('id'));
+    }
+
+    /**
+     * Validates the status value before it's set.
+     *
+     * Prevents the check status from being downgraded if it's already set to 'error'.
+     *
+     * @param string $value The new status value.
+     * @return void
+     * @throws coding_exception
+     */
+    protected function set_status(string $value): void {
+        $current = (string) $this->raw_get('status');
+        $value = (string) $value;
+
+        $allowed = [
+            'running' => ['info', 'warning', 'failed', 'successful', 'error'],
+            'successful' => ['info', 'warning', 'failed', 'error'],
+            'info' => ['warning', 'failed', 'error'],
+            'warning' => ['failed', 'error'],
+            'failed' => ['error'],
+            'error' => [],
+        ];
+
+        // Allow setting the same status again without triggering transition validation.
+        if ($value === $current) {
+            return;
+        }
+
+        if (!isset($allowed[$current]) || !in_array($value, $allowed[$current], true)) {
+            return;
+        }
+
+        $this->raw_set('status', $value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function before_delete(): void {
+        $this->delete_results();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function before_update(): void {
+        if ($this->raw_get('status') === 'running') {
+            // Set Status to successful if the status is still running and the check is done.
+            $this->set('status', 'successful');
+        }
     }
 }

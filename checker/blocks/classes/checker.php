@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,9 +27,9 @@
 namespace coursechecker_blocks;
 
 use dml_exception;
-use local_course_checker\model\check_plugin_interface;
+use local_course_checker\config;
 use local_course_checker\db\model\check;
-use local_course_checker\model\checker_config_trait;
+use local_course_checker\model\check_plugin_interface;
 use local_course_checker\resolution_link_helper;
 use local_course_checker\translation_manager;
 use stdClass;
@@ -38,8 +38,6 @@ use stdClass;
  * {@inheritDoc}
  */
 class checker implements check_plugin_interface {
-    use checker_config_trait;
-
     /**
      * Defines the path to the setting referencecourseid.
      */
@@ -113,8 +111,7 @@ class checker implements check_plugin_interface {
             // When there aren't two blocks and blockname is not equal (for whatever reason - should not).
             if ((!$courseblock || !$refblock) || ($courseblock->blockname != $refblock->blockname)) {
                 $message = translation_manager::generate('blocks_error', 'coursechecker_blocks');
-                $this->check->add_failed($title, $resolutionlink, $message . ' ' . $comparison);
-                $this->check->set('status', 'failed');
+                $this->check->add_failed($title, $resolutionlink, translation_manager::concat([$message, ' ', $comparison]));
                 continue;
             }
 
@@ -129,11 +126,11 @@ class checker implements check_plugin_interface {
      */
     public function init(): void {
         // Load settings.
-        $this->referencecourseid = (int) $this->get_config(
+        $this->referencecourseid = (int) config::get(
             self::REFERENCE_COURSE,
             self::REFERENCE_COURSE_DEFAULT
         );
-        $this->enabledblocks = explode(',', $this->get_config('coursechecker_blocks/blocks'));
+        $this->enabledblocks = explode(',', config::get('coursechecker_blocks/blocks'));
     }
 
     /**
@@ -148,8 +145,8 @@ class checker implements check_plugin_interface {
         global $DB;
 
         return $DB->get_record('block_instances', [
-                'blockname' => $block,
-                'parentcontextid' => $context->id,
+            'blockname' => $block,
+            'parentcontextid' => $context->id,
         ]);
     }
 

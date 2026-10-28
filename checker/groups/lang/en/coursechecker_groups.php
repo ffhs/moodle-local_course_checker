@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
  */
 
 $string['pluginname'] = 'Group submission check';
-$string['pluginname_help'] = 'This plugin checks assignment activities in a course to ensure correct group submission configuration. It verifies that group mode is properly set, a valid grouping is assigned, and that the grouping contains at least two groups.';
-$string['privacy:metadata'] = 'The group submission check does not store any personal data. The check results are stored in the course checker plugin.';
+$string['pluginname_help'] = 'This check examines every user-visible assignment that has a view page. Assignments without group submission pass; when group submission is enabled, a valid grouping containing at least two groups is required. Hidden or otherwise inaccessible assignments are not checked.';
+$string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
 // String specific for the group checker.
 $string['groups_deactivated'] = 'Group submission setting is deactivated';

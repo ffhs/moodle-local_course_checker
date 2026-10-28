@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@
  */
 
 $string['pluginname'] = 'Referenzeinstellungen Überprüfung';
-$string['pluginname_help'] = 'Dieses Plugin vergleicht allgemeine Kurseinstellungen (wie Kategorie, Format, Sprache, Filter und Formatoptionen) des aktuellen Kurses mit denen eines Referenzkurses.';
-$string['privacy:metadata'] = 'Das Plugin „Referenzeinstellungen Überprüfung“ speichert keine personenbezogenen Daten. Die Prüfergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
+$string['pluginname_help'] = 'Diese Überprüfung vergleicht die ausgewählten allgemeinen Kurseinstellungen mit einem Referenzkurs und kann zusätzlich die Zustände der Kursfilter sowie die Kursformatoptionen vergleichen. Es werden nur konfigurierte Einstellungsgruppen geprüft; nicht verfügbare ausgewählte Kurseigenschaften werden als Fehler gemeldet.';
+$string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // String specific for the reference course settings checker.
 $string['referencesettings_comparison'] =

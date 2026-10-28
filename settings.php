@@ -24,6 +24,7 @@
  */
 
 use local_course_checker\admin\admin_setting_courseid_selector;
+use local_course_checker\output\report_renderer;
 use local_course_checker\table\plugin_management_table;
 
 defined('MOODLE_INTERNAL') || die();
@@ -34,7 +35,8 @@ if ($hassiteconfig) {
         get_string('pluginname', 'local_course_checker', null, true)
     ));
 
-    $settings = new admin_settingpage('local_course_checker_settings', get_string('settings_name', 'local_course_checker', null, true));
+    $settings =
+        new admin_settingpage('local_course_checker_settings', get_string('settings_name', 'local_course_checker', null, true));
 
     if ($ADMIN->fulltree) {
         $settings->add(new admin_setting_heading(
@@ -54,6 +56,21 @@ if ($hassiteconfig) {
         // Define reference course id.
         $visiblename = get_string("settings_referencecourseid", "local_course_checker");
         $settings->add(new admin_setting_courseid_selector('local_course_checker/referencecourseid', $visiblename, '', SITEID));
+
+        $settings->add(new admin_setting_configcheckbox(
+            report_renderer::ENABLE_VERSIONING,
+            get_string('settings_enableversioning', 'local_course_checker'),
+            get_string('settings_enableversioning_desc', 'local_course_checker'),
+            report_renderer::ENABLE_VERSIONING_DEFAULT,
+        ));
+
+        $settings->add(new admin_setting_configtext(
+            report_renderer::MAXSAVEDREPORTS,
+            get_string('settings_maxsavedreports', 'local_course_checker'),
+            get_string('settings_maxsavedreports_desc', 'local_course_checker'),
+            report_renderer::MAXSAVEDREPORTS_DEFAULT,
+            PARAM_INT,
+        ));
     }
     $ADMIN->add('local_course_checker', $settings);
     unset($settings);

@@ -1,5 +1,5 @@
 {{!
-    This file is part of Moodle - http://moodle.org/
+    This file is part of Moodle - https://moodle.org/
 
     Moodle is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@
 <div class="local_course_checker__section mb-1">
     <div class="d-flex local_course_checker__check local_course_checker__check-{{status}} align-items-center p-2 border rounded-lg">
         <div class="d-flex align-items-start position-relative">
-            <a class="btn mr-auto mb-0" data-toggle="collapse" href="#{{check_name}}">
+            <a class="mr-auto mb-0 link-offset-2 text-decoration-none text-body" data-toggle="collapse" href="#{{check_name}}">
                 {{plugin_check_name}}
             </a>
         </div>
@@ -69,6 +69,7 @@
                     <input type="hidden" name="action" value="run_check">
                     <input type="hidden" name="check_name" value="{{check_name}}">
                     <input type="hidden" name="courseid" value="{{courseid}}">
+                    <input type="hidden" name="selected_version" value="{{version_name}}">
                     <input type="hidden" name="sesskey" value="{{sesskey}}">
                     {{#returnurl}}
                         <input type="hidden" name="returnurl" value="{{returnurl}}">
@@ -84,14 +85,14 @@
                 </button>
             {{/check_is_running}}
             {{#result}}
-                <a class="btn btn-icon btn-light bg-light mr-2 icons-collapse-expand collapsed justify-content-center" data-toggle="collapse" data-for="sectiontoggler" href="#{{check_name}}" id="toggle{{check_name}}" aria-expanded="false" aria-controls="{{check_name}}" aria-label="{{check_name}}">
+                <button class="btn btn-icon btn-light bg-light local_course_checker__toggle-icon icons-collapse-expand mr-2 collapsed justify-content-center" data-toggle="collapse" data-for="sectiontoggler" data-target="#{{check_name}}" id="toggle{{check_name}}" aria-expanded="false" aria-controls="{{check_name}}" aria-label="{{check_name}}">
                     <span class="expanded-icon icon-no-margin" title="{{#str}} collapse, core{{/str}}">
                         {{#pix}}t/expandedchevron,core{{/pix}}
                     </span>
                     <span class="collapsed-icon icon-no-margin" title="{{#str}} expand, core{{/str}}">
                         {{#pix}}t/collapsedchevron_rtl,core{{/pix}}
                     </span>
-                </a>
+                </button>
             {{/result}}
         </div>
     </div>
@@ -100,6 +101,7 @@
             {{#error}}{{{.}}}{{/error}}
             {{#failed}}{{{.}}}{{/failed}}
             {{#warning}}{{{.}}}{{/warning}}
+            {{#info}}{{{.}}}{{/info}}
             {{#successful}}{{{.}}}{{/successful}}
         </div>
     {{/result}}

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -67,11 +67,11 @@ class notification {
         }
 
         $data = [
-                'coursename' => $course->fullname,
-                'user' => $user->lastname,
-                'checks' => $checksnames,
-                'result_url' => $url,
-                'checkername' => $checksnames[0],
+            'coursename' => $course->fullname,
+            'user' => $user->lastname,
+            'checks' => $checksnames,
+            'result_url' => $url,
+            'checkername' => $checksnames[0],
         ];
 
         $html = $renderer->render_from_template('local_course_checker/notification', $data);
@@ -111,7 +111,7 @@ class notification {
 
         $url = (new moodle_url('/local/course_checker/index.php', ['courseid' => $course->id]))->out(false);
 
-        $data = (object)[
+        $data = (object) [
             'firstname' => $user->firstname,
             'coursename' => $course->fullname,
         ];
@@ -124,7 +124,7 @@ class notification {
         return self::send_message_noreply_user(
             $user->id,
             $course->id,
-            'checker_completed',
+            'checker_failed',
             $subject,
             $plaintext,
             $html,

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of Moodle - https://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,33 +28,33 @@
 defined('MOODLE_INTERNAL') || die();
 // List of observers.
 $observers = [
-        [
-                'eventname' => '\core\event\course_updated', // Log when summary or name of the course changes.
-                'callback' => '\local_course_checker\event_manager::course_event_trigger',
-        ], [
-                'eventname' => '\core\event\course_deleted', // Cleanup activity database table.
-                'callback' => '\local_course_checker\event_manager::course_event_trigger',
-        ],
+    [
+        'eventname' => '\core\event\course_updated', // Log when summary or name of the course changes.
+        'callback' => '\local_course_checker\event_manager::course_event_trigger',
+    ], [
+        'eventname' => '\core\event\course_deleted', // Cleanup activity database table.
+        'callback' => '\local_course_checker\event_manager::course_event_trigger',
+    ],
 
-        [
-                'eventname' => '\core\event\course_module_created',
-                'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
-        ], [
-                'eventname' => '\core\event\course_module_deleted',
-                'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
-        ], [
-                'eventname' => '\core\event\course_module_updated',
-                'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
-        ],
+    [
+        'eventname' => '\core\event\course_module_created',
+        'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
+    ], [
+        'eventname' => '\core\event\course_module_deleted',
+        'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
+    ], [
+        'eventname' => '\core\event\course_module_updated',
+        'callback' => '\local_course_checker\event_manager::course_module_event_trigger',
+    ],
 
-        [
-                'eventname' => '\core\event\course_section_created',
-                'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
-        ], [
-                'eventname' => '\core\event\course_section_deleted',
-                'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
-        ], [
-                'eventname' => '\core\event\course_section_updated',
-                'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
-        ],
+    [
+        'eventname' => '\core\event\course_section_created',
+        'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
+    ], [
+        'eventname' => '\core\event\course_section_deleted',
+        'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
+    ], [
+        'eventname' => '\core\event\course_section_updated',
+        'callback' => '\local_course_checker\event_manager::course_section_event_trigger',
+    ],
 ];
