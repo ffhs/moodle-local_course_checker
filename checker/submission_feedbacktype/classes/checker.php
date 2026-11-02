@@ -78,7 +78,7 @@ class checker implements check_plugin_interface, mod_type_interface {
             ];
 
             // Restrict to subplugins to onlinetext, file or kalvid.
-            $hassubmission = $DB->get_record_sql($sql . "AND plugin IN ('onlinetext', 'file', 'kalvid')", $submissionparams);
+            $hassubmission = $DB->record_exists_sql($sql . " AND plugin IN ('onlinetext', 'file', 'kalvid')", $submissionparams);
             if ($hassubmission) {
                 $feedbackparams = [
                     'assignment' => $assignment->id,
@@ -86,7 +86,7 @@ class checker implements check_plugin_interface, mod_type_interface {
                     'name' => 'enabled',
                     'value' => '1',
                 ];
-                $hasfeedback = $DB->get_record_sql($sql, $feedbackparams);
+                $hasfeedback = $DB->record_exists_sql($sql, $feedbackparams);
                 if (!$hasfeedback) {
                     $message = translation_manager::generate(
                         'submission_feedbacktype_error',
