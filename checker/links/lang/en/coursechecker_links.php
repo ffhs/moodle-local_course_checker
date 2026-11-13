@@ -26,11 +26,12 @@
  */
 
 $string['pluginname'] = 'Link check';
-$string['pluginname_help'] = 'This check extracts HTTP and HTTPS links from the course summary, activity names, introductions and content, book chapters and wiki pages, and directly checks URL activities for reachability and configured HTML error-page patterns. Exact URLs and domains on the configured whitelists are skipped, as are requests blocked by Moodle security policies.';
+$string['pluginname_help'] = 'This check extracts HTTP and HTTPS links from the course summary, section summaries, activity names, introductions and content, book chapters and wiki pages, and directly checks URL activities for reachability and configured HTML error-page patterns. Exact URLs and domains on the configured whitelists are skipped, as are requests blocked by Moodle security policies.';
 $string['privacy:metadata'] = 'This check does not store any personal data. Its results are stored by the Course Checker plugin.';
 
 // Results.
 $string['course_summary'] = 'Course summary';
+$string['section_summary'] = 'Section summary: {$a->name}';
 $string['book_chapter'] = 'Book Chapter: {$a->title}';
 $string['wiki_page'] = 'Wiki Page: {$a->title}';
 $string['filetype_unknown'] = 'Unknown file';

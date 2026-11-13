@@ -70,8 +70,12 @@ class checker implements check_plugin_interface, mod_type_interface {
         // Check the course summary for links.
         $this->check_course_summary($course);
 
-        // Get all unique modules in the course.
         $modinfo = get_fast_modinfo($course);
+
+        // Check the section summaries for links.
+        $this->check_section_summaries($course, $modinfo);
+
+        // Get all unique modules in the course.
         $modules = $this->get_unique_modnames($course, $modinfo);
 
         foreach ($modules as $modname) {
@@ -158,6 +162,33 @@ class checker implements check_plugin_interface, mod_type_interface {
             $courseurl,
             translation_manager::generate("course_summary", "coursechecker_links")
         );
+    }
+
+    /**
+     * Checks urls in section summaries.
+     *
+     * @param stdClass $course
+     * @param course_modinfo $modinfo
+     * @throws moodle_exception
+     */
+    protected function check_section_summaries(stdClass $course, course_modinfo $modinfo): void {
+        // Loop over all sections in the course. Subsections can no longer have descriptions
+        foreach ($modinfo->get_listed_section_info_all() as $section) {
+            $urls = $this->get_urls_from_text($section->summary);
+            // Skip sections without links in their summary.
+            if (empty($urls)) {
+                continue;
+            }
+            // Title shown in the report, e.g. "Section summary: Topic 1".
+            $target = translation_manager::generate(
+                'section_summary',
+                'coursechecker_links',
+                (object) ['name' => get_section_name($course, $section)]
+            );
+            // Resolution link: the edit page where the section summary can be fixed.
+            $link = (new moodle_url('/course/editsection.php', ['id' => $section->id]))->out(false);
+            $this->check_urls_with_resolution_url($urls, $link, $target);
+        }
     }
 
     /**
