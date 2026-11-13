@@ -26,11 +26,12 @@
  */
 
 $string['pluginname'] = 'Link Überprüfung';
-$string['pluginname_help'] = 'Diese Überprüfung extrahiert HTTP- und HTTPS-Links aus der Kursbeschreibung, aus Namen, Einleitungen und Inhalten von Aktivitäten sowie aus Buchkapiteln und Wiki-Seiten und prüft URL-Aktivitäten direkt auf Erreichbarkeit und konfigurierte HTML-Fehlerseitenmuster. Exakte URLs und Domains auf den konfigurierten Ausnahmelisten werden ebenso übersprungen wie durch Moodle-Sicherheitsrichtlinien blockierte Anfragen.';
+$string['pluginname_help'] = 'Diese Überprüfung extrahiert HTTP- und HTTPS-Links aus der Kursbeschreibung, aus Abschnittsbeschreibungen, aus Namen, Einleitungen und Inhalten von Aktivitäten sowie aus Buchkapiteln und Wiki-Seiten und prüft URL-Aktivitäten direkt auf Erreichbarkeit und konfigurierte HTML-Fehlerseitenmuster. Exakte URLs und Domains auf den konfigurierten Ausnahmelisten werden ebenso übersprungen wie durch Moodle-Sicherheitsrichtlinien blockierte Anfragen.';
 $string['privacy:metadata'] = 'Diese Überprüfung speichert keine personenbezogenen Daten. Ihre Ergebnisse werden im Haupt-Plugin „Course Checker“ gespeichert.';
 
 // Ergebnisse.
 $string['course_summary'] = 'Kurszusammenfassung';
+$string['section_summary'] = 'Abschnittsbeschreibung: {$a->name}';
 $string['book_chapter'] = 'Buchkapitel: {$a->title}';
 $string['wiki_page'] = 'Wiki-Seite: {$a->title}';
 $string['filetype_unknown'] = 'Unbekannte Datei';
